@@ -50,6 +50,7 @@ namespace Hotspring
 
         private void button_play_Click(object sender, EventArgs e)
         {
+            Thread MainThread = new Thread(new ThreadStart(MainFunction));
             Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
             Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
 
@@ -65,64 +66,22 @@ namespace Hotspring
                 textBox_delaytime.Enabled = false;
                 textBox_step.Enabled = false;
                 button_settings.Enabled = false;
-                string frontdata, receive_command;
 
-                if (checkBox_RA.Checked == true || checkBox_RB.Checked == true || checkBox_RB.Checked == true || textBox_startValue.Text != "" && textBox_endValue.Text != "" && textBox_step.Text != "" && textBox_delaytime.Text != "")
+                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
                 {
-                    uint startvalue = Convert.ToUInt32(textBox_startValue.Text);
-                    uint endvalue = Convert.ToUInt32(textBox_endValue.Text);
-                    uint step = Convert.ToUInt32(textBox_step.Text);
-                    int delay = Convert.ToInt32(textBox_delaytime.Text);
-
                     Open_serialPort1();
-                    Open_serialPort2();
                     LogAThread.Start();
-                    LogBThread.Start();
-
-                    if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
-                    {
-                        receive_command = "VAL?";
-                        if (checkBox_RA.Checked == true)
-                        {
-                            frontdata = "set RA ";
-                            send_hotspring_command(startvalue, endvalue, step, delay, frontdata, receive_command);
-                        }
-                        else if (checkBox_RB.Checked == true)
-                        {
-                            frontdata = "set RB ";
-                            send_hotspring_command(startvalue, endvalue, step, delay, frontdata, receive_command);
-                        }
-                        else if (checkBox_RC.Checked == true)
-                        {
-                            frontdata = "set RC ";
-                            send_hotspring_command(startvalue, endvalue, step, delay, frontdata, receive_command);
-                        }
-                    }
-
-                    while (flag_receive) { }
-                    Output_csv_log();
-
-                    start_button = false;
-                    button_play.Text = "Play";
-                    checkBox_RA.Enabled = true;
-                    checkBox_RB.Enabled = true;
-                    checkBox_RC.Enabled = true;
-                    textBox_startValue.Enabled = true;
-                    textBox_endValue.Enabled = true;
-                    textBox_delaytime.Enabled = true;
-                    textBox_step.Enabled = true;
-
-                    Close_serialPort1();
-                    LogAThread.Abort();
-                    Close_serialPort2();
-                    LogBThread.Abort();
                 }
+                if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1")          //送至Comport
+                {
+                    Open_serialPort2();
+                    LogBThread.Start();
+                }
+
+                MainThread.Start();
             }
             else
             {
-                while (flag_receive) {}
-                Output_csv_log();
-
                 button_play.Text = "Play";
                 checkBox_RA.Enabled = true;
                 checkBox_RB.Enabled = true;
@@ -132,14 +91,20 @@ namespace Hotspring
                 textBox_delaytime.Enabled = true;
                 textBox_step.Enabled = true;
 
-                Close_serialPort1();
-                LogAThread.Abort();
-                Close_serialPort2();
-                LogBThread.Abort();
+                MainThread.Abort();
+                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
+                {
+                    Close_serialPort1();
+                    LogAThread.Abort();
+                }
+                if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1")          //送至Comport
+                {
+                    Close_serialPort2();
+                    LogBThread.Abort();
+                }
+
             }
-
         }
-
         //  開啟SerialPort
         protected void Open_serialPort1()
         {
@@ -277,11 +242,48 @@ namespace Hotspring
             }
         }
 
+        private void MainFunction()
+        {
+            string frontdata, receive_command = "VAL?";
+            if (start_button == true)
+            {
+                if (checkBox_RA.Checked == true || checkBox_RB.Checked == true || checkBox_RB.Checked == true || textBox_startValue.Text != "" && textBox_endValue.Text != "" && textBox_step.Text != "" && textBox_delaytime.Text != "")
+                {
+                    uint startvalue = Convert.ToUInt32(textBox_startValue.Text);
+                    uint endvalue = Convert.ToUInt32(textBox_endValue.Text);
+                    uint step = Convert.ToUInt32(textBox_step.Text);
+                    int delay = Convert.ToInt32(textBox_delaytime.Text);
+
+                    if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
+                    {
+                        if (checkBox_RA.Checked == true)
+                        {
+                            frontdata = "set RA ";
+                            send_hotspring_command(startvalue, endvalue, step, delay, frontdata, receive_command);
+                        }
+                        else if (checkBox_RB.Checked == true)
+                        {
+                            frontdata = "set RB ";
+                            send_hotspring_command(startvalue, endvalue, step, delay, frontdata, receive_command);
+                        }
+                        else if (checkBox_RC.Checked == true)
+                        {
+                            frontdata = "set RC ";
+                            send_hotspring_command(startvalue, endvalue, step, delay, frontdata, receive_command);
+                        }
+                    }
+
+                    while (flag_receive) { }
+                    Output_csv_log();
+                }
+            }
+        }
+
         private void send_hotspring_command(uint startvalue, uint endvalue, uint step, int delay, string frontdata, string recevice_command)
         {
-            if (startvalue < endvalue)
+            for (uint i = startvalue; i <= endvalue; i += step)
             {
-                for (uint i = startvalue; i <= endvalue; i += step)
+                if (start_button == true)
                 {
                     try
                     {
@@ -291,26 +293,6 @@ namespace Hotspring
                         serialPort1_csv += i + ";";
                         Thread.Sleep(delay);
                         while (flag_send) { }
-                        serialPort2.WriteLine(recevice_command);
-                        flag_receive = true;
-                    }
-                    catch (Exception Ex)
-                    {
-                        MessageBox.Show(Ex.Message.ToString(), "SerialPort1 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-            else
-            {
-                for (uint i = startvalue; i <= endvalue; i -= step)
-                {
-                    try
-                    {
-                        string send_data = frontdata + i;
-                        while (flag_receive) { }
-                        serialPort1.WriteLine(send_data);
-                        serialPort1_csv += i + ";";
-                        Thread.Sleep(delay);
                         serialPort2.WriteLine(recevice_command);
                         flag_receive = true;
                     }
