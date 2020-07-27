@@ -71,7 +71,7 @@
             this.textBox_delaytime.Name = "textBox_delaytime";
             this.textBox_delaytime.Size = new System.Drawing.Size(100, 25);
             this.textBox_delaytime.TabIndex = 2;
-            this.textBox_delaytime.Text = "1000";
+            this.textBox_delaytime.Text = "800";
             // 
             // textBox_step
             // 

@@ -19,21 +19,17 @@ namespace Hotspring
     {
         private string Config_Path = Application.StartupPath + "\\Config.ini";
 
-        private string serialPort1_text, serialPort2_text;
-        private string serialPort1_csv, serialPort2_csv;
+        string serialPort1_text, serialPort2_text;
+        string serialPort1_csv, serialPort2_csv;
         const int byteMessage_max_Hex = 16;
         const int byteMessage_max_Ascii = 256;
 
         bool start_button;
+        bool flag_receive = false, flag_send = false;
         byte[] byteMessage_A = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_A = 0;
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_B = 0;
-
-        // File path and name
-        string docPath = string.Empty;
-        string fileName = string.Empty;
-        string txtFileName = string.Empty;
 
         string output_csv = "Hotspring Value, Fluke receive value," + Environment.NewLine;
 
@@ -61,7 +57,6 @@ namespace Hotspring
             if (start_button == true)
             {
                 button_play.Text = "Stop";
-                /*
                 checkBox_RA.Enabled = false;
                 checkBox_RB.Enabled = false;
                 checkBox_RC.Enabled = false;
@@ -69,7 +64,7 @@ namespace Hotspring
                 textBox_endValue.Enabled = false;
                 textBox_delaytime.Enabled = false;
                 textBox_step.Enabled = false;
-                */
+                button_settings.Enabled = false;
                 string frontdata, receive_command;
 
                 if (checkBox_RA.Checked == true || checkBox_RB.Checked == true || checkBox_RB.Checked == true || textBox_startValue.Text != "" && textBox_endValue.Text != "" && textBox_step.Text != "" && textBox_delaytime.Text != "")
@@ -104,11 +99,30 @@ namespace Hotspring
                         }
                     }
 
+                    while (flag_receive) { }
                     Output_csv_log();
+
+                    start_button = false;
+                    button_play.Text = "Play";
+                    checkBox_RA.Enabled = true;
+                    checkBox_RB.Enabled = true;
+                    checkBox_RC.Enabled = true;
+                    textBox_startValue.Enabled = true;
+                    textBox_endValue.Enabled = true;
+                    textBox_delaytime.Enabled = true;
+                    textBox_step.Enabled = true;
+
+                    Close_serialPort1();
+                    LogAThread.Abort();
+                    Close_serialPort2();
+                    LogBThread.Abort();
                 }
             }
             else
             {
+                while (flag_receive) {}
+                Output_csv_log();
+
                 button_play.Text = "Play";
                 checkBox_RA.Enabled = true;
                 checkBox_RB.Enabled = true;
@@ -252,6 +266,7 @@ namespace Hotspring
                     double receive = double.Parse(dataValue, CultureInfo.InvariantCulture);
                     if (receive != 0)
                         serialPort2_csv += receive + ";";
+                    flag_receive = false;
                 }
                 byteMessage_length_B = 0;
             }
@@ -271,11 +286,13 @@ namespace Hotspring
                     try
                     {
                         string send_data = frontdata + i;
-                        Thread.Sleep(delay);
+                        while (flag_receive) { }
                         serialPort1.WriteLine(send_data);
                         serialPort1_csv += i + ";";
                         Thread.Sleep(delay);
+                        while (flag_send) { }
                         serialPort2.WriteLine(recevice_command);
+                        flag_receive = true;
                     }
                     catch (Exception Ex)
                     {
@@ -290,11 +307,12 @@ namespace Hotspring
                     try
                     {
                         string send_data = frontdata + i;
-                        Thread.Sleep(delay);
+                        while (flag_receive) { }
                         serialPort1.WriteLine(send_data);
                         serialPort1_csv += i + ";";
                         Thread.Sleep(delay);
                         serialPort2.WriteLine(recevice_command);
+                        flag_receive = true;
                     }
                     catch (Exception Ex)
                     {
@@ -323,6 +341,8 @@ namespace Hotspring
                     output_csv += serialPort1_split_data[i] + "," + serialPort2_split_data[i] + "," + Environment.NewLine;
                 }
                 file.Write(output_csv);
+                file.Close();
+                output_csv = "";
                 output_csv = "Hotspring Value, Fluke receive value," + Environment.NewLine;
             }
         }
