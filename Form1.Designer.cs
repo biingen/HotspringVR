@@ -44,6 +44,12 @@
             this.button_settings = new System.Windows.Forms.Button();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.serialPort2 = new System.IO.Ports.SerialPort(this.components);
+            this.label_basis = new System.Windows.Forms.Label();
+            this.textBox_basis = new System.Windows.Forms.TextBox();
+            this.textBox_power = new System.Windows.Forms.TextBox();
+            this.label_power = new System.Windows.Forms.Label();
+            this.label_sendValue = new System.Windows.Forms.Label();
+            this.label_receiveValue = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox_startValue
@@ -62,7 +68,7 @@
             this.textBox_endValue.Name = "textBox_endValue";
             this.textBox_endValue.Size = new System.Drawing.Size(100, 25);
             this.textBox_endValue.TabIndex = 1;
-            this.textBox_endValue.Text = "15";
+            this.textBox_endValue.Text = "1048580";
             // 
             // textBox_delaytime
             // 
@@ -155,7 +161,7 @@
             // 
             // button_play
             // 
-            this.button_play.Location = new System.Drawing.Point(191, 59);
+            this.button_play.Location = new System.Drawing.Point(176, 166);
             this.button_play.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_play.Name = "button_play";
             this.button_play.Size = new System.Drawing.Size(75, 22);
@@ -166,7 +172,7 @@
             // 
             // button_settings
             // 
-            this.button_settings.Location = new System.Drawing.Point(191, 120);
+            this.button_settings.Location = new System.Drawing.Point(176, 195);
             this.button_settings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_settings.Name = "button_settings";
             this.button_settings.Size = new System.Drawing.Size(75, 22);
@@ -175,11 +181,71 @@
             this.button_settings.UseVisualStyleBackColor = true;
             this.button_settings.Click += new System.EventHandler(this.button_settings_Click);
             // 
+            // label_basis
+            // 
+            this.label_basis.AutoSize = true;
+            this.label_basis.Location = new System.Drawing.Point(8, 169);
+            this.label_basis.Name = "label_basis";
+            this.label_basis.Size = new System.Drawing.Size(44, 15);
+            this.label_basis.TabIndex = 14;
+            this.label_basis.Text = "Basis: ";
+            // 
+            // textBox_basis
+            // 
+            this.textBox_basis.Location = new System.Drawing.Point(59, 166);
+            this.textBox_basis.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox_basis.Name = "textBox_basis";
+            this.textBox_basis.Size = new System.Drawing.Size(100, 25);
+            this.textBox_basis.TabIndex = 15;
+            this.textBox_basis.Text = "1";
+            // 
+            // textBox_power
+            // 
+            this.textBox_power.Location = new System.Drawing.Point(59, 195);
+            this.textBox_power.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox_power.Name = "textBox_power";
+            this.textBox_power.Size = new System.Drawing.Size(100, 25);
+            this.textBox_power.TabIndex = 17;
+            this.textBox_power.Text = "1";
+            // 
+            // label_power
+            // 
+            this.label_power.AutoSize = true;
+            this.label_power.Location = new System.Drawing.Point(8, 198);
+            this.label_power.Name = "label_power";
+            this.label_power.Size = new System.Drawing.Size(51, 15);
+            this.label_power.TabIndex = 16;
+            this.label_power.Text = "Power: ";
+            // 
+            // label_sendValue
+            // 
+            this.label_sendValue.AutoSize = true;
+            this.label_sendValue.Location = new System.Drawing.Point(188, 49);
+            this.label_sendValue.Name = "label_sendValue";
+            this.label_sendValue.Size = new System.Drawing.Size(63, 15);
+            this.label_sendValue.TabIndex = 18;
+            this.label_sendValue.Text = "00000000";
+            // 
+            // label_receiveValue
+            // 
+            this.label_receiveValue.AutoSize = true;
+            this.label_receiveValue.Location = new System.Drawing.Point(188, 77);
+            this.label_receiveValue.Name = "label_receiveValue";
+            this.label_receiveValue.Size = new System.Drawing.Size(63, 15);
+            this.label_receiveValue.TabIndex = 19;
+            this.label_receiveValue.Text = "00000000";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 177);
+            this.ClientSize = new System.Drawing.Size(262, 237);
+            this.Controls.Add(this.label_receiveValue);
+            this.Controls.Add(this.label_sendValue);
+            this.Controls.Add(this.textBox_power);
+            this.Controls.Add(this.label_power);
+            this.Controls.Add(this.textBox_basis);
+            this.Controls.Add(this.label_basis);
             this.Controls.Add(this.button_settings);
             this.Controls.Add(this.button_play);
             this.Controls.Add(this.checkBox_RC);
@@ -218,6 +284,12 @@
         private System.Windows.Forms.Button button_settings;
         private System.IO.Ports.SerialPort serialPort1;
         private System.IO.Ports.SerialPort serialPort2;
+        private System.Windows.Forms.Label label_basis;
+        private System.Windows.Forms.TextBox textBox_basis;
+        private System.Windows.Forms.TextBox textBox_power;
+        private System.Windows.Forms.Label label_power;
+        private System.Windows.Forms.Label label_sendValue;
+        private System.Windows.Forms.Label label_receiveValue;
     }
 }
 
