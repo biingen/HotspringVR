@@ -25,7 +25,7 @@ namespace Hotspring
         const int byteMessage_max_Ascii = 256;
 
         bool start_button;
-        bool flag_receive = false, flag_send = false;
+        bool flag_receive = false;
         byte[] byteMessage_A = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_A = 0;
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
@@ -97,15 +97,15 @@ namespace Hotspring
                 button_settings.Enabled = true;
 
                 MainThread.Abort();
-                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
+                if (serialPort1.IsOpen == true)          //送至Comport
                 {
-                    Close_serialPort1();
                     LogAThread.Abort();
+                    Close_serialPort1();
                 }
-                if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1")          //送至Comport
+                if (serialPort2.IsOpen == true)          //送至Comport
                 {
-                    Close_serialPort2();
                     LogBThread.Abort();
+                    Close_serialPort2();
                 }
             }
         }
@@ -247,6 +247,103 @@ namespace Hotspring
             }
         }
 
+        private void textBox_startValue_TextChanged(object sender, EventArgs e)
+        {
+            check_start_end_value();
+        }
+
+        private void textBox_endValue_TextChanged(object sender, EventArgs e)
+        {
+            check_start_end_value();
+        }
+
+        private void textBox_step_TextChanged(object sender, EventArgs e)
+        {
+            check_step_value();
+        }
+
+        private void textBox_basis_TextChanged(object sender, EventArgs e)
+        {
+            check_basis_power_value();
+        }
+
+        private void textBox_power_TextChanged(object sender, EventArgs e)
+        {
+            check_basis_power_value();
+        }
+
+        private void check_start_end_value()
+        {
+            int start_number = 0;
+            int end_number = 0;
+            bool textBox_start_bool = Int32.TryParse(textBox_startValue.Text, out start_number);
+            bool textBox_end_bool = Int32.TryParse(textBox_endValue.Text, out end_number);
+            if (textBox_start_bool && start_number < 1 || start_number > 1048580)
+            {
+                textBox_startValue.Text = "2";
+                MessageBox.Show("Please re-keyin the correct value.", "Start value Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (textBox_end_bool && end_number < 1 || end_number > 1048580)
+            {
+                textBox_endValue.Text = "1048580";
+                MessageBox.Show("Please re-keyin the correct value.", "End value Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void check_step_value()
+        {
+            int step_number = 0;
+            bool textBox_step_bool = Int32.TryParse(textBox_step.Text, out step_number);
+            if (textBox_step_bool && step_number == 0)
+            {
+                textBox_basis.Enabled = true;
+                textBox_power.Enabled = true;
+                textBox_step.Enabled = false;
+            }
+            else if (textBox_step_bool && step_number < -1048580 || step_number > 1048580)
+            {
+                textBox_step.Text = "1";
+                MessageBox.Show("Please re-keyin the correct value.", "End value Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                textBox_basis.Enabled = false;
+                textBox_power.Enabled = false;
+                textBox_step.Enabled = true;
+            }
+        }
+
+        private void check_basis_power_value()
+        {
+            int basis_number = 0;
+            int power_number = 0;
+            bool textBox_basis_bool = Int32.TryParse(textBox_basis.Text, out basis_number);
+            bool textBox_power_bool = Int32.TryParse(textBox_power.Text, out power_number);
+
+            if (textBox_basis_bool && textBox_power_bool)
+            {
+                if (basis_number == 1 || basis_number == 0 && power_number == 0)
+                {
+                    textBox_basis.Enabled = false;
+                    textBox_power.Enabled = false;
+                    textBox_step.Enabled = true;
+                }
+                else
+                {
+                    textBox_basis.Enabled = true;
+                    textBox_power.Enabled = true;
+                    textBox_step.Enabled = false;
+                }
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            check_start_end_value();
+            check_step_value();
+            check_basis_power_value();
+        }
+
         private void MainFunction()
         {
             string frontdata, receive_command = "VAL?";
@@ -290,24 +387,49 @@ namespace Hotspring
         {
             if (step != 0)
             {
-                for (int i = startvalue; i <= endvalue; i += step)
+                if (startvalue < endvalue)
                 {
-                    if (start_button == true)
+                    for (int i = startvalue; i <= endvalue; i += step)
                     {
-                        try
+                        if (start_button == true)
                         {
-                            string send_data = frontdata + i;
-                            while (flag_receive) { }
-                            serialPort1.WriteLine(send_data);
-                            serialPort1_csv += i + ";";
-                            Thread.Sleep(delay);
-                            while (flag_send) { }
-                            serialPort2.WriteLine(recevice_command);
-                            flag_receive = true;
+                            try
+                            {
+                                string send_data = frontdata + i;
+                                while (flag_receive) { }
+                                serialPort1.WriteLine(send_data);
+                                serialPort1_csv += i + ";";
+                                Thread.Sleep(delay);
+                                serialPort2.WriteLine(recevice_command);
+                                flag_receive = true;
+                            }
+                            catch (Exception Ex)
+                            {
+                                MessageBox.Show(Ex.Message.ToString(), "SerialPort1 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
-                        catch (Exception Ex)
+                    }
+                }
+                else
+                {
+                    for (int i = startvalue; i >= endvalue; i += step)
+                    {
+                        if (start_button == true)
                         {
-                            MessageBox.Show(Ex.Message.ToString(), "SerialPort1 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            try
+                            {
+                                string send_data = frontdata + i;
+                                while (flag_receive) { }
+                                serialPort1.WriteLine(send_data);
+                                serialPort1_csv += i + ";";
+                                Thread.Sleep(delay);
+                                serialPort2.WriteLine(recevice_command);
+                                flag_receive = true;
+                            }
+                            catch (Exception Ex)
+                            {
+                                MessageBox.Show(Ex.Message.ToString(), "SerialPort1 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                     }
                 }
@@ -315,25 +437,50 @@ namespace Hotspring
             else if (basis != 0 && basis != 1 && power != 0)
             {
                 int value = 0;
-                for (long i = startvalue; i <= endvalue; i += (long)Math.Pow(basis, value))
+                if (startvalue < endvalue)
                 {
-                    if (value < power)
+                    for (long i = startvalue; i <= endvalue; i += (long)Math.Pow(basis, value))
                     {
-                        try
+                        if (value < power)
                         {
-                            string send_data = frontdata + i;
-                            while (flag_receive) { }
-                            serialPort1.WriteLine(send_data);
-                            serialPort1_csv += i + ";";
-                            Thread.Sleep(delay);
-                            while (flag_send) { }
-                            serialPort2.WriteLine(recevice_command);
-                            flag_receive = true;
-                            value++;
+                            try
+                            {
+                                string send_data = frontdata + i;
+                                while (flag_receive) { }
+                                serialPort1.WriteLine(send_data);
+                                serialPort1_csv += i + ";";
+                                Thread.Sleep(delay);
+                                serialPort2.WriteLine(recevice_command);
+                                flag_receive = true;
+                                value++;
+                            }
+                            catch (Exception Ex)
+                            {
+                                MessageBox.Show(Ex.Message.ToString(), "SerialPort1 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
-                        catch (Exception Ex)
+                    }
+                }
+                else
+                {
+                    for (long i = startvalue; i >= endvalue; i += (long)Math.Pow(basis, value))
+                    {
+                        if (start_button == true)
                         {
-                            MessageBox.Show(Ex.Message.ToString(), "SerialPort1 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            try
+                            {
+                                string send_data = frontdata + i;
+                                while (flag_receive) { }
+                                serialPort1.WriteLine(send_data);
+                                serialPort1_csv += i + ";";
+                                Thread.Sleep(delay);
+                                serialPort2.WriteLine(recevice_command);
+                                flag_receive = true;
+                            }
+                            catch (Exception Ex)
+                            {
+                                MessageBox.Show(Ex.Message.ToString(), "SerialPort1 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                     }
                 }
@@ -347,24 +494,31 @@ namespace Hotspring
             {
                 if (serialPort1_csv != "" && serialPort2_csv != "")
                 {
-                    string[] serialPort1_split_data = serialPort1_csv.Split(';');
-                    string[] serialPort2_split_data = serialPort2_csv.Split(';');
-                    int serialPort_length = 0;
-                    if (serialPort1_split_data.Length > serialPort2_split_data.Length)
-                        serialPort_length = serialPort2_split_data.Length;
-                    else if (serialPort1_split_data.Length < serialPort2_split_data.Length)
-                        serialPort_length = serialPort1_split_data.Length;
-                    else
-                        serialPort_length = serialPort1_split_data.Length;
-                    for (int i = 0; i < serialPort_length; i++)
+                    try
                     {
-                        output_csv += serialPort1_split_data[i] + "," + serialPort2_split_data[i] + "," + Environment.NewLine;
+                        string[] serialPort1_split_data = serialPort1_csv.Split(';');
+                        string[] serialPort2_split_data = serialPort2_csv.Split(';');
+                        int serialPort_length = 0;
+                        if (serialPort1_split_data.Length > serialPort2_split_data.Length)
+                            serialPort_length = serialPort2_split_data.Length;
+                        else if (serialPort1_split_data.Length < serialPort2_split_data.Length)
+                            serialPort_length = serialPort1_split_data.Length;
+                        else
+                            serialPort_length = serialPort1_split_data.Length;
+                        for (int i = 0; i < serialPort_length; i++)
+                        {
+                            output_csv += serialPort1_split_data[i] + "," + serialPort2_split_data[i] + "," + Environment.NewLine;
+                        }
+                        file.Write(output_csv);
+                        serialPort1_csv = "";
+                        serialPort2_csv = "";
+                        output_csv = "";
+                        output_csv = "Hotspring Value, Fluke receive value," + Environment.NewLine;
                     }
-                    file.Write(output_csv);
-                    serialPort1_csv = "";
-                    serialPort2_csv = "";
-                    output_csv = "";
-                    output_csv = "Hotspring Value, Fluke receive value," + Environment.NewLine;
+                    catch (Exception Ex)
+                    {
+                        MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
         }
