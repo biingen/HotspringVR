@@ -25,7 +25,7 @@ namespace Hotspring
         const int byteMessage_max_Ascii = 256;
 
         bool start_button;
-        bool flag_receive = false;
+        bool flag_receive = false, flag_send = false;
         byte[] byteMessage_A = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_A = 0;
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
@@ -69,13 +69,27 @@ namespace Hotspring
                 textBox_power.Enabled = false;
                 button_settings.Enabled = false;
 
-                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
+                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
                 {
                     Open_serialPort1();
                     LogAThread.Start();
                 }
-                if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1")          //送至Comport
+                else if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == true)
                 {
+                    LogAThread.Abort();
+                    Close_serialPort1();
+                    Open_serialPort1();
+                    LogAThread.Start();
+                }
+                if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
+                {
+                    Open_serialPort2();
+                    LogBThread.Start();
+                }
+                else if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == true)
+                {
+                    LogAThread.Abort();
+                    Close_serialPort2();
                     Open_serialPort2();
                     LogBThread.Start();
                 }
@@ -97,12 +111,12 @@ namespace Hotspring
                 button_settings.Enabled = true;
 
                 MainThread.Abort();
-                if (serialPort1.IsOpen == true)          //送至Comport
+                if (serialPort1.IsOpen == true && flag_send == false)          //送至Comport
                 {
                     LogAThread.Abort();
                     Close_serialPort1();
                 }
-                if (serialPort2.IsOpen == true)          //送至Comport
+                if (serialPort2.IsOpen == true && flag_receive == false)          //送至Comport
                 {
                     LogBThread.Abort();
                     Close_serialPort2();
@@ -166,6 +180,11 @@ namespace Hotspring
             if ((ch == 0x0A) || (byteMessage_length_A >= byteMessage_max_Ascii))
             {
                 string dataValue = Encoding.ASCII.GetString(byteMessage_A).Substring(0, byteMessage_length_A);
+                DateTime dt = DateTime.Now;
+                dataValue = "[Receive_Port_1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + dataValue + "\r\n"; //OK
+                serialPort1_text = string.Concat(serialPort1_text, dataValue);
+                if (dataValue.Contains("OK"))
+                    flag_send = false;
                 byteMessage_length_A = 0;
             }
             else
@@ -231,6 +250,9 @@ namespace Hotspring
             if ((ch == 0x0A) || (byteMessage_length_B >= byteMessage_max_Ascii))
             {
                 string dataValue = Encoding.ASCII.GetString(byteMessage_B).Substring(0, byteMessage_length_B);
+                DateTime dt = DateTime.Now;
+                dataValue = "[Receive_Port_2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + dataValue + "\r\n"; //OK
+                serialPort2_text = string.Concat(serialPort2_text, dataValue);
                 if (dataValue.Contains("E"))
                 {
                     double receive = double.Parse(dataValue, CultureInfo.InvariantCulture);
@@ -377,7 +399,7 @@ namespace Hotspring
                         }
                     }
 
-                    while (flag_receive) { }
+                    while (flag_receive || flag_send) { }
                     Output_csv_log();
                 }
             }
@@ -396,11 +418,18 @@ namespace Hotspring
                             try
                             {
                                 string send_data = frontdata + i;
-                                while (flag_receive) { }
+                                while (flag_receive || flag_send) { }
                                 serialPort1.WriteLine(send_data);
+                                DateTime dt = DateTime.Now;
+                                string send_serial1_text = "[send_serialport_1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                                serialPort1_text = string.Concat(serialPort1_text, send_serial1_text);
                                 serialPort1_csv += i + ";";
+                                flag_send = true;
                                 Thread.Sleep(delay);
                                 serialPort2.WriteLine(recevice_command);
+                                dt = DateTime.Now;
+                                string receive_serial2_text = "[receive_serialport_2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                                serialPort2_text = string.Concat(serialPort2_text, receive_serial2_text);
                                 flag_receive = true;
                             }
                             catch (Exception Ex)
@@ -419,11 +448,18 @@ namespace Hotspring
                             try
                             {
                                 string send_data = frontdata + i;
-                                while (flag_receive) { }
+                                while (flag_receive || flag_send) { }
                                 serialPort1.WriteLine(send_data);
+                                DateTime dt = DateTime.Now;
+                                string send_serial1_text = "[send_serialport_1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                                serialPort1_text = string.Concat(serialPort1_text, send_serial1_text);
                                 serialPort1_csv += i + ";";
+                                flag_send = true;
                                 Thread.Sleep(delay);
                                 serialPort2.WriteLine(recevice_command);
+                                dt = DateTime.Now;
+                                string receive_serial2_text = "[receive_serialport_2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                                serialPort2_text = string.Concat(serialPort2_text, receive_serial2_text);
                                 flag_receive = true;
                             }
                             catch (Exception Ex)
@@ -446,11 +482,18 @@ namespace Hotspring
                             try
                             {
                                 string send_data = frontdata + i;
-                                while (flag_receive) { }
+                                while (flag_receive || flag_send) { }
                                 serialPort1.WriteLine(send_data);
+                                DateTime dt = DateTime.Now;
+                                string send_serial1_text = "[send_serialport_1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                                serialPort1_text = string.Concat(serialPort1_text, send_serial1_text);
                                 serialPort1_csv += i + ";";
+                                flag_send = true;
                                 Thread.Sleep(delay);
                                 serialPort2.WriteLine(recevice_command);
+                                dt = DateTime.Now;
+                                string receive_serial2_text = "[receive_serialport_2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                                serialPort2_text = string.Concat(serialPort2_text, receive_serial2_text);
                                 flag_receive = true;
                                 value++;
                             }
@@ -470,11 +513,18 @@ namespace Hotspring
                             try
                             {
                                 string send_data = frontdata + i;
-                                while (flag_receive) { }
+                                while (flag_receive || flag_send) { }
                                 serialPort1.WriteLine(send_data);
+                                DateTime dt = DateTime.Now;
+                                string send_serial1_text = "[send_serialport_1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                                serialPort1_text = string.Concat(serialPort1_text, send_serial1_text);
                                 serialPort1_csv += i + ";";
+                                flag_send = true;
                                 Thread.Sleep(delay);
                                 serialPort2.WriteLine(recevice_command);
+                                dt = DateTime.Now;
+                                string receive_serial2_text = "[receive_serialport_2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                                serialPort2_text = string.Concat(serialPort2_text, receive_serial2_text);
                                 flag_receive = true;
                             }
                             catch (Exception Ex)
@@ -514,6 +564,38 @@ namespace Hotspring
                         serialPort2_csv = "";
                         output_csv = "";
                         output_csv = "Hotspring Value, Fluke receive value," + Environment.NewLine;
+                    }
+                    catch (Exception Ex)
+                    {
+                        MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_Serialport1.txt", true))
+            {
+                if (serialPort1_text != "")
+                {
+                    try
+                    {
+                        file.Write(serialPort1_text);
+                        serialPort1_text = "";
+                    }
+                    catch (Exception Ex)
+                    {
+                        MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_Serialport2.txt", true))
+            {
+                if (serialPort2_text != "")
+                {
+                    try
+                    {
+                        file.Write(serialPort2_text);
+                        serialPort2_text = "";
                     }
                     catch (Exception Ex)
                     {
