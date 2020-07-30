@@ -311,7 +311,7 @@ namespace Hotspring
             }
             else if (textBox_step_bool && step_number < -1048576 || step_number > 1048576)
             {
-                textBox_step.Text = "0";
+                textBox_step.Text = "1";
                 MessageBox.Show("Please re-keyin the correct value.", "End value Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
@@ -462,13 +462,13 @@ namespace Hotspring
                 int value = 0;
                 if (startvalue < endvalue)
                 {
-                    for (long i = startvalue; i < endvalue; i += (long)Math.Pow(basis, value))
+                    for (long i = startvalue; i <= endvalue; i += (long)Math.Pow(basis, value))
                     {
                         if (value < power)
                         {
                             try
                             {
-                                string send_data = frontdata + (i - 1);
+                                string send_data = frontdata + i;
                                 while (flag_receive || flag_send) { }
                                 serialPort1.WriteLine(send_data);
                                 DateTime dt = DateTime.Now;
@@ -493,13 +493,13 @@ namespace Hotspring
                 }
                 else
                 {
-                    for (long i = startvalue; i > endvalue; i += (long)Math.Pow(basis, value))
+                    for (long i = startvalue; i >= endvalue; i += (long)Math.Pow(basis, value))
                     {
                         if (start_button == true)
                         {
                             try
                             {
-                                string send_data = frontdata + (i - 1);
+                                string send_data = frontdata + i;
                                 while (flag_receive || flag_send) { }
                                 serialPort1.WriteLine(send_data);
                                 DateTime dt = DateTime.Now;
