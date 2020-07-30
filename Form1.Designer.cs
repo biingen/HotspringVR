@@ -54,7 +54,7 @@
             // 
             // textBox_startValue
             // 
-            this.textBox_startValue.Location = new System.Drawing.Point(93, 49);
+            this.textBox_startValue.Location = new System.Drawing.Point(109, 48);
             this.textBox_startValue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_startValue.Name = "textBox_startValue";
             this.textBox_startValue.Size = new System.Drawing.Size(100, 25);
@@ -64,17 +64,17 @@
             // 
             // textBox_endValue
             // 
-            this.textBox_endValue.Location = new System.Drawing.Point(93, 78);
+            this.textBox_endValue.Location = new System.Drawing.Point(109, 77);
             this.textBox_endValue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_endValue.Name = "textBox_endValue";
             this.textBox_endValue.Size = new System.Drawing.Size(100, 25);
             this.textBox_endValue.TabIndex = 1;
-            this.textBox_endValue.Text = "1048580";
+            this.textBox_endValue.Text = "1048576";
             this.textBox_endValue.TextChanged += new System.EventHandler(this.textBox_endValue_TextChanged);
             // 
             // textBox_delaytime
             // 
-            this.textBox_delaytime.Location = new System.Drawing.Point(93, 138);
+            this.textBox_delaytime.Location = new System.Drawing.Point(109, 137);
             this.textBox_delaytime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_delaytime.Name = "textBox_delaytime";
             this.textBox_delaytime.Size = new System.Drawing.Size(100, 25);
@@ -83,7 +83,7 @@
             // 
             // textBox_step
             // 
-            this.textBox_step.Location = new System.Drawing.Point(93, 109);
+            this.textBox_step.Location = new System.Drawing.Point(109, 108);
             this.textBox_step.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_step.Name = "textBox_step";
             this.textBox_step.Size = new System.Drawing.Size(100, 25);
@@ -94,7 +94,7 @@
             // label_startValue
             // 
             this.label_startValue.AutoSize = true;
-            this.label_startValue.Location = new System.Drawing.Point(8, 49);
+            this.label_startValue.Location = new System.Drawing.Point(24, 48);
             this.label_startValue.Name = "label_startValue";
             this.label_startValue.Size = new System.Drawing.Size(42, 15);
             this.label_startValue.TabIndex = 4;
@@ -103,7 +103,7 @@
             // label_endValue
             // 
             this.label_endValue.AutoSize = true;
-            this.label_endValue.Location = new System.Drawing.Point(8, 77);
+            this.label_endValue.Location = new System.Drawing.Point(24, 76);
             this.label_endValue.Name = "label_endValue";
             this.label_endValue.Size = new System.Drawing.Size(38, 15);
             this.label_endValue.TabIndex = 5;
@@ -112,7 +112,7 @@
             // label_delay
             // 
             this.label_delay.AutoSize = true;
-            this.label_delay.Location = new System.Drawing.Point(8, 140);
+            this.label_delay.Location = new System.Drawing.Point(24, 139);
             this.label_delay.Name = "label_delay";
             this.label_delay.Size = new System.Drawing.Size(78, 15);
             this.label_delay.TabIndex = 6;
@@ -121,7 +121,7 @@
             // label_step
             // 
             this.label_step.AutoSize = true;
-            this.label_step.Location = new System.Drawing.Point(9, 110);
+            this.label_step.Location = new System.Drawing.Point(25, 109);
             this.label_step.Name = "label_step";
             this.label_step.Size = new System.Drawing.Size(40, 15);
             this.label_step.TabIndex = 7;
@@ -132,7 +132,7 @@
             this.checkBox_RA.AutoSize = true;
             this.checkBox_RA.Checked = true;
             this.checkBox_RA.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_RA.Location = new System.Drawing.Point(12, 12);
+            this.checkBox_RA.Location = new System.Drawing.Point(28, 11);
             this.checkBox_RA.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox_RA.Name = "checkBox_RA";
             this.checkBox_RA.Size = new System.Drawing.Size(48, 19);
@@ -143,7 +143,7 @@
             // checkBox_RB
             // 
             this.checkBox_RB.AutoSize = true;
-            this.checkBox_RB.Location = new System.Drawing.Point(67, 12);
+            this.checkBox_RB.Location = new System.Drawing.Point(83, 11);
             this.checkBox_RB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox_RB.Name = "checkBox_RB";
             this.checkBox_RB.Size = new System.Drawing.Size(47, 19);
@@ -154,7 +154,7 @@
             // checkBox_RC
             // 
             this.checkBox_RC.AutoSize = true;
-            this.checkBox_RC.Location = new System.Drawing.Point(119, 12);
+            this.checkBox_RC.Location = new System.Drawing.Point(135, 11);
             this.checkBox_RC.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox_RC.Name = "checkBox_RC";
             this.checkBox_RC.Size = new System.Drawing.Size(47, 19);
@@ -164,10 +164,10 @@
             // 
             // button_play
             // 
-            this.button_play.Location = new System.Drawing.Point(210, 169);
+            this.button_play.Location = new System.Drawing.Point(226, 168);
             this.button_play.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_play.Name = "button_play";
-            this.button_play.Size = new System.Drawing.Size(75, 22);
+            this.button_play.Size = new System.Drawing.Size(75, 25);
             this.button_play.TabIndex = 11;
             this.button_play.Text = "Play";
             this.button_play.UseVisualStyleBackColor = true;
@@ -175,10 +175,10 @@
             // 
             // button_settings
             // 
-            this.button_settings.Location = new System.Drawing.Point(210, 198);
+            this.button_settings.Location = new System.Drawing.Point(226, 197);
             this.button_settings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_settings.Name = "button_settings";
-            this.button_settings.Size = new System.Drawing.Size(75, 22);
+            this.button_settings.Size = new System.Drawing.Size(75, 25);
             this.button_settings.TabIndex = 12;
             this.button_settings.Text = "Settings";
             this.button_settings.UseVisualStyleBackColor = true;
@@ -187,7 +187,7 @@
             // label_basis
             // 
             this.label_basis.AutoSize = true;
-            this.label_basis.Location = new System.Drawing.Point(8, 169);
+            this.label_basis.Location = new System.Drawing.Point(24, 168);
             this.label_basis.Name = "label_basis";
             this.label_basis.Size = new System.Drawing.Size(44, 15);
             this.label_basis.TabIndex = 14;
@@ -195,7 +195,7 @@
             // 
             // textBox_basis
             // 
-            this.textBox_basis.Location = new System.Drawing.Point(93, 169);
+            this.textBox_basis.Location = new System.Drawing.Point(109, 168);
             this.textBox_basis.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_basis.Name = "textBox_basis";
             this.textBox_basis.Size = new System.Drawing.Size(100, 25);
@@ -205,7 +205,7 @@
             // 
             // textBox_power
             // 
-            this.textBox_power.Location = new System.Drawing.Point(93, 198);
+            this.textBox_power.Location = new System.Drawing.Point(109, 197);
             this.textBox_power.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_power.Name = "textBox_power";
             this.textBox_power.Size = new System.Drawing.Size(100, 25);
@@ -216,7 +216,7 @@
             // label_power
             // 
             this.label_power.AutoSize = true;
-            this.label_power.Location = new System.Drawing.Point(8, 198);
+            this.label_power.Location = new System.Drawing.Point(24, 197);
             this.label_power.Name = "label_power";
             this.label_power.Size = new System.Drawing.Size(51, 15);
             this.label_power.TabIndex = 16;
@@ -225,26 +225,28 @@
             // label_sendValue
             // 
             this.label_sendValue.AutoSize = true;
-            this.label_sendValue.Location = new System.Drawing.Point(222, 52);
+            this.label_sendValue.Location = new System.Drawing.Point(238, 51);
             this.label_sendValue.Name = "label_sendValue";
             this.label_sendValue.Size = new System.Drawing.Size(63, 15);
             this.label_sendValue.TabIndex = 18;
             this.label_sendValue.Text = "00000000";
+            this.label_sendValue.Visible = false;
             // 
             // label_receiveValue
             // 
             this.label_receiveValue.AutoSize = true;
-            this.label_receiveValue.Location = new System.Drawing.Point(222, 80);
+            this.label_receiveValue.Location = new System.Drawing.Point(238, 79);
             this.label_receiveValue.Name = "label_receiveValue";
             this.label_receiveValue.Size = new System.Drawing.Size(63, 15);
             this.label_receiveValue.TabIndex = 19;
             this.label_receiveValue.Text = "00000000";
+            this.label_receiveValue.Visible = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(293, 237);
+            this.ClientSize = new System.Drawing.Size(337, 237);
             this.Controls.Add(this.label_receiveValue);
             this.Controls.Add(this.label_sendValue);
             this.Controls.Add(this.textBox_power);
@@ -266,7 +268,7 @@
             this.Controls.Add(this.textBox_startValue);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "HotspringVR";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
