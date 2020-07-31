@@ -46,8 +46,6 @@
             this.serialPort2 = new System.IO.Ports.SerialPort(this.components);
             this.label_basis = new System.Windows.Forms.Label();
             this.textBox_basis = new System.Windows.Forms.TextBox();
-            this.textBox_power = new System.Windows.Forms.TextBox();
-            this.label_power = new System.Windows.Forms.Label();
             this.label_sendValue = new System.Windows.Forms.Label();
             this.label_receiveValue = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -69,7 +67,7 @@
             this.textBox_endValue.Name = "textBox_endValue";
             this.textBox_endValue.Size = new System.Drawing.Size(100, 25);
             this.textBox_endValue.TabIndex = 1;
-            this.textBox_endValue.Text = "1048576";
+            this.textBox_endValue.Text = "1048575";
             this.textBox_endValue.TextChanged += new System.EventHandler(this.textBox_endValue_TextChanged);
             // 
             // textBox_delaytime
@@ -79,7 +77,7 @@
             this.textBox_delaytime.Name = "textBox_delaytime";
             this.textBox_delaytime.Size = new System.Drawing.Size(100, 25);
             this.textBox_delaytime.TabIndex = 2;
-            this.textBox_delaytime.Text = "800";
+            this.textBox_delaytime.Text = "2000";
             // 
             // textBox_step
             // 
@@ -88,7 +86,7 @@
             this.textBox_step.Name = "textBox_step";
             this.textBox_step.Size = new System.Drawing.Size(100, 25);
             this.textBox_step.TabIndex = 3;
-            this.textBox_step.Text = "1";
+            this.textBox_step.Text = "0";
             this.textBox_step.TextChanged += new System.EventHandler(this.textBox_step_TextChanged);
             // 
             // label_startValue
@@ -164,7 +162,7 @@
             // 
             // button_play
             // 
-            this.button_play.Location = new System.Drawing.Point(226, 168);
+            this.button_play.Location = new System.Drawing.Point(226, 136);
             this.button_play.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_play.Name = "button_play";
             this.button_play.Size = new System.Drawing.Size(75, 25);
@@ -175,7 +173,7 @@
             // 
             // button_settings
             // 
-            this.button_settings.Location = new System.Drawing.Point(226, 197);
+            this.button_settings.Location = new System.Drawing.Point(226, 168);
             this.button_settings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_settings.Name = "button_settings";
             this.button_settings.Size = new System.Drawing.Size(75, 25);
@@ -187,7 +185,7 @@
             // label_basis
             // 
             this.label_basis.AutoSize = true;
-            this.label_basis.Location = new System.Drawing.Point(24, 168);
+            this.label_basis.Location = new System.Drawing.Point(25, 171);
             this.label_basis.Name = "label_basis";
             this.label_basis.Size = new System.Drawing.Size(44, 15);
             this.label_basis.TabIndex = 14;
@@ -200,27 +198,8 @@
             this.textBox_basis.Name = "textBox_basis";
             this.textBox_basis.Size = new System.Drawing.Size(100, 25);
             this.textBox_basis.TabIndex = 15;
-            this.textBox_basis.Text = "1";
+            this.textBox_basis.Text = "2";
             this.textBox_basis.TextChanged += new System.EventHandler(this.textBox_basis_TextChanged);
-            // 
-            // textBox_power
-            // 
-            this.textBox_power.Location = new System.Drawing.Point(109, 197);
-            this.textBox_power.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox_power.Name = "textBox_power";
-            this.textBox_power.Size = new System.Drawing.Size(100, 25);
-            this.textBox_power.TabIndex = 17;
-            this.textBox_power.Text = "1";
-            this.textBox_power.TextChanged += new System.EventHandler(this.textBox_power_TextChanged);
-            // 
-            // label_power
-            // 
-            this.label_power.AutoSize = true;
-            this.label_power.Location = new System.Drawing.Point(24, 197);
-            this.label_power.Name = "label_power";
-            this.label_power.Size = new System.Drawing.Size(51, 15);
-            this.label_power.TabIndex = 16;
-            this.label_power.Text = "Power: ";
             // 
             // label_sendValue
             // 
@@ -246,11 +225,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 237);
+            this.ClientSize = new System.Drawing.Size(318, 203);
             this.Controls.Add(this.label_receiveValue);
             this.Controls.Add(this.label_sendValue);
-            this.Controls.Add(this.textBox_power);
-            this.Controls.Add(this.label_power);
             this.Controls.Add(this.textBox_basis);
             this.Controls.Add(this.label_basis);
             this.Controls.Add(this.button_settings);
@@ -294,8 +271,6 @@
         private System.IO.Ports.SerialPort serialPort2;
         private System.Windows.Forms.Label label_basis;
         private System.Windows.Forms.TextBox textBox_basis;
-        private System.Windows.Forms.TextBox textBox_power;
-        private System.Windows.Forms.Label label_power;
         private System.Windows.Forms.Label label_sendValue;
         private System.Windows.Forms.Label label_receiveValue;
     }
