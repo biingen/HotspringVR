@@ -480,7 +480,7 @@ namespace Hotspring
             {
                 int power = 0;
                 long value = 0;
-                while (value <= endvalue)
+                while (value <= endvalue && serialPort1.IsOpen == true)
                 {
                     try
                     {
@@ -534,6 +534,7 @@ namespace Hotspring
                         file.Write(output_csv);
                         hotspring_send = "";
                         fluke_receive = "";
+                        deduction_resistance = "";
                         output_csv = "";
                         output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, " + Environment.NewLine;
                     }
