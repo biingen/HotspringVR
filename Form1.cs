@@ -20,7 +20,9 @@ namespace Hotspring
         private string Config_Path = Application.StartupPath + "\\Config.ini";
 
         string serialPort1_text, serialPort2_text;
-        string serialPort1_csv, serialPort2_csv;
+        string hotspring_send, fluke_receive, deduction_resistance;
+        int resistance_value = 0;
+
         const int byteMessage_max_Hex = 16;
         const int byteMessage_max_Ascii = 256;
 
@@ -31,7 +33,7 @@ namespace Hotspring
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_B = 0;
 
-        string output_csv = "Hotspring Value, Fluke receive value," + Environment.NewLine;
+        string output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, " + Environment.NewLine;
 
         public Form1()
         {
@@ -44,7 +46,7 @@ namespace Hotspring
 
             if (Settings.ShowDialog() == DialogResult.Cancel)
             {
-                check_power_value();
+                check_resistance_value();
             }
         }
 
@@ -65,6 +67,7 @@ namespace Hotspring
                 textBox_endValue.Enabled = false;
                 textBox_delaytime.Enabled = false;
                 textBox_step.Enabled = false;
+                textBox_resistance.Enabled = false;
                 textBox_basis.Enabled = false;
                 button_settings.Enabled = false;
 
@@ -92,6 +95,7 @@ namespace Hotspring
                 textBox_endValue.Enabled = true;
                 textBox_delaytime.Enabled = true;
                 textBox_step.Enabled = true;
+                textBox_resistance.Enabled = true;
                 textBox_basis.Enabled = true;
                 button_settings.Enabled = true;
 
@@ -240,7 +244,12 @@ namespace Hotspring
                 {
                     double receive = double.Parse(dataValue, CultureInfo.InvariantCulture);
                     if (receive != 0)
-                        serialPort2_csv += receive + ";";
+                        fluke_receive += receive + ";";
+                    float resistance = Convert.ToSingle(textBox_resistance.Text);
+                    if (resistance != 0 && receive <= 512)
+                        deduction_resistance += receive - resistance + ";";
+                    else
+                        deduction_resistance += receive - 0 + ";";
                     flag_receive = false;
                 }
                 byteMessage_length_B = 0;
@@ -267,9 +276,14 @@ namespace Hotspring
             check_step_value();
         }
 
+        private void textBox_resistance_TextChanged(object sender, EventArgs e)
+        {
+            check_resistance_value();
+        }
+
         private void textBox_basis_TextChanged(object sender, EventArgs e)
         {
-            check_basis_power_value();
+            check_basis_value();
         }
 
         private void check_start_end_value()
@@ -311,7 +325,7 @@ namespace Hotspring
             }
         }
 
-        private void check_basis_power_value()
+        private void check_basis_value()
         {
             int basis_number = 0;
             bool textBox_basis_bool = Int32.TryParse(textBox_basis.Text, out basis_number);
@@ -331,8 +345,16 @@ namespace Hotspring
             }
         }
 
-        private void check_power_value()
+        private void check_resistance_value()
         {
+            int resistance_number = 0;
+            bool textBox_resistance_bool = Int32.TryParse(textBox_resistance.Text, out resistance_number);
+
+            if (textBox_resistance_bool)
+                resistance_value = resistance_number;
+            else
+                resistance_value = 0;
+
             if (ini12.INIRead(Config_Path, "other", "Power", "") == "1")
             {
                 label_basis.Visible = true;
@@ -349,8 +371,8 @@ namespace Hotspring
         {
             check_start_end_value();
             check_step_value();
-            check_basis_power_value();
-            check_power_value();
+            check_basis_value();
+            check_resistance_value();
         }
 
         private void MainFunction()
@@ -409,7 +431,7 @@ namespace Hotspring
                                 DateTime dt = DateTime.Now;
                                 string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
                                 serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
-                                serialPort1_csv = string.Concat(serialPort1_csv, value + ";");
+                                hotspring_send = string.Concat(hotspring_send, value + ";");
                                 Thread.Sleep(delay);
                                 serialPort2.WriteLine(recevice_command);
                                 dt = DateTime.Now;
@@ -438,7 +460,7 @@ namespace Hotspring
                                 DateTime dt = DateTime.Now;
                                 string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
                                 serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
-                                serialPort1_csv = string.Concat(serialPort1_csv, value + ";");
+                                hotspring_send = string.Concat(hotspring_send, value + ";");
                                 Thread.Sleep(delay);
                                 serialPort2.WriteLine(recevice_command);
                                 dt = DateTime.Now;
@@ -469,7 +491,7 @@ namespace Hotspring
                         DateTime dt = DateTime.Now;
                         string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
                         serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
-                        serialPort1_csv = string.Concat(serialPort1_csv, value + ";");
+                        hotspring_send = string.Concat(hotspring_send, value + ";");
                         Thread.Sleep(delay);
                         serialPort2.WriteLine(recevice_command);
                         dt = DateTime.Now;
@@ -491,28 +513,29 @@ namespace Hotspring
             DateTime myDate = DateTime.Now;
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" +  DateTime.Now.ToString("yyyyMMddHHmmss") + "_Report.csv", true))
             {
-                if (serialPort1_csv != "" && serialPort2_csv != "")
+                if (hotspring_send != "" && fluke_receive != "")
                 {
                     try
                     {
-                        string[] serialPort1_split_data = serialPort1_csv.Split(';');
-                        string[] serialPort2_split_data = serialPort2_csv.Split(';');
+                        string[] hotspring_send_split_data = hotspring_send.Split(';');
+                        string[] fluke_receive_split_data = fluke_receive.Split(';');
+                        string[] deduction_resistance_split_data = deduction_resistance.Split(';');
                         int serialPort_length = 0;
-                        if (serialPort1_split_data.Length > serialPort2_split_data.Length)
-                            serialPort_length = serialPort2_split_data.Length;
-                        else if (serialPort1_split_data.Length < serialPort2_split_data.Length)
-                            serialPort_length = serialPort1_split_data.Length;
+                        if (hotspring_send_split_data.Length > fluke_receive_split_data.Length)
+                            serialPort_length = fluke_receive_split_data.Length;
+                        else if (hotspring_send_split_data.Length < fluke_receive_split_data.Length)
+                            serialPort_length = hotspring_send_split_data.Length;
                         else
-                            serialPort_length = serialPort1_split_data.Length;
+                            serialPort_length = hotspring_send_split_data.Length;
                         for (int i = 0; i < serialPort_length; i++)
                         {
-                            output_csv += serialPort1_split_data[i] + "," + serialPort2_split_data[i] + "," + Environment.NewLine;
+                            output_csv += hotspring_send_split_data[i] + "," + fluke_receive_split_data[i] + "," + deduction_resistance_split_data[i] + "," + Environment.NewLine;
                         }
                         file.Write(output_csv);
-                        serialPort1_csv = "";
-                        serialPort2_csv = "";
+                        hotspring_send = "";
+                        fluke_receive = "";
                         output_csv = "";
-                        output_csv = "Hotspring Value, Fluke receive value," + Environment.NewLine;
+                        output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, " + Environment.NewLine;
                     }
                     catch (Exception Ex)
                     {

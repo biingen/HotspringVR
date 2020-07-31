@@ -233,6 +233,7 @@
             this.textBox_resistance.Size = new System.Drawing.Size(100, 25);
             this.textBox_resistance.TabIndex = 21;
             this.textBox_resistance.Text = "0";
+            this.textBox_resistance.TextChanged += new System.EventHandler(this.textBox_resistance_TextChanged);
             // 
             // label_resistance
             // 
