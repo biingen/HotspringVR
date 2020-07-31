@@ -42,9 +42,9 @@ namespace Hotspring
         {
             Settings Settings = new Settings();
 
-            if (Settings.ShowDialog() == DialogResult.OK)
+            if (Settings.ShowDialog() == DialogResult.Cancel)
             {
-
+                check_power_value();
             }
         }
 
@@ -318,7 +318,7 @@ namespace Hotspring
 
             if (textBox_basis_bool)
             {
-                if (basis_number == 1 || basis_number == 0)
+                if (basis_number == 0)
                 {
                     textBox_basis.Enabled = false;
                     textBox_step.Enabled = true;
@@ -331,11 +331,26 @@ namespace Hotspring
             }
         }
 
+        private void check_power_value()
+        {
+            if (ini12.INIRead(Config_Path, "other", "Power", "") == "1")
+            {
+                label_basis.Visible = true;
+                textBox_basis.Visible = true;
+            }
+            else
+            {
+                label_basis.Visible = false;
+                textBox_basis.Visible = false;
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             check_start_end_value();
             check_step_value();
             check_basis_power_value();
+            check_power_value();
         }
 
         private void MainFunction()

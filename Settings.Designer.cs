@@ -41,6 +41,7 @@
             this.label_serialPort1_baudrate = new System.Windows.Forms.Label();
             this.label_serialPort1_portname = new System.Windows.Forms.Label();
             this.label_serialPort_status = new System.Windows.Forms.Label();
+            this.checkBox_power = new System.Windows.Forms.CheckBox();
             this.groupBox_serialPort2.SuspendLayout();
             this.groupBox_serialPort1.SuspendLayout();
             this.SuspendLayout();
@@ -53,9 +54,9 @@
             this.groupBox_serialPort2.Controls.Add(this.label_serialPort2_baudrate);
             this.groupBox_serialPort2.Controls.Add(this.label_serialPort2_portname);
             this.groupBox_serialPort2.Location = new System.Drawing.Point(363, 41);
-            this.groupBox_serialPort2.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox_serialPort2.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox_serialPort2.Name = "groupBox_serialPort2";
-            this.groupBox_serialPort2.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox_serialPort2.Padding = new System.Windows.Forms.Padding(5);
             this.groupBox_serialPort2.Size = new System.Drawing.Size(340, 149);
             this.groupBox_serialPort2.TabIndex = 9;
             this.groupBox_serialPort2.TabStop = false;
@@ -65,7 +66,7 @@
             // 
             this.serialPort2_enable.AutoSize = true;
             this.serialPort2_enable.Location = new System.Drawing.Point(17, 32);
-            this.serialPort2_enable.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.serialPort2_enable.Margin = new System.Windows.Forms.Padding(5);
             this.serialPort2_enable.Name = "serialPort2_enable";
             this.serialPort2_enable.Size = new System.Drawing.Size(68, 19);
             this.serialPort2_enable.TabIndex = 6;
@@ -93,7 +94,7 @@
             "460800",
             "921600"});
             this.comboBox_serialPort2_baudrate.Location = new System.Drawing.Point(108, 108);
-            this.comboBox_serialPort2_baudrate.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.comboBox_serialPort2_baudrate.Margin = new System.Windows.Forms.Padding(5);
             this.comboBox_serialPort2_baudrate.Name = "comboBox_serialPort2_baudrate";
             this.comboBox_serialPort2_baudrate.Size = new System.Drawing.Size(212, 23);
             this.comboBox_serialPort2_baudrate.TabIndex = 5;
@@ -103,7 +104,7 @@
             // 
             this.comboBox_serialPort2_portname.FormattingEnabled = true;
             this.comboBox_serialPort2_portname.Location = new System.Drawing.Point(108, 68);
-            this.comboBox_serialPort2_portname.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.comboBox_serialPort2_portname.Margin = new System.Windows.Forms.Padding(5);
             this.comboBox_serialPort2_portname.Name = "comboBox_serialPort2_portname";
             this.comboBox_serialPort2_portname.Size = new System.Drawing.Size(212, 23);
             this.comboBox_serialPort2_portname.TabIndex = 4;
@@ -137,9 +138,9 @@
             this.groupBox_serialPort1.Controls.Add(this.label_serialPort1_baudrate);
             this.groupBox_serialPort1.Controls.Add(this.label_serialPort1_portname);
             this.groupBox_serialPort1.Location = new System.Drawing.Point(13, 41);
-            this.groupBox_serialPort1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox_serialPort1.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox_serialPort1.Name = "groupBox_serialPort1";
-            this.groupBox_serialPort1.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.groupBox_serialPort1.Padding = new System.Windows.Forms.Padding(5);
             this.groupBox_serialPort1.Size = new System.Drawing.Size(340, 149);
             this.groupBox_serialPort1.TabIndex = 8;
             this.groupBox_serialPort1.TabStop = false;
@@ -149,7 +150,7 @@
             // 
             this.serialPort1_enable.AutoSize = true;
             this.serialPort1_enable.Location = new System.Drawing.Point(17, 32);
-            this.serialPort1_enable.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.serialPort1_enable.Margin = new System.Windows.Forms.Padding(5);
             this.serialPort1_enable.Name = "serialPort1_enable";
             this.serialPort1_enable.Size = new System.Drawing.Size(68, 19);
             this.serialPort1_enable.TabIndex = 6;
@@ -177,7 +178,7 @@
             "460800",
             "921600"});
             this.comboBox_serialPort1_baudrate.Location = new System.Drawing.Point(112, 108);
-            this.comboBox_serialPort1_baudrate.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.comboBox_serialPort1_baudrate.Margin = new System.Windows.Forms.Padding(5);
             this.comboBox_serialPort1_baudrate.Name = "comboBox_serialPort1_baudrate";
             this.comboBox_serialPort1_baudrate.Size = new System.Drawing.Size(212, 23);
             this.comboBox_serialPort1_baudrate.TabIndex = 5;
@@ -187,7 +188,7 @@
             // 
             this.comboBox_serialPort1_portname.FormattingEnabled = true;
             this.comboBox_serialPort1_portname.Location = new System.Drawing.Point(112, 66);
-            this.comboBox_serialPort1_portname.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.comboBox_serialPort1_portname.Margin = new System.Windows.Forms.Padding(5);
             this.comboBox_serialPort1_portname.Name = "comboBox_serialPort1_portname";
             this.comboBox_serialPort1_portname.Size = new System.Drawing.Size(212, 23);
             this.comboBox_serialPort1_portname.TabIndex = 4;
@@ -223,11 +224,24 @@
             this.label_serialPort_status.TabIndex = 67;
             this.label_serialPort_status.Text = "Comport status";
             // 
+            // checkBox_power
+            // 
+            this.checkBox_power.AutoSize = true;
+            this.checkBox_power.Location = new System.Drawing.Point(379, 12);
+            this.checkBox_power.Margin = new System.Windows.Forms.Padding(5);
+            this.checkBox_power.Name = "checkBox_power";
+            this.checkBox_power.Size = new System.Drawing.Size(65, 19);
+            this.checkBox_power.TabIndex = 7;
+            this.checkBox_power.Text = "Power";
+            this.checkBox_power.UseVisualStyleBackColor = true;
+            this.checkBox_power.CheckedChanged += new System.EventHandler(this.checkBox_power_CheckedChanged);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(725, 201);
+            this.Controls.Add(this.checkBox_power);
             this.Controls.Add(this.label_serialPort_status);
             this.Controls.Add(this.groupBox_serialPort2);
             this.Controls.Add(this.groupBox_serialPort1);
@@ -259,5 +273,6 @@
         private System.Windows.Forms.Label label_serialPort1_baudrate;
         private System.Windows.Forms.Label label_serialPort1_portname;
         private System.Windows.Forms.Label label_serialPort_status;
+        private System.Windows.Forms.CheckBox checkBox_power;
     }
 }

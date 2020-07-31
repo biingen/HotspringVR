@@ -48,6 +48,8 @@
             this.textBox_basis = new System.Windows.Forms.TextBox();
             this.label_sendValue = new System.Windows.Forms.Label();
             this.label_receiveValue = new System.Windows.Forms.Label();
+            this.textBox_resistance = new System.Windows.Forms.TextBox();
+            this.label_resistance = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox_startValue
@@ -86,7 +88,7 @@
             this.textBox_step.Name = "textBox_step";
             this.textBox_step.Size = new System.Drawing.Size(100, 25);
             this.textBox_step.TabIndex = 3;
-            this.textBox_step.Text = "0";
+            this.textBox_step.Text = "1";
             this.textBox_step.TextChanged += new System.EventHandler(this.textBox_step_TextChanged);
             // 
             // label_startValue
@@ -185,20 +187,22 @@
             // label_basis
             // 
             this.label_basis.AutoSize = true;
-            this.label_basis.Location = new System.Drawing.Point(25, 171);
+            this.label_basis.Location = new System.Drawing.Point(25, 201);
             this.label_basis.Name = "label_basis";
             this.label_basis.Size = new System.Drawing.Size(44, 15);
             this.label_basis.TabIndex = 14;
             this.label_basis.Text = "Basis: ";
+            this.label_basis.Visible = false;
             // 
             // textBox_basis
             // 
-            this.textBox_basis.Location = new System.Drawing.Point(109, 168);
+            this.textBox_basis.Location = new System.Drawing.Point(109, 198);
             this.textBox_basis.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_basis.Name = "textBox_basis";
             this.textBox_basis.Size = new System.Drawing.Size(100, 25);
             this.textBox_basis.TabIndex = 15;
-            this.textBox_basis.Text = "2";
+            this.textBox_basis.Text = "0";
+            this.textBox_basis.Visible = false;
             this.textBox_basis.TextChanged += new System.EventHandler(this.textBox_basis_TextChanged);
             // 
             // label_sendValue
@@ -221,11 +225,31 @@
             this.label_receiveValue.Text = "00000000";
             this.label_receiveValue.Visible = false;
             // 
+            // textBox_resistance
+            // 
+            this.textBox_resistance.Location = new System.Drawing.Point(109, 168);
+            this.textBox_resistance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox_resistance.Name = "textBox_resistance";
+            this.textBox_resistance.Size = new System.Drawing.Size(100, 25);
+            this.textBox_resistance.TabIndex = 21;
+            this.textBox_resistance.Text = "0";
+            // 
+            // label_resistance
+            // 
+            this.label_resistance.AutoSize = true;
+            this.label_resistance.Location = new System.Drawing.Point(25, 171);
+            this.label_resistance.Name = "label_resistance";
+            this.label_resistance.Size = new System.Drawing.Size(73, 15);
+            this.label_resistance.TabIndex = 20;
+            this.label_resistance.Text = "Resistance: ";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(318, 203);
+            this.ClientSize = new System.Drawing.Size(318, 234);
+            this.Controls.Add(this.textBox_resistance);
+            this.Controls.Add(this.label_resistance);
             this.Controls.Add(this.label_receiveValue);
             this.Controls.Add(this.label_sendValue);
             this.Controls.Add(this.textBox_basis);
@@ -273,6 +297,8 @@
         private System.Windows.Forms.TextBox textBox_basis;
         private System.Windows.Forms.Label label_sendValue;
         private System.Windows.Forms.Label label_receiveValue;
+        private System.Windows.Forms.TextBox textBox_resistance;
+        private System.Windows.Forms.Label label_resistance;
     }
 }
 
