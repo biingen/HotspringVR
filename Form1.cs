@@ -355,15 +355,15 @@ namespace Hotspring
             else
                 resistance_value = 0;
 
-            if (ini12.INIRead(Config_Path, "other", "Power", "") == "1")
+            if (ini12.INIRead(Config_Path, "other", "Step", "") == "1")
             {
-                label_basis.Visible = true;
-                textBox_basis.Visible = true;
+                label_step.Visible = true;
+                textBox_step.Visible = true;
             }
             else
             {
-                label_basis.Visible = false;
-                textBox_basis.Visible = false;
+                label_step.Visible = false;
+                textBox_step.Visible = false;
             }
         }
 
@@ -480,25 +480,28 @@ namespace Hotspring
             {
                 int power = 0;
                 long value = 0;
-                while (value <= endvalue && serialPort1.IsOpen == true)
+                while (value < endvalue && serialPort1.IsOpen == true)
                 {
                     try
                     {
                         value = (long)Math.Pow(basis, power);
-                        string send_data = frontdata + value;
-                        while (flag_receive) { }
-                        serialPort1.WriteLine(send_data);
-                        DateTime dt = DateTime.Now;
-                        string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
-                        serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
-                        hotspring_send = string.Concat(hotspring_send, value + ";");
-                        Thread.Sleep(delay);
-                        serialPort2.WriteLine(recevice_command);
-                        dt = DateTime.Now;
-                        string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
-                        serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
-                        flag_receive = true;
-                        power++;
+                        if (value < endvalue)
+                        {
+                            string send_data = frontdata + value;
+                            while (flag_receive) { }
+                            serialPort1.WriteLine(send_data);
+                            DateTime dt = DateTime.Now;
+                            string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                            serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
+                            hotspring_send = string.Concat(hotspring_send, value + ";");
+                            Thread.Sleep(delay);
+                            serialPort2.WriteLine(recevice_command);
+                            dt = DateTime.Now;
+                            string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                            serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
+                            flag_receive = true;
+                            power++;
+                        }
                     }
                     catch (Exception Ex)
                     {

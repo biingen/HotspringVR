@@ -41,7 +41,7 @@
             this.label_serialPort1_baudrate = new System.Windows.Forms.Label();
             this.label_serialPort1_portname = new System.Windows.Forms.Label();
             this.label_serialPort_status = new System.Windows.Forms.Label();
-            this.checkBox_power = new System.Windows.Forms.CheckBox();
+            this.checkBox_step = new System.Windows.Forms.CheckBox();
             this.groupBox_serialPort2.SuspendLayout();
             this.groupBox_serialPort1.SuspendLayout();
             this.SuspendLayout();
@@ -224,24 +224,24 @@
             this.label_serialPort_status.TabIndex = 67;
             this.label_serialPort_status.Text = "Comport status";
             // 
-            // checkBox_power
+            // checkBox_step
             // 
-            this.checkBox_power.AutoSize = true;
-            this.checkBox_power.Location = new System.Drawing.Point(379, 12);
-            this.checkBox_power.Margin = new System.Windows.Forms.Padding(5);
-            this.checkBox_power.Name = "checkBox_power";
-            this.checkBox_power.Size = new System.Drawing.Size(65, 19);
-            this.checkBox_power.TabIndex = 7;
-            this.checkBox_power.Text = "Power";
-            this.checkBox_power.UseVisualStyleBackColor = true;
-            this.checkBox_power.CheckedChanged += new System.EventHandler(this.checkBox_power_CheckedChanged);
+            this.checkBox_step.AutoSize = true;
+            this.checkBox_step.Location = new System.Drawing.Point(379, 12);
+            this.checkBox_step.Margin = new System.Windows.Forms.Padding(5);
+            this.checkBox_step.Name = "checkBox_step";
+            this.checkBox_step.Size = new System.Drawing.Size(54, 19);
+            this.checkBox_step.TabIndex = 7;
+            this.checkBox_step.Text = "Step";
+            this.checkBox_step.UseVisualStyleBackColor = true;
+            this.checkBox_step.CheckedChanged += new System.EventHandler(this.checkBox_step_CheckedChanged);
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(725, 201);
-            this.Controls.Add(this.checkBox_power);
+            this.Controls.Add(this.checkBox_step);
             this.Controls.Add(this.label_serialPort_status);
             this.Controls.Add(this.groupBox_serialPort2);
             this.Controls.Add(this.groupBox_serialPort1);
@@ -273,6 +273,6 @@
         private System.Windows.Forms.Label label_serialPort1_baudrate;
         private System.Windows.Forms.Label label_serialPort1_portname;
         private System.Windows.Forms.Label label_serialPort_status;
-        private System.Windows.Forms.CheckBox checkBox_power;
+        private System.Windows.Forms.CheckBox checkBox_step;
     }
 }

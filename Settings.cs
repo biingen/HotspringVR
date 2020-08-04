@@ -56,10 +56,22 @@ namespace Hotspring
             comboBox_serialPort2_baudrate.Text = ini12.INIRead(Config_Path, "serialPort2", "BaudRate", "");
             comboBox_serialPort2_portname.Text = ini12.INIRead(Config_Path, "serialPort2", "PortName", "");
 
-            if (ini12.INIRead(Config_Path, "other", "Power", "") == "1")
-                checkBox_power.Checked = true;
+            if (ini12.INIRead(Config_Path, "other", "Step", "") == "1")
+                checkBox_step.Checked = true;
             else
-                checkBox_power.Checked = false;
+                checkBox_step.Checked = false;
+        }
+
+        private void checkBox_step_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_step.Checked == true)
+            {
+                ini12.INIWrite(Config_Path, "other", "Step", "1");
+            }
+            else
+            {
+                ini12.INIWrite(Config_Path, "other", "Step", "0");
+            }
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -91,18 +103,6 @@ namespace Hotspring
                 ini12.INIWrite(Config_Path, "serialPort2", "Exist", "0");
                 comboBox_serialPort2_baudrate.Enabled = false;
                 comboBox_serialPort2_portname.Enabled = false;
-            }
-        }
-
-        private void checkBox_power_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox_power.Checked == true)
-            {
-                ini12.INIWrite(Config_Path, "other", "Power", "1");
-            }
-            else
-            {
-                ini12.INIWrite(Config_Path, "other", "Power", "0");
             }
         }
 

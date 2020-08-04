@@ -54,7 +54,7 @@
             // 
             // textBox_startValue
             // 
-            this.textBox_startValue.Location = new System.Drawing.Point(200, 48);
+            this.textBox_startValue.Location = new System.Drawing.Point(218, 48);
             this.textBox_startValue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_startValue.Name = "textBox_startValue";
             this.textBox_startValue.Size = new System.Drawing.Size(100, 25);
@@ -64,7 +64,7 @@
             // 
             // textBox_endValue
             // 
-            this.textBox_endValue.Location = new System.Drawing.Point(200, 77);
+            this.textBox_endValue.Location = new System.Drawing.Point(218, 77);
             this.textBox_endValue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_endValue.Name = "textBox_endValue";
             this.textBox_endValue.Size = new System.Drawing.Size(100, 25);
@@ -74,7 +74,7 @@
             // 
             // textBox_delaytime
             // 
-            this.textBox_delaytime.Location = new System.Drawing.Point(200, 137);
+            this.textBox_delaytime.Location = new System.Drawing.Point(218, 137);
             this.textBox_delaytime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_delaytime.Name = "textBox_delaytime";
             this.textBox_delaytime.Size = new System.Drawing.Size(100, 25);
@@ -83,12 +83,12 @@
             // 
             // textBox_step
             // 
-            this.textBox_step.Location = new System.Drawing.Point(200, 108);
+            this.textBox_step.Location = new System.Drawing.Point(218, 197);
             this.textBox_step.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_step.Name = "textBox_step";
             this.textBox_step.Size = new System.Drawing.Size(100, 25);
             this.textBox_step.TabIndex = 3;
-            this.textBox_step.Text = "1";
+            this.textBox_step.Text = "0";
             this.textBox_step.TextChanged += new System.EventHandler(this.textBox_step_TextChanged);
             // 
             // label_startValue
@@ -121,7 +121,7 @@
             // label_step
             // 
             this.label_step.AutoSize = true;
-            this.label_step.Location = new System.Drawing.Point(25, 109);
+            this.label_step.Location = new System.Drawing.Point(25, 198);
             this.label_step.Name = "label_step";
             this.label_step.Size = new System.Drawing.Size(40, 15);
             this.label_step.TabIndex = 7;
@@ -164,7 +164,7 @@
             // 
             // button_play
             // 
-            this.button_play.Location = new System.Drawing.Point(317, 136);
+            this.button_play.Location = new System.Drawing.Point(335, 136);
             this.button_play.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_play.Name = "button_play";
             this.button_play.Size = new System.Drawing.Size(75, 25);
@@ -175,7 +175,7 @@
             // 
             // button_settings
             // 
-            this.button_settings.Location = new System.Drawing.Point(317, 168);
+            this.button_settings.Location = new System.Drawing.Point(335, 168);
             this.button_settings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_settings.Name = "button_settings";
             this.button_settings.Size = new System.Drawing.Size(75, 25);
@@ -187,28 +187,26 @@
             // label_basis
             // 
             this.label_basis.AutoSize = true;
-            this.label_basis.Location = new System.Drawing.Point(25, 201);
+            this.label_basis.Location = new System.Drawing.Point(25, 110);
             this.label_basis.Name = "label_basis";
             this.label_basis.Size = new System.Drawing.Size(44, 15);
             this.label_basis.TabIndex = 14;
             this.label_basis.Text = "Basis: ";
-            this.label_basis.Visible = false;
             // 
             // textBox_basis
             // 
-            this.textBox_basis.Location = new System.Drawing.Point(200, 198);
+            this.textBox_basis.Location = new System.Drawing.Point(218, 107);
             this.textBox_basis.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_basis.Name = "textBox_basis";
             this.textBox_basis.Size = new System.Drawing.Size(100, 25);
             this.textBox_basis.TabIndex = 15;
-            this.textBox_basis.Text = "0";
-            this.textBox_basis.Visible = false;
+            this.textBox_basis.Text = "2";
             this.textBox_basis.TextChanged += new System.EventHandler(this.textBox_basis_TextChanged);
             // 
             // label_sendValue
             // 
             this.label_sendValue.AutoSize = true;
-            this.label_sendValue.Location = new System.Drawing.Point(329, 51);
+            this.label_sendValue.Location = new System.Drawing.Point(347, 51);
             this.label_sendValue.Name = "label_sendValue";
             this.label_sendValue.Size = new System.Drawing.Size(63, 15);
             this.label_sendValue.TabIndex = 18;
@@ -218,7 +216,7 @@
             // label_receiveValue
             // 
             this.label_receiveValue.AutoSize = true;
-            this.label_receiveValue.Location = new System.Drawing.Point(329, 79);
+            this.label_receiveValue.Location = new System.Drawing.Point(347, 79);
             this.label_receiveValue.Name = "label_receiveValue";
             this.label_receiveValue.Size = new System.Drawing.Size(63, 15);
             this.label_receiveValue.TabIndex = 19;
@@ -227,7 +225,7 @@
             // 
             // textBox_resistance
             // 
-            this.textBox_resistance.Location = new System.Drawing.Point(200, 168);
+            this.textBox_resistance.Location = new System.Drawing.Point(218, 168);
             this.textBox_resistance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_resistance.Name = "textBox_resistance";
             this.textBox_resistance.Size = new System.Drawing.Size(100, 25);
@@ -248,7 +246,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 229);
+            this.ClientSize = new System.Drawing.Size(436, 229);
             this.Controls.Add(this.textBox_resistance);
             this.Controls.Add(this.label_resistance);
             this.Controls.Add(this.label_receiveValue);
