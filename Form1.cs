@@ -521,72 +521,214 @@ namespace Hotspring
         private void Output_csv_log()
         {
             DateTime myDate = DateTime.Now;
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" +  DateTime.Now.ToString("yyyyMMddHHmmss") + "_Report.csv", true))
+            if (checkBox_RA.Checked == true)
             {
-                if (hotspring_send != "" && fluke_receive != "")
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_RA_Report.csv", true))
                 {
-                    try
+                    if (hotspring_send != "" && fluke_receive != "")
                     {
-                        string[] hotspring_send_split_data = hotspring_send.Split(';');
-                        string[] fluke_receive_split_data = fluke_receive.Split(';');
-                        string[] deduction_resistance_split_data = deduction_resistance.Split(';');
-                        string[] percentage_split_data = percentage_value.Split(';');
-                        int serialPort_length = 0;
-                        if (hotspring_send_split_data.Length > fluke_receive_split_data.Length)
-                            serialPort_length = fluke_receive_split_data.Length;
-                        else if (hotspring_send_split_data.Length < fluke_receive_split_data.Length)
-                            serialPort_length = hotspring_send_split_data.Length;
-                        else
-                            serialPort_length = hotspring_send_split_data.Length;
-                        for (int i = 0; i < serialPort_length; i++)
+                        try
                         {
-                            output_csv += hotspring_send_split_data[i] + "," + fluke_receive_split_data[i] + "," + deduction_resistance_split_data[i] + "," + percentage_split_data[i] + "," + Environment.NewLine;
+                            string[] hotspring_send_split_data = hotspring_send.Split(';');
+                            string[] fluke_receive_split_data = fluke_receive.Split(';');
+                            string[] deduction_resistance_split_data = deduction_resistance.Split(';');
+                            string[] percentage_split_data = percentage_value.Split(';');
+                            int serialPort_length = 0;
+                            if (hotspring_send_split_data.Length > fluke_receive_split_data.Length)
+                                serialPort_length = fluke_receive_split_data.Length;
+                            else if (hotspring_send_split_data.Length < fluke_receive_split_data.Length)
+                                serialPort_length = hotspring_send_split_data.Length;
+                            else
+                                serialPort_length = hotspring_send_split_data.Length;
+                            for (int i = 0; i < serialPort_length; i++)
+                            {
+                                output_csv += hotspring_send_split_data[i] + "," + fluke_receive_split_data[i] + "," + deduction_resistance_split_data[i] + "," + percentage_split_data[i] + "," + Environment.NewLine;
+                            }
+                            file.Write(output_csv);
+                            hotspring_send = "";
+                            fluke_receive = "";
+                            deduction_resistance = "";
+                            output_csv = "";
+                            output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
                         }
-                        file.Write(output_csv);
-                        hotspring_send = "";
-                        fluke_receive = "";
-                        deduction_resistance = "";
-                        output_csv = "";
-                        output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
-                    catch (Exception Ex)
+                }
+
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_RA_Serialport1.txt", true))
+                {
+                    if (serialPort1_text != "")
                     {
-                        MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        try
+                        {
+                            file.Write(serialPort1_text);
+                            serialPort1_text = "";
+                        }
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_RA_Serialport2.txt", true))
+                {
+                    if (serialPort2_text != "")
+                    {
+                        try
+                        {
+                            file.Write(serialPort2_text);
+                            serialPort2_text = "";
+                        }
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            else if (checkBox_RB.Checked == true)
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_RB_Report.csv", true))
+                {
+                    if (hotspring_send != "" && fluke_receive != "")
+                    {
+                        try
+                        {
+                            string[] hotspring_send_split_data = hotspring_send.Split(';');
+                            string[] fluke_receive_split_data = fluke_receive.Split(';');
+                            string[] deduction_resistance_split_data = deduction_resistance.Split(';');
+                            string[] percentage_split_data = percentage_value.Split(';');
+                            int serialPort_length = 0;
+                            if (hotspring_send_split_data.Length > fluke_receive_split_data.Length)
+                                serialPort_length = fluke_receive_split_data.Length;
+                            else if (hotspring_send_split_data.Length < fluke_receive_split_data.Length)
+                                serialPort_length = hotspring_send_split_data.Length;
+                            else
+                                serialPort_length = hotspring_send_split_data.Length;
+                            for (int i = 0; i < serialPort_length; i++)
+                            {
+                                output_csv += hotspring_send_split_data[i] + "," + fluke_receive_split_data[i] + "," + deduction_resistance_split_data[i] + "," + percentage_split_data[i] + "," + Environment.NewLine;
+                            }
+                            file.Write(output_csv);
+                            hotspring_send = "";
+                            fluke_receive = "";
+                            deduction_resistance = "";
+                            output_csv = "";
+                            output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+                        }
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_RB_Serialport1.txt", true))
+                {
+                    if (serialPort1_text != "")
+                    {
+                        try
+                        {
+                            file.Write(serialPort1_text);
+                            serialPort1_text = "";
+                        }
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_RB_Serialport2.txt", true))
+                {
+                    if (serialPort2_text != "")
+                    {
+                        try
+                        {
+                            file.Write(serialPort2_text);
+                            serialPort2_text = "";
+                        }
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            else if (checkBox_RC.Checked == true)
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_RC_Report.csv", true))
+                {
+                    if (hotspring_send != "" && fluke_receive != "")
+                    {
+                        try
+                        {
+                            string[] hotspring_send_split_data = hotspring_send.Split(';');
+                            string[] fluke_receive_split_data = fluke_receive.Split(';');
+                            string[] deduction_resistance_split_data = deduction_resistance.Split(';');
+                            string[] percentage_split_data = percentage_value.Split(';');
+                            int serialPort_length = 0;
+                            if (hotspring_send_split_data.Length > fluke_receive_split_data.Length)
+                                serialPort_length = fluke_receive_split_data.Length;
+                            else if (hotspring_send_split_data.Length < fluke_receive_split_data.Length)
+                                serialPort_length = hotspring_send_split_data.Length;
+                            else
+                                serialPort_length = hotspring_send_split_data.Length;
+                            for (int i = 0; i < serialPort_length; i++)
+                            {
+                                output_csv += hotspring_send_split_data[i] + "," + fluke_receive_split_data[i] + "," + deduction_resistance_split_data[i] + "," + percentage_split_data[i] + "," + Environment.NewLine;
+                            }
+                            file.Write(output_csv);
+                            hotspring_send = "";
+                            fluke_receive = "";
+                            deduction_resistance = "";
+                            output_csv = "";
+                            output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+                        }
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_RC_Serialport1.txt", true))
+                {
+                    if (serialPort1_text != "")
+                    {
+                        try
+                        {
+                            file.Write(serialPort1_text);
+                            serialPort1_text = "";
+                        }
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_RC_Serialport2.txt", true))
+                {
+                    if (serialPort2_text != "")
+                    {
+                        try
+                        {
+                            file.Write(serialPort2_text);
+                            serialPort2_text = "";
+                        }
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_Serialport1.txt", true))
-            {
-                if (serialPort1_text != "")
-                {
-                    try
-                    {
-                        file.Write(serialPort1_text);
-                        serialPort1_text = "";
-                    }
-                    catch (Exception Ex)
-                    {
-                        MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_Serialport2.txt", true))
-            {
-                if (serialPort2_text != "")
-                {
-                    try
-                    {
-                        file.Write(serialPort2_text);
-                        serialPort2_text = "";
-                    }
-                    catch (Exception Ex)
-                    {
-                        MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
         }
     }
 }
