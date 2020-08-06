@@ -252,7 +252,7 @@ namespace Hotspring
                         resistance = 0;
                     }
                     deduction_resistance += receive - resistance + ";";
-                    double percentage = (receive - resistance - target_resistance_value) / (receive - resistance);
+                    double percentage = (receive - resistance - target_resistance_value) / target_resistance_value;
                     percentage_value += percentage + ";";
                     flag_receive = false;
                 }
