@@ -548,6 +548,7 @@ namespace Hotspring
                             hotspring_send = "";
                             fluke_receive = "";
                             deduction_resistance = "";
+                            percentage_value = "";
                             output_csv = "";
                             output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
                         }
@@ -617,6 +618,7 @@ namespace Hotspring
                             hotspring_send = "";
                             fluke_receive = "";
                             deduction_resistance = "";
+                            percentage_value = "";
                             output_csv = "";
                             output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
                         }
@@ -686,6 +688,7 @@ namespace Hotspring
                             hotspring_send = "";
                             fluke_receive = "";
                             deduction_resistance = "";
+                            percentage_value = "";
                             output_csv = "";
                             output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
                         }
