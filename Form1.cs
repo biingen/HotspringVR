@@ -34,7 +34,8 @@ namespace Hotspring
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_B = 0;
 
-        string output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+        string csv_title = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+        string output_csv = "";
 
         public Form1()
         {
@@ -371,6 +372,33 @@ namespace Hotspring
             }
         }
 
+        private void checkBox_RA_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_RA.Checked == true)
+            {
+                checkBox_RB.Checked = false;
+                checkBox_RC.Checked = false;
+            }
+        }
+
+        private void checkBox_RB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_RB.Checked == true)
+            {
+                checkBox_RA.Checked = false;
+                checkBox_RC.Checked = false;
+            }
+        }
+
+        private void checkBox_RC_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_RC.Checked == true)
+            {
+                checkBox_RA.Checked = false;
+                checkBox_RB.Checked = false;
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             check_start_end_value();
@@ -540,6 +568,7 @@ namespace Hotspring
                                 serialPort_length = hotspring_send_split_data.Length;
                             else
                                 serialPort_length = hotspring_send_split_data.Length;
+                            output_csv = csv_title;
                             for (int i = 0; i < serialPort_length; i++)
                             {
                                 output_csv += hotspring_send_split_data[i] + "," + fluke_receive_split_data[i] + "," + deduction_resistance_split_data[i] + "," + percentage_split_data[i] + "," + Environment.NewLine;
@@ -549,8 +578,7 @@ namespace Hotspring
                             fluke_receive = "";
                             deduction_resistance = "";
                             percentage_value = "";
-                            output_csv = "";
-                            output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+                            output_csv = csv_title;
                         }
                         catch (Exception Ex)
                         {
@@ -610,6 +638,7 @@ namespace Hotspring
                                 serialPort_length = hotspring_send_split_data.Length;
                             else
                                 serialPort_length = hotspring_send_split_data.Length;
+                            output_csv = csv_title;
                             for (int i = 0; i < serialPort_length; i++)
                             {
                                 output_csv += hotspring_send_split_data[i] + "," + fluke_receive_split_data[i] + "," + deduction_resistance_split_data[i] + "," + percentage_split_data[i] + "," + Environment.NewLine;
@@ -619,8 +648,7 @@ namespace Hotspring
                             fluke_receive = "";
                             deduction_resistance = "";
                             percentage_value = "";
-                            output_csv = "";
-                            output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+                            output_csv = csv_title;
                         }
                         catch (Exception Ex)
                         {
@@ -680,6 +708,7 @@ namespace Hotspring
                                 serialPort_length = hotspring_send_split_data.Length;
                             else
                                 serialPort_length = hotspring_send_split_data.Length;
+                            output_csv = csv_title;
                             for (int i = 0; i < serialPort_length; i++)
                             {
                                 output_csv += hotspring_send_split_data[i] + "," + fluke_receive_split_data[i] + "," + deduction_resistance_split_data[i] + "," + percentage_split_data[i] + "," + Environment.NewLine;
@@ -689,8 +718,7 @@ namespace Hotspring
                             fluke_receive = "";
                             deduction_resistance = "";
                             percentage_value = "";
-                            output_csv = "";
-                            output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+                            output_csv = csv_title;
                         }
                         catch (Exception Ex)
                         {
