@@ -244,6 +244,7 @@ namespace Hotspring
                 serialPort2_text = string.Concat(serialPort2_text, logValue);
                 if (dataValue.Contains("E"))
                 {
+                    flag_receive = false;
                     double receive = double.Parse(dataValue, CultureInfo.InvariantCulture);
                     if (receive != 0)
                         fluke_receive += receive + ";";
@@ -255,7 +256,6 @@ namespace Hotspring
                     deduction_resistance += receive - resistance + ";";
                     double percentage = (receive - resistance - target_resistance_value) / target_resistance_value;
                     percentage_value += percentage + ";";
-                    flag_receive = false;
                 }
                 byteMessage_length_B = 0;
             }
@@ -399,6 +399,65 @@ namespace Hotspring
             }
         }
 
+        private void button_self_Click(object sender, EventArgs e)
+        {
+            Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
+            Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
+
+            int j = 0;
+            int endvalue = Convert.ToInt32(textBox_endValue.Text);
+            int delay = Convert.ToInt32(textBox_delaytime.Text);
+            string frontdata, receive_command = "VAL?";
+
+            List<int> PrimeLists = new List<int> { 2, 3, 5, 7, 11, 13, 17, 19 };
+
+            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+            {
+                Open_serialPort1();
+                LogAThread.Start();
+            }
+
+            if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
+            {
+                Open_serialPort2();
+                LogBThread.Start();
+            }
+
+            for (int i = 0; i < PrimeLists.Count; i++)
+            {
+                if (checkBox_RA.Checked == true && serialPort1.IsOpen == true)
+                {
+                    frontdata = "set RA ";
+                    send_basis_command(endvalue, delay, PrimeLists[i], frontdata, receive_command);
+                }
+                else if (checkBox_RB.Checked == true && serialPort1.IsOpen == true)
+                {
+                    frontdata = "set RB ";
+                    send_basis_command(endvalue, delay, PrimeLists[i], frontdata, receive_command);
+                }
+                else if (checkBox_RC.Checked == true && serialPort1.IsOpen == true)
+                {
+                    frontdata = "set RC ";
+                    send_basis_command(endvalue, delay, PrimeLists[i], frontdata, receive_command);
+                }
+                j++;
+            }
+
+            while (flag_receive) { }
+            Output_csv_log();
+
+            if (serialPort1.IsOpen == true)          //送至Comport
+            {
+                LogAThread.Abort();
+                Close_serialPort1();
+            }
+            if (serialPort2.IsOpen == true && flag_receive == false)          //送至Comport
+            {
+                LogBThread.Abort();
+                Close_serialPort2();
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             check_start_end_value();
@@ -422,17 +481,17 @@ namespace Hotspring
 
                     if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
                     {
-                        if (checkBox_RA.Checked == true)
+                        if (checkBox_RA.Checked == true && serialPort1.IsOpen == true)
                         {
                             frontdata = "set RA ";
                             send_hotspring_command(startvalue, endvalue, step, delay, basis, frontdata, receive_command);
                         }
-                        else if (checkBox_RB.Checked == true)
+                        else if (checkBox_RB.Checked == true && serialPort1.IsOpen == true)
                         {
                             frontdata = "set RB ";
                             send_hotspring_command(startvalue, endvalue, step, delay, basis, frontdata, receive_command);
                         }
-                        else if (checkBox_RC.Checked == true)
+                        else if (checkBox_RC.Checked == true && serialPort1.IsOpen == true)
                         {
                             frontdata = "set RC ";
                             send_hotspring_command(startvalue, endvalue, step, delay, basis, frontdata, receive_command);
@@ -542,6 +601,38 @@ namespace Hotspring
                     {
                         MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
+                }
+            }
+        }
+
+        private void send_basis_command(int endvalue, int delay, int basis, string frontdata, string recevice_command)
+        {
+            int power = 0;
+            long value = 0;
+            while (value < endvalue && serialPort1.IsOpen == true)
+            {
+                try
+                {
+                    value = (long)Math.Pow(basis, power);
+                    string send_data = frontdata + value;
+                    while (flag_receive) { }
+                    serialPort1.WriteLine(send_data);
+                    target_resistance_value = value;
+                    DateTime dt = DateTime.Now;
+                    string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                    serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
+                    hotspring_send = string.Concat(hotspring_send, value + ";");
+                    Thread.Sleep(delay);
+                    serialPort2.WriteLine(recevice_command);
+                    dt = DateTime.Now;
+                    string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                    serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
+                    flag_receive = true;
+                    power++;
+                }
+                catch (Exception Ex)
+                {
+                    MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
