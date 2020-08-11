@@ -379,7 +379,55 @@ namespace Hotspring
 
         private void button_prime10_Click(object sender, EventArgs e)
         {
+            Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
+            Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
 
+            int endvalue = 1048575;
+            int delay = 2000;
+            string frontdata, receive_command = "VAL?";
+            int prime = 10;
+
+            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+            {
+                Open_serialPort1();
+                LogAThread.Start();
+            }
+
+            if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
+            {
+                Open_serialPort2();
+                LogBThread.Start();
+            }
+
+            if (checkBox_RA.Checked == true && serialPort1.IsOpen == true)
+            {
+                frontdata = "set RA ";
+                send_basis_command(endvalue, delay, prime, frontdata, receive_command);
+            }
+            else if (checkBox_RB.Checked == true && serialPort1.IsOpen == true)
+            {
+                frontdata = "set RB ";
+                send_basis_command(endvalue, delay, prime, frontdata, receive_command);
+            }
+            else if (checkBox_RC.Checked == true && serialPort1.IsOpen == true)
+            {
+                frontdata = "set RC ";
+                send_basis_command(endvalue, delay, prime, frontdata, receive_command);
+            }
+
+            while (flag_receive) { }
+            Output_csv_log();
+
+            if (serialPort1.IsOpen == true)          //送至Comport
+            {
+                LogAThread.Abort();
+                Close_serialPort1();
+            }
+            if (serialPort2.IsOpen == true && flag_receive == false)          //送至Comport
+            {
+                LogBThread.Abort();
+                Close_serialPort2();
+            }
         }
 
         private void Output_csv_log()
