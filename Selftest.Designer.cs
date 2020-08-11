@@ -44,7 +44,7 @@
             // button_prime
             // 
             this.button_prime.Location = new System.Drawing.Point(136, 59);
-            this.button_prime.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_prime.Margin = new System.Windows.Forms.Padding(2);
             this.button_prime.Name = "button_prime";
             this.button_prime.Size = new System.Drawing.Size(71, 26);
             this.button_prime.TabIndex = 0;
@@ -136,7 +136,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 202);
+            this.ClientSize = new System.Drawing.Size(327, 190);
             this.Controls.Add(this.button_prime10);
             this.Controls.Add(this.button_prime2);
             this.Controls.Add(this.textBox_resistance);
@@ -145,7 +145,7 @@
             this.Controls.Add(this.checkBox_RB);
             this.Controls.Add(this.checkBox_RA);
             this.Controls.Add(this.button_prime);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Selftest";
             this.Text = "Selftest";
             this.ResumeLayout(false);

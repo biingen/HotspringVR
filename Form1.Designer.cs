@@ -28,279 +28,99 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.textBox_startValue = new System.Windows.Forms.TextBox();
-            this.textBox_endValue = new System.Windows.Forms.TextBox();
-            this.textBox_delaytime = new System.Windows.Forms.TextBox();
-            this.textBox_step = new System.Windows.Forms.TextBox();
-            this.label_startValue = new System.Windows.Forms.Label();
-            this.label_endValue = new System.Windows.Forms.Label();
-            this.label_delay = new System.Windows.Forms.Label();
-            this.label_step = new System.Windows.Forms.Label();
-            this.checkBox_RA = new System.Windows.Forms.CheckBox();
-            this.checkBox_RB = new System.Windows.Forms.CheckBox();
-            this.checkBox_RC = new System.Windows.Forms.CheckBox();
-            this.button_start = new System.Windows.Forms.Button();
-            this.button_settings = new System.Windows.Forms.Button();
-            this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            this.serialPort2 = new System.IO.Ports.SerialPort(this.components);
-            this.label_basis = new System.Windows.Forms.Label();
-            this.textBox_basis = new System.Windows.Forms.TextBox();
-            this.label_sendValue = new System.Windows.Forms.Label();
-            this.label_receiveValue = new System.Windows.Forms.Label();
-            this.textBox_resistance = new System.Windows.Forms.TextBox();
-            this.label_resistance = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage_user = new System.Windows.Forms.TabPage();
+            this.tabPage_self = new System.Windows.Forms.TabPage();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabControl1.SuspendLayout();
+            this.tabControl2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // textBox_startValue
+            // tabControl1
             // 
-            this.textBox_startValue.Location = new System.Drawing.Point(219, 48);
-            this.textBox_startValue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox_startValue.Name = "textBox_startValue";
-            this.textBox_startValue.Size = new System.Drawing.Size(100, 25);
-            this.textBox_startValue.TabIndex = 0;
-            this.textBox_startValue.Text = "2";
-            this.textBox_startValue.TextChanged += new System.EventHandler(this.textBox_startValue_TextChanged);
+            this.tabControl1.Controls.Add(this.tabPage_user);
+            this.tabControl1.Controls.Add(this.tabPage_self);
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(326, 199);
+            this.tabControl1.TabIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
-            // textBox_endValue
+            // tabPage_user
             // 
-            this.textBox_endValue.Location = new System.Drawing.Point(219, 78);
-            this.textBox_endValue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox_endValue.Name = "textBox_endValue";
-            this.textBox_endValue.Size = new System.Drawing.Size(100, 25);
-            this.textBox_endValue.TabIndex = 1;
-            this.textBox_endValue.Text = "1048575";
-            this.textBox_endValue.TextChanged += new System.EventHandler(this.textBox_endValue_TextChanged);
+            this.tabPage_user.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_user.Name = "tabPage_user";
+            this.tabPage_user.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_user.Size = new System.Drawing.Size(318, 173);
+            this.tabPage_user.TabIndex = 0;
+            this.tabPage_user.Text = "User";
+            this.tabPage_user.UseVisualStyleBackColor = true;
             // 
-            // textBox_delaytime
+            // tabPage_self
             // 
-            this.textBox_delaytime.Location = new System.Drawing.Point(219, 138);
-            this.textBox_delaytime.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox_delaytime.Name = "textBox_delaytime";
-            this.textBox_delaytime.Size = new System.Drawing.Size(100, 25);
-            this.textBox_delaytime.TabIndex = 2;
-            this.textBox_delaytime.Text = "2000";
+            this.tabPage_self.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_self.Name = "tabPage_self";
+            this.tabPage_self.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_self.Size = new System.Drawing.Size(599, 437);
+            this.tabPage_self.TabIndex = 1;
+            this.tabPage_self.Text = "Self";
+            this.tabPage_self.UseVisualStyleBackColor = true;
             // 
-            // textBox_step
+            // tabControl2
             // 
-            this.textBox_step.Location = new System.Drawing.Point(219, 198);
-            this.textBox_step.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox_step.Name = "textBox_step";
-            this.textBox_step.Size = new System.Drawing.Size(100, 25);
-            this.textBox_step.TabIndex = 3;
-            this.textBox_step.Text = "0";
-            this.textBox_step.TextChanged += new System.EventHandler(this.textBox_step_TextChanged);
+            this.tabControl2.Controls.Add(this.tabPage3);
+            this.tabControl2.Controls.Add(this.tabPage4);
+            this.tabControl2.Location = new System.Drawing.Point(188, 261);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(8, 8);
+            this.tabControl2.TabIndex = 1;
             // 
-            // label_startValue
+            // tabPage3
             // 
-            this.label_startValue.AutoSize = true;
-            this.label_startValue.Location = new System.Drawing.Point(24, 48);
-            this.label_startValue.Name = "label_startValue";
-            this.label_startValue.Size = new System.Drawing.Size(42, 15);
-            this.label_startValue.TabIndex = 4;
-            this.label_startValue.Text = "Start: ";
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(0, 0);
+            this.tabPage3.TabIndex = 0;
+            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // label_endValue
+            // tabPage4
             // 
-            this.label_endValue.AutoSize = true;
-            this.label_endValue.Location = new System.Drawing.Point(24, 76);
-            this.label_endValue.Name = "label_endValue";
-            this.label_endValue.Size = new System.Drawing.Size(38, 15);
-            this.label_endValue.TabIndex = 5;
-            this.label_endValue.Text = "End: ";
-            // 
-            // label_delay
-            // 
-            this.label_delay.AutoSize = true;
-            this.label_delay.Location = new System.Drawing.Point(24, 139);
-            this.label_delay.Name = "label_delay";
-            this.label_delay.Size = new System.Drawing.Size(78, 15);
-            this.label_delay.TabIndex = 6;
-            this.label_delay.Text = "Delay (ms): ";
-            // 
-            // label_step
-            // 
-            this.label_step.AutoSize = true;
-            this.label_step.Location = new System.Drawing.Point(25, 198);
-            this.label_step.Name = "label_step";
-            this.label_step.Size = new System.Drawing.Size(40, 15);
-            this.label_step.TabIndex = 7;
-            this.label_step.Text = "Step: ";
-            // 
-            // checkBox_RA
-            // 
-            this.checkBox_RA.AutoSize = true;
-            this.checkBox_RA.Checked = true;
-            this.checkBox_RA.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox_RA.Location = new System.Drawing.Point(28, 11);
-            this.checkBox_RA.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBox_RA.Name = "checkBox_RA";
-            this.checkBox_RA.Size = new System.Drawing.Size(48, 19);
-            this.checkBox_RA.TabIndex = 8;
-            this.checkBox_RA.Text = "RA";
-            this.checkBox_RA.UseVisualStyleBackColor = true;
-            this.checkBox_RA.CheckedChanged += new System.EventHandler(this.checkBox_RA_CheckedChanged);
-            // 
-            // checkBox_RB
-            // 
-            this.checkBox_RB.AutoSize = true;
-            this.checkBox_RB.Location = new System.Drawing.Point(83, 11);
-            this.checkBox_RB.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBox_RB.Name = "checkBox_RB";
-            this.checkBox_RB.Size = new System.Drawing.Size(47, 19);
-            this.checkBox_RB.TabIndex = 9;
-            this.checkBox_RB.Text = "RB";
-            this.checkBox_RB.UseVisualStyleBackColor = true;
-            this.checkBox_RB.CheckedChanged += new System.EventHandler(this.checkBox_RB_CheckedChanged);
-            // 
-            // checkBox_RC
-            // 
-            this.checkBox_RC.AutoSize = true;
-            this.checkBox_RC.Location = new System.Drawing.Point(135, 11);
-            this.checkBox_RC.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.checkBox_RC.Name = "checkBox_RC";
-            this.checkBox_RC.Size = new System.Drawing.Size(47, 19);
-            this.checkBox_RC.TabIndex = 10;
-            this.checkBox_RC.Text = "RC";
-            this.checkBox_RC.UseVisualStyleBackColor = true;
-            this.checkBox_RC.CheckedChanged += new System.EventHandler(this.checkBox_RC_CheckedChanged);
-            // 
-            // button_start
-            // 
-            this.button_start.Location = new System.Drawing.Point(335, 136);
-            this.button_start.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button_start.Name = "button_start";
-            this.button_start.Size = new System.Drawing.Size(75, 25);
-            this.button_start.TabIndex = 11;
-            this.button_start.Text = "Start";
-            this.button_start.UseVisualStyleBackColor = true;
-            this.button_start.Click += new System.EventHandler(this.button_start_Click);
-            // 
-            // button_settings
-            // 
-            this.button_settings.Location = new System.Drawing.Point(335, 168);
-            this.button_settings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button_settings.Name = "button_settings";
-            this.button_settings.Size = new System.Drawing.Size(75, 25);
-            this.button_settings.TabIndex = 12;
-            this.button_settings.Text = "Settings";
-            this.button_settings.UseVisualStyleBackColor = true;
-            this.button_settings.Click += new System.EventHandler(this.button_settings_Click);
-            // 
-            // label_basis
-            // 
-            this.label_basis.AutoSize = true;
-            this.label_basis.Location = new System.Drawing.Point(25, 110);
-            this.label_basis.Name = "label_basis";
-            this.label_basis.Size = new System.Drawing.Size(44, 15);
-            this.label_basis.TabIndex = 14;
-            this.label_basis.Text = "Basis: ";
-            // 
-            // textBox_basis
-            // 
-            this.textBox_basis.Location = new System.Drawing.Point(219, 108);
-            this.textBox_basis.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox_basis.Name = "textBox_basis";
-            this.textBox_basis.Size = new System.Drawing.Size(100, 25);
-            this.textBox_basis.TabIndex = 15;
-            this.textBox_basis.Text = "2";
-            this.textBox_basis.TextChanged += new System.EventHandler(this.textBox_basis_TextChanged);
-            // 
-            // label_sendValue
-            // 
-            this.label_sendValue.AutoSize = true;
-            this.label_sendValue.Location = new System.Drawing.Point(347, 51);
-            this.label_sendValue.Name = "label_sendValue";
-            this.label_sendValue.Size = new System.Drawing.Size(63, 15);
-            this.label_sendValue.TabIndex = 18;
-            this.label_sendValue.Text = "00000000";
-            this.label_sendValue.Visible = false;
-            // 
-            // label_receiveValue
-            // 
-            this.label_receiveValue.AutoSize = true;
-            this.label_receiveValue.Location = new System.Drawing.Point(347, 79);
-            this.label_receiveValue.Name = "label_receiveValue";
-            this.label_receiveValue.Size = new System.Drawing.Size(63, 15);
-            this.label_receiveValue.TabIndex = 19;
-            this.label_receiveValue.Text = "00000000";
-            this.label_receiveValue.Visible = false;
-            // 
-            // textBox_resistance
-            // 
-            this.textBox_resistance.Location = new System.Drawing.Point(219, 168);
-            this.textBox_resistance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox_resistance.Name = "textBox_resistance";
-            this.textBox_resistance.Size = new System.Drawing.Size(100, 25);
-            this.textBox_resistance.TabIndex = 21;
-            this.textBox_resistance.Text = "0.2";
-            this.textBox_resistance.TextChanged += new System.EventHandler(this.textBox_resistance_TextChanged);
-            // 
-            // label_resistance
-            // 
-            this.label_resistance.AutoSize = true;
-            this.label_resistance.Location = new System.Drawing.Point(25, 171);
-            this.label_resistance.Name = "label_resistance";
-            this.label_resistance.Size = new System.Drawing.Size(173, 15);
-            this.label_resistance.TabIndex = 20;
-            this.label_resistance.Text = "Resistance: (Below 512 ohm)";
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(0, 0);
+            this.tabPage4.TabIndex = 1;
+            this.tabPage4.Text = "tabPage4";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(436, 229);
-            this.Controls.Add(this.textBox_resistance);
-            this.Controls.Add(this.label_resistance);
-            this.Controls.Add(this.label_receiveValue);
-            this.Controls.Add(this.label_sendValue);
-            this.Controls.Add(this.textBox_basis);
-            this.Controls.Add(this.label_basis);
-            this.Controls.Add(this.button_settings);
-            this.Controls.Add(this.button_start);
-            this.Controls.Add(this.checkBox_RC);
-            this.Controls.Add(this.checkBox_RB);
-            this.Controls.Add(this.checkBox_RA);
-            this.Controls.Add(this.label_step);
-            this.Controls.Add(this.label_delay);
-            this.Controls.Add(this.label_endValue);
-            this.Controls.Add(this.label_startValue);
-            this.Controls.Add(this.textBox_step);
-            this.Controls.Add(this.textBox_delaytime);
-            this.Controls.Add(this.textBox_endValue);
-            this.Controls.Add(this.textBox_startValue);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.ClientSize = new System.Drawing.Size(331, 201);
+            this.Controls.Add(this.tabControl2);
+            this.Controls.Add(this.tabControl1);
             this.Name = "Form1";
-            this.Text = "HotspringVR";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Text = "Form1";
+            this.tabControl1.ResumeLayout(false);
+            this.tabControl2.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox_startValue;
-        private System.Windows.Forms.TextBox textBox_endValue;
-        private System.Windows.Forms.TextBox textBox_delaytime;
-        private System.Windows.Forms.TextBox textBox_step;
-        private System.Windows.Forms.Label label_startValue;
-        private System.Windows.Forms.Label label_endValue;
-        private System.Windows.Forms.Label label_delay;
-        private System.Windows.Forms.Label label_step;
-        private System.Windows.Forms.CheckBox checkBox_RA;
-        private System.Windows.Forms.CheckBox checkBox_RB;
-        private System.Windows.Forms.CheckBox checkBox_RC;
-        private System.Windows.Forms.Button button_start;
-        private System.Windows.Forms.Button button_settings;
-        private System.IO.Ports.SerialPort serialPort1;
-        private System.IO.Ports.SerialPort serialPort2;
-        private System.Windows.Forms.Label label_basis;
-        private System.Windows.Forms.TextBox textBox_basis;
-        private System.Windows.Forms.Label label_sendValue;
-        private System.Windows.Forms.Label label_receiveValue;
-        private System.Windows.Forms.TextBox textBox_resistance;
-        private System.Windows.Forms.Label label_resistance;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage_user;
+        private System.Windows.Forms.TabPage tabPage_self;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
     }
 }
-
