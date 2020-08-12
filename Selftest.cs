@@ -26,7 +26,8 @@ namespace Hotspring
         const int byteMessage_max_Hex = 16;
         const int byteMessage_max_Ascii = 256;
 
-        bool port_status = false;
+        bool status_port = false;
+        bool status_6b595 = false;
         bool flag_receive = false;
         byte[] byteMessage_A = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_A = 0;
@@ -93,12 +94,16 @@ namespace Hotspring
         //  SerialPort記錄
         private void serialPort1_recorder(byte ch, bool SaveToLog = false)
         {
-            if ((ch == 0x0A) || (byteMessage_length_A >= byteMessage_max_Ascii))
+            if ((ch == 0x0D) || (byteMessage_length_A >= byteMessage_max_Ascii))
             {
                 string dataValue = Encoding.ASCII.GetString(byteMessage_A).Substring(0, byteMessage_length_A);
                 DateTime dt = DateTime.Now;
                 string logValue = "[Receive_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + dataValue + "\r\n"; //OK
                 serialPort1_text = string.Concat(serialPort1_text, logValue);
+                if (dataValue.Contains("/"))
+                {
+                    UpdateUI(dataValue, button_6b595_result);
+                }
                 byteMessage_length_A = 0;
             }
             else
@@ -292,9 +297,15 @@ namespace Hotspring
             Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
             Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
 
-            port_status = !port_status;
-            if (port_status == true)
+            status_port = !status_port;
+            if (status_port == true)
             {
+                button_6b595.Enabled = true;
+                button_6b595_result.Enabled = true;
+                button_prime.Enabled = true;
+                button_prime2.Enabled = true;
+                button_prime10.Enabled = true;
+
                 if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
                 {
                     Open_serialPort1();
@@ -310,6 +321,11 @@ namespace Hotspring
             }
             else
             {
+                button_6b595.Enabled = false;
+                button_6b595_result.Enabled = false;
+                button_prime.Enabled = false;
+                button_prime2.Enabled = false;
+                button_prime10.Enabled = false;
                 if (serialPort1.IsOpen == true)          //送至Comport
                 {
                     LogAThread.Abort();
@@ -356,6 +372,59 @@ namespace Hotspring
                 {
                     MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void Selftest_Load(object sender, EventArgs e)
+        {
+            button_6b595.Enabled = false;
+            button_6b595_result.Enabled = false;
+            button_prime.Enabled = false;
+            button_prime2.Enabled = false;
+            button_prime10.Enabled = false;
+        }
+
+        private void button_6b595_Click(object sender, EventArgs e)
+        {
+            string send_data;
+
+            status_port = !status_port;
+            if (status_port == true)
+            {
+                send_data = "set 6B595_selftest 1";
+                button_6b595.Text = "Off";
+                if (serialPort1.IsOpen == true)
+                    serialPort1.WriteLine(send_data);
+            }
+            else
+            {
+                send_data = "set 6B595_selftest 0";
+                button_6b595.Text = "On";
+                if (serialPort1.IsOpen == true)
+                    serialPort1.WriteLine(send_data);
+            }
+        }
+
+        private void button_6b595_result_Click(object sender, EventArgs e)
+        {
+            string send_data = "get 6B595_selftest";
+
+            if (serialPort1.IsOpen == true)
+                serialPort1.WriteLine(send_data);
+        }
+
+        //執行緒控制label.text
+        private delegate void UpdateUICallBack(string value, Control ctl);
+        private void UpdateUI(string value, Control ctl)
+        {
+            if (InvokeRequired)
+            {
+                UpdateUICallBack uu = new UpdateUICallBack(UpdateUI);
+                Invoke(uu, value, ctl);
+            }
+            else
+            {
+                ctl.Text = value;
             }
         }
 
