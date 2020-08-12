@@ -267,27 +267,35 @@ namespace Hotspring
 
         private void button_prime_Click(object sender, EventArgs e)
         {
-            Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
-            Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
+            List<int> primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17, 19 };
 
-            int j = 0;
+        }
+
+        private void button_prime2_Click(object sender, EventArgs e)
+        {
+            List<int> primeLists = new List<int> { 2 };
+
+            SerialPortfunction();
+            SelfModefunction(primeLists);
+            SerialPortfunction();
+        }
+
+        private void button_prime10_Click(object sender, EventArgs e)
+        {
+            List<int> primeLists = new List<int> { 10 };
+
+            SerialPortfunction();
+            SelfModefunction(primeLists);
+            SerialPortfunction();
+        }
+
+        private void SelfModefunction(List<int> primeLists)
+        {
+            SerialPortfunction();
+
             int endvalue = 1048575;
             int delay = 2000;
             string frontdata, receive_command = "VAL?";
-
-            List<int> primeLists = new List<int> { 2, 3, 5, 7, 11, 13, 17, 19 };
-
-            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
-            {
-                Open_serialPort1();
-                LogAThread.Start();
-            }
-
-            if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
-            {
-                Open_serialPort2();
-                LogBThread.Start();
-            }
 
             for (int i = 0; i < primeLists.Count; i++)
             {
@@ -306,33 +314,16 @@ namespace Hotspring
                     frontdata = "set RC ";
                     send_basis_command(endvalue, delay, primeLists[i], frontdata, receive_command);
                 }
-                j++;
             }
 
             while (flag_receive) { }
             Output_csv_log();
-
-            if (serialPort1.IsOpen == true)          //送至Comport
-            {
-                LogAThread.Abort();
-                Close_serialPort1();
-            }
-            if (serialPort2.IsOpen == true && flag_receive == false)          //送至Comport
-            {
-                LogBThread.Abort();
-                Close_serialPort2();
-            }
         }
 
-        private void button_prime2_Click(object sender, EventArgs e)
+        private void SerialPortfunction()
         {
             Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
             Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
-
-            int endvalue = 1048575;
-            int delay = 2000;
-            string frontdata, receive_command = "VAL?";
-            int prime = 2;
 
             if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
             {
@@ -345,78 +336,6 @@ namespace Hotspring
                 Open_serialPort2();
                 LogBThread.Start();
             }
-
-            if (checkBox_RA.Checked == true && serialPort1.IsOpen == true)
-            {
-                frontdata = "set RA ";
-                send_basis_command(endvalue, delay, prime, frontdata, receive_command);
-            }
-            else if (checkBox_RB.Checked == true && serialPort1.IsOpen == true)
-            {
-                frontdata = "set RB ";
-                send_basis_command(endvalue, delay, prime, frontdata, receive_command);
-            }
-            else if (checkBox_RC.Checked == true && serialPort1.IsOpen == true)
-            {
-                frontdata = "set RC ";
-                send_basis_command(endvalue, delay, prime, frontdata, receive_command);
-            }
-
-            while (flag_receive) { }
-            Output_csv_log();
-
-            if (serialPort1.IsOpen == true)          //送至Comport
-            {
-                LogAThread.Abort();
-                Close_serialPort1();
-            }
-            if (serialPort2.IsOpen == true && flag_receive == false)          //送至Comport
-            {
-                LogBThread.Abort();
-                Close_serialPort2();
-            }
-        }
-
-        private void button_prime10_Click(object sender, EventArgs e)
-        {
-            Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
-            Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
-
-            int endvalue = 1048575;
-            int delay = 2000;
-            string frontdata, receive_command = "VAL?";
-            int prime = 10;
-
-            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
-            {
-                Open_serialPort1();
-                LogAThread.Start();
-            }
-
-            if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
-            {
-                Open_serialPort2();
-                LogBThread.Start();
-            }
-
-            if (checkBox_RA.Checked == true && serialPort1.IsOpen == true)
-            {
-                frontdata = "set RA ";
-                send_basis_command(endvalue, delay, prime, frontdata, receive_command);
-            }
-            else if (checkBox_RB.Checked == true && serialPort1.IsOpen == true)
-            {
-                frontdata = "set RB ";
-                send_basis_command(endvalue, delay, prime, frontdata, receive_command);
-            }
-            else if (checkBox_RC.Checked == true && serialPort1.IsOpen == true)
-            {
-                frontdata = "set RC ";
-                send_basis_command(endvalue, delay, prime, frontdata, receive_command);
-            }
-
-            while (flag_receive) { }
-            Output_csv_log();
 
             if (serialPort1.IsOpen == true)          //送至Comport
             {
