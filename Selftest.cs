@@ -18,6 +18,7 @@ namespace Hotspring
     {
         private string Config_Path = Application.StartupPath + "\\Config.ini";
 
+        List<int> primeLists;
         string serialPort1_text, serialPort2_text;
         int resistance_value = 0;
         double target_resistance_value = 0;
@@ -25,7 +26,7 @@ namespace Hotspring
         const int byteMessage_max_Hex = 16;
         const int byteMessage_max_Ascii = 256;
 
-        bool start_button = false;
+        bool port_status = false;
         bool flag_receive = false;
         byte[] byteMessage_A = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_A = 0;
@@ -37,49 +38,6 @@ namespace Hotspring
         public Selftest()
         {
             InitializeComponent();
-        }
-
-        private void send_basis_command(int endvalue, int delay, int basis, string frontdata, string recevice_command)
-        {
-            int power = 0;
-            long value = 0;
-            while (value < endvalue && serialPort1.IsOpen == true)
-            {
-                try
-                {
-                    value = (long)Math.Pow(basis, power);
-                    string send_data = frontdata + value;
-                    while (flag_receive) { }
-                    serialPort1.WriteLine(send_data);
-                    target_resistance_value = value;
-                    DateTime dt = DateTime.Now;
-                    string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
-                    serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
-                    output_csv = string.Concat(output_csv, value + ",");
-                    Thread.Sleep(delay);
-                    serialPort2.WriteLine(recevice_command);
-                    dt = DateTime.Now;
-                    string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
-                    serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
-                    flag_receive = true;
-                    power++;
-                }
-                catch (Exception Ex)
-                {
-                    MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void check_resistance_value()
-        {
-            int resistance_number = 0;
-            bool textBox_resistance_bool = Int32.TryParse(textBox_resistance.Text, out resistance_number);
-
-            if (textBox_resistance_bool)
-                resistance_value = resistance_number;
-            else
-                resistance_value = 0;
         }
 
         //  開啟SerialPort
@@ -200,33 +158,6 @@ namespace Hotspring
             }
         }
 
-        private void checkBox_RA_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox_RA.Checked == true)
-            {
-                checkBox_RB.Checked = false;
-                checkBox_RC.Checked = false;
-            }
-        }
-
-        private void checkBox_RB_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox_RB.Checked == true)
-            {
-                checkBox_RA.Checked = false;
-                checkBox_RC.Checked = false;
-            }
-        }
-
-        private void checkBox_RC_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox_RC.Checked == true)
-            {
-                checkBox_RA.Checked = false;
-                checkBox_RB.Checked = false;
-            }
-        }
-
         //  SerialPort記錄
         private void serialPort2_recorder(byte ch, bool SaveToLog = false)
         {
@@ -260,6 +191,33 @@ namespace Hotspring
             }
         }
 
+        private void checkBox_RA_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_RA.Checked == true)
+            {
+                checkBox_RB.Checked = false;
+                checkBox_RC.Checked = false;
+            }
+        }
+
+        private void checkBox_RB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_RB.Checked == true)
+            {
+                checkBox_RA.Checked = false;
+                checkBox_RC.Checked = false;
+            }
+        }
+
+        private void checkBox_RC_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_RC.Checked == true)
+            {
+                checkBox_RA.Checked = false;
+                checkBox_RB.Checked = false;
+            }
+        }
+
         private void textBox_resistance_TextChanged(object sender, EventArgs e)
         {
             check_resistance_value();
@@ -267,52 +225,61 @@ namespace Hotspring
 
         private void button_prime_Click(object sender, EventArgs e)
         {
-            List<int> primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17, 19 };
-
+            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
+            primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17, 19 };
+            SelfThread.Start();
         }
 
         private void button_prime2_Click(object sender, EventArgs e)
         {
-            List<int> primeLists = new List<int> { 2 };
-
-            SerialPortfunction();
-            SelfModefunction(primeLists);
-            SerialPortfunction();
+            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
+            primeLists = new List<int> { 2 };
+            SelfThread.Start();
         }
 
         private void button_prime10_Click(object sender, EventArgs e)
         {
-            List<int> primeLists = new List<int> { 10 };
+            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
+            primeLists = new List<int> { 10 };
+            SelfThread.Start();
+        }
+        
+        private void check_resistance_value()
+        {
+            int resistance_number = 0;
+            bool textBox_resistance_bool = Int32.TryParse(textBox_resistance.Text, out resistance_number);
 
-            SerialPortfunction();
-            SelfModefunction(primeLists);
-            SerialPortfunction();
+            if (textBox_resistance_bool)
+                resistance_value = resistance_number;
+            else
+                resistance_value = 0;
         }
 
-        private void SelfModefunction(List<int> primeLists)
+        private void SelfModefunction()
         {
-            SerialPortfunction();
-
-            int endvalue = 1048575;
-            int delay = 2000;
-            string frontdata, receive_command = "VAL?";
-
-            for (int i = 0; i < primeLists.Count; i++)
+            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
             {
-                if (checkBox_RA.Checked == true && serialPort1.IsOpen == true)
+                for (int i = 0; i < primeLists.Count; i++)
                 {
-                    frontdata = "set RA ";
-                    send_basis_command(endvalue, delay, primeLists[i], frontdata, receive_command);
-                }
-                else if (checkBox_RB.Checked == true && serialPort1.IsOpen == true)
-                {
-                    frontdata = "set RB ";
-                    send_basis_command(endvalue, delay, primeLists[i], frontdata, receive_command);
-                }
-                else if (checkBox_RC.Checked == true && serialPort1.IsOpen == true)
-                {
-                    frontdata = "set RC ";
-                    send_basis_command(endvalue, delay, primeLists[i], frontdata, receive_command);
+                    int endvalue = 1048575;
+                    int delay = 2000;
+                    string frontdata, receive_command = "VAL?";
+
+                    if (checkBox_RA.Checked == true && serialPort1.IsOpen == true)
+                    {
+                        frontdata = "set RA ";
+                        send_basis_command(endvalue, delay, primeLists[i], frontdata, receive_command);
+                    }
+                    else if (checkBox_RB.Checked == true && serialPort1.IsOpen == true)
+                    {
+                        frontdata = "set RB ";
+                        send_basis_command(endvalue, delay, primeLists[i], frontdata, receive_command);
+                    }
+                    else if (checkBox_RC.Checked == true && serialPort1.IsOpen == true)
+                    {
+                        frontdata = "set RC ";
+                        send_basis_command(endvalue, delay, primeLists[i], frontdata, receive_command);
+                    }
                 }
             }
 
@@ -320,32 +287,75 @@ namespace Hotspring
             Output_csv_log();
         }
 
-        private void SerialPortfunction()
+        private void button_port_Click(object sender, EventArgs e)
         {
             Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
             Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
 
-            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+            port_status = !port_status;
+            if (port_status == true)
             {
-                Open_serialPort1();
-                LogAThread.Start();
-            }
+                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+                {
+                    Open_serialPort1();
+                    LogAThread.Start();
+                }
 
-            if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
-            {
-                Open_serialPort2();
-                LogBThread.Start();
+                if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
+                {
+                    Open_serialPort2();
+                    LogBThread.Start();
+                }
+                button_port.Text = "Disconnect";
             }
+            else
+            {
+                if (serialPort1.IsOpen == true)          //送至Comport
+                {
+                    LogAThread.Abort();
+                    Close_serialPort1();
+                }
+                if (serialPort2.IsOpen == true)          //送至Comport
+                {
+                    LogBThread.Abort();
+                    Close_serialPort2();
+                }
+                button_port.Text = "Connect";
+            }
+        }
 
-            if (serialPort1.IsOpen == true)          //送至Comport
+        private void send_basis_command(int endvalue, int delay, int basis, string frontdata, string recevice_command)
+        {
+            int power = 1;
+            long value = 0;
+            while (value < endvalue && serialPort1.IsOpen == true)
             {
-                LogAThread.Abort();
-                Close_serialPort1();
-            }
-            if (serialPort2.IsOpen == true && flag_receive == false)          //送至Comport
-            {
-                LogBThread.Abort();
-                Close_serialPort2();
+                try
+                {
+                    value = (long)Math.Pow(basis, power);
+                    if (value < endvalue)
+                    {
+                        string send_data = frontdata + value;
+                        while (flag_receive) { }
+                        serialPort1.WriteLine(send_data);
+                        target_resistance_value = value;
+                        DateTime dt = DateTime.Now;
+                        string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                        serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
+                        output_csv = string.Concat(output_csv, value + ",");
+                        Thread.Sleep(delay);
+                        serialPort2.WriteLine(recevice_command);
+                        dt = DateTime.Now;
+                        string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                        serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
+                        flag_receive = true;
+                        power++;
+                    }
+                }
+                catch (Exception Ex)
+                {
+                    MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
