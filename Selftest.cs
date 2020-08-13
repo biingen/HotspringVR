@@ -330,7 +330,7 @@ namespace Hotspring
         //  IO_button_status
         private void io_button_status()
         {
-            while (serialPort1.IsOpen == true)
+            while (serialPort1.IsOpen == true && status_io == true)
             {
                 string send_data = "get button_io";
                 serialPort1.WriteLine(send_data);
@@ -615,9 +615,15 @@ namespace Hotspring
 
             status_io = !status_io;
             if (status_io == true)
+            {
+                button_io.Text = "Disable";
                 ButtonThread.Start();
+            }
             else
+            {
+                button_io.Text = "Enable";
                 ButtonThread.Abort();
+            }
         }
 
         private void Output_csv_log()
