@@ -42,12 +42,14 @@
             this.button_port = new System.Windows.Forms.Button();
             this.button_6b595 = new System.Windows.Forms.Button();
             this.button_6b595_result = new System.Windows.Forms.Button();
+            this.button_nop = new System.Windows.Forms.Button();
+            this.label_nop = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button_prime
             // 
             this.button_prime.Location = new System.Drawing.Point(136, 59);
-            this.button_prime.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_prime.Margin = new System.Windows.Forms.Padding(2);
             this.button_prime.Name = "button_prime";
             this.button_prime.Size = new System.Drawing.Size(71, 26);
             this.button_prime.TabIndex = 0;
@@ -59,7 +61,7 @@
             // 
             this.checkBox_RC.AutoSize = true;
             this.checkBox_RC.Location = new System.Drawing.Point(92, 11);
-            this.checkBox_RC.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox_RC.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_RC.Name = "checkBox_RC";
             this.checkBox_RC.Size = new System.Drawing.Size(40, 16);
             this.checkBox_RC.TabIndex = 13;
@@ -71,7 +73,7 @@
             // 
             this.checkBox_RB.AutoSize = true;
             this.checkBox_RB.Location = new System.Drawing.Point(53, 11);
-            this.checkBox_RB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox_RB.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_RB.Name = "checkBox_RB";
             this.checkBox_RB.Size = new System.Drawing.Size(40, 16);
             this.checkBox_RB.TabIndex = 12;
@@ -85,7 +87,7 @@
             this.checkBox_RA.Checked = true;
             this.checkBox_RA.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_RA.Location = new System.Drawing.Point(12, 11);
-            this.checkBox_RA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox_RA.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_RA.Name = "checkBox_RA";
             this.checkBox_RA.Size = new System.Drawing.Size(40, 16);
             this.checkBox_RA.TabIndex = 11;
@@ -96,7 +98,7 @@
             // textBox_resistance
             // 
             this.textBox_resistance.Location = new System.Drawing.Point(155, 33);
-            this.textBox_resistance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_resistance.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_resistance.Name = "textBox_resistance";
             this.textBox_resistance.Size = new System.Drawing.Size(52, 22);
             this.textBox_resistance.TabIndex = 23;
@@ -116,7 +118,7 @@
             // button_prime2
             // 
             this.button_prime2.Location = new System.Drawing.Point(11, 59);
-            this.button_prime2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_prime2.Margin = new System.Windows.Forms.Padding(2);
             this.button_prime2.Name = "button_prime2";
             this.button_prime2.Size = new System.Drawing.Size(52, 26);
             this.button_prime2.TabIndex = 24;
@@ -127,7 +129,7 @@
             // button_prime10
             // 
             this.button_prime10.Location = new System.Drawing.Point(67, 59);
-            this.button_prime10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_prime10.Margin = new System.Windows.Forms.Padding(2);
             this.button_prime10.Name = "button_prime10";
             this.button_prime10.Size = new System.Drawing.Size(65, 26);
             this.button_prime10.TabIndex = 25;
@@ -138,7 +140,7 @@
             // button_port
             // 
             this.button_port.Location = new System.Drawing.Point(136, 5);
-            this.button_port.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_port.Margin = new System.Windows.Forms.Padding(2);
             this.button_port.Name = "button_port";
             this.button_port.Size = new System.Drawing.Size(70, 26);
             this.button_port.TabIndex = 26;
@@ -149,7 +151,7 @@
             // button_6b595
             // 
             this.button_6b595.Location = new System.Drawing.Point(12, 88);
-            this.button_6b595.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_6b595.Margin = new System.Windows.Forms.Padding(2);
             this.button_6b595.Name = "button_6b595";
             this.button_6b595.Size = new System.Drawing.Size(76, 26);
             this.button_6b595.TabIndex = 27;
@@ -160,19 +162,42 @@
             // button_6b595_result
             // 
             this.button_6b595_result.Location = new System.Drawing.Point(93, 88);
-            this.button_6b595_result.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_6b595_result.Margin = new System.Windows.Forms.Padding(2);
             this.button_6b595_result.Name = "button_6b595_result";
             this.button_6b595_result.Size = new System.Drawing.Size(113, 26);
             this.button_6b595_result.TabIndex = 28;
-            this.button_6b595_result.Text = "Result";
+            this.button_6b595_result.Text = "6B595_Result";
             this.button_6b595_result.UseVisualStyleBackColor = true;
             this.button_6b595_result.Click += new System.EventHandler(this.button_6b595_result_Click);
+            // 
+            // button_nop
+            // 
+            this.button_nop.Location = new System.Drawing.Point(93, 118);
+            this.button_nop.Margin = new System.Windows.Forms.Padding(2);
+            this.button_nop.Name = "button_nop";
+            this.button_nop.Size = new System.Drawing.Size(40, 22);
+            this.button_nop.TabIndex = 29;
+            this.button_nop.Text = "Nop";
+            this.button_nop.UseVisualStyleBackColor = true;
+            this.button_nop.Click += new System.EventHandler(this.button_nop_Click);
+            // 
+            // label_nop
+            // 
+            this.label_nop.AutoSize = true;
+            this.label_nop.Location = new System.Drawing.Point(11, 123);
+            this.label_nop.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_nop.Name = "label_nop";
+            this.label_nop.Size = new System.Drawing.Size(83, 12);
+            this.label_nop.TabIndex = 31;
+            this.label_nop.Text = "set nop 1000000";
             // 
             // Selftest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(327, 190);
+            this.Controls.Add(this.label_nop);
+            this.Controls.Add(this.button_nop);
             this.Controls.Add(this.button_6b595_result);
             this.Controls.Add(this.button_6b595);
             this.Controls.Add(this.button_port);
@@ -184,7 +209,7 @@
             this.Controls.Add(this.checkBox_RB);
             this.Controls.Add(this.checkBox_RA);
             this.Controls.Add(this.button_prime);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Selftest";
             this.Text = "Selftest";
             this.Load += new System.EventHandler(this.Selftest_Load);
@@ -208,5 +233,7 @@
         private System.Windows.Forms.Button button_port;
         private System.Windows.Forms.Button button_6b595;
         private System.Windows.Forms.Button button_6b595_result;
+        private System.Windows.Forms.Button button_nop;
+        private System.Windows.Forms.Label label_nop;
     }
 }

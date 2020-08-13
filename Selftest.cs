@@ -104,12 +104,31 @@ namespace Hotspring
                 {
                     UpdateUI(dataValue, button_6b595_result);
                 }
+                else if (dataValue.Contains("set nop "))
+                {
+                    UpdateUI(dataValue, label_nop);
+                }
                 byteMessage_length_A = 0;
             }
             else
             {
                 byteMessage_A[byteMessage_length_A] = ch;
                 byteMessage_length_A++;
+            }
+        }
+
+        //執行緒控制label.text
+        private delegate void UpdateUICallBack(string value, Control ctl);
+        private void UpdateUI(string value, Control ctl)
+        {
+            if (InvokeRequired)
+            {
+                UpdateUICallBack uu = new UpdateUICallBack(UpdateUI);
+                Invoke(uu, value, ctl);
+            }
+            else
+            {
+                ctl.Text = value;
             }
         }
 
@@ -302,6 +321,7 @@ namespace Hotspring
             {
                 button_6b595.Enabled = true;
                 button_6b595_result.Enabled = true;
+                button_nop.Enabled = true;
                 button_prime.Enabled = true;
                 button_prime2.Enabled = true;
                 button_prime10.Enabled = true;
@@ -323,9 +343,11 @@ namespace Hotspring
             {
                 button_6b595.Enabled = false;
                 button_6b595_result.Enabled = false;
+                button_nop.Enabled = false;
                 button_prime.Enabled = false;
                 button_prime2.Enabled = false;
                 button_prime10.Enabled = false;
+
                 if (serialPort1.IsOpen == true)          //送至Comport
                 {
                     LogAThread.Abort();
@@ -379,6 +401,7 @@ namespace Hotspring
         {
             button_6b595.Enabled = false;
             button_6b595_result.Enabled = false;
+            button_nop.Enabled = false;
             button_prime.Enabled = false;
             button_prime2.Enabled = false;
             button_prime10.Enabled = false;
@@ -413,19 +436,14 @@ namespace Hotspring
                 serialPort1.WriteLine(send_data);
         }
 
-        //執行緒控制label.text
-        private delegate void UpdateUICallBack(string value, Control ctl);
-        private void UpdateUI(string value, Control ctl)
+        private void button_nop_Click(object sender, EventArgs e)
         {
-            if (InvokeRequired)
-            {
-                UpdateUICallBack uu = new UpdateUICallBack(UpdateUI);
-                Invoke(uu, value, ctl);
-            }
-            else
-            {
-                ctl.Text = value;
-            }
+            Random Rnd = new Random(); //加入Random，產生的數字不會重覆
+            int i = Rnd.Next(2, 1048576);
+            string send_data = "set nop " + i;
+
+            if (serialPort1.IsOpen == true)
+                serialPort1.WriteLine(send_data);
         }
 
         private void Output_csv_log()
