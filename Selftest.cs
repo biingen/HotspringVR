@@ -28,6 +28,7 @@ namespace Hotspring
 
         bool status_port = false;
         bool status_echo = false;
+        bool status_io = false;
         bool status_nop = false;
         bool flag_receive = false;
         bool flag_nop = false;
@@ -116,6 +117,109 @@ namespace Hotspring
                     nop_csv = string.Concat(nop_csv, l_strResult + "," + Environment.NewLine);
                     flag_nop = false;
                 }
+                else if (dataValue.Contains("button_io:"))
+                {
+                    string button_value = dataValue.Replace("button_io:", "").Replace("\t", "").Replace("\r", "").Replace("\n", "");
+                    switch (button_value)
+                    {
+                        case "0":
+                            pictureBox_blue.Image = Properties.Resources.black;
+                            pictureBox_green.Image = Properties.Resources.black;
+                            pictureBox_yellow.Image = Properties.Resources.black;
+                            pictureBox_red.Image = Properties.Resources.black;
+                            break;
+                        case "1":
+                            pictureBox_blue.Image = Properties.Resources.black;
+                            pictureBox_green.Image = Properties.Resources.black;
+                            pictureBox_yellow.Image = Properties.Resources.black;
+                            pictureBox_red.Image = Properties.Resources.red;
+                            break;
+                        case "2":
+                            pictureBox_blue.Image = Properties.Resources.black;
+                            pictureBox_green.Image = Properties.Resources.black;
+                            pictureBox_yellow.Image = Properties.Resources.yellow;
+                            pictureBox_red.Image = Properties.Resources.black;
+                            break;
+                        case "3":
+                            pictureBox_blue.Image = Properties.Resources.black;
+                            pictureBox_green.Image = Properties.Resources.black;
+                            pictureBox_yellow.Image = Properties.Resources.yellow;
+                            pictureBox_red.Image = Properties.Resources.red;
+                            break;
+                        case "4":
+                            pictureBox_blue.Image = Properties.Resources.black;
+                            pictureBox_green.Image = Properties.Resources.green;
+                            pictureBox_yellow.Image = Properties.Resources.black;
+                            pictureBox_red.Image = Properties.Resources.black;
+                            break;
+                        case "5":
+                            pictureBox_blue.Image = Properties.Resources.black;
+                            pictureBox_green.Image = Properties.Resources.green;
+                            pictureBox_yellow.Image = Properties.Resources.black;
+                            pictureBox_red.Image = Properties.Resources.red;
+                            break;
+                        case "6":
+                            pictureBox_blue.Image = Properties.Resources.black;
+                            pictureBox_green.Image = Properties.Resources.green;
+                            pictureBox_yellow.Image = Properties.Resources.yellow;
+                            pictureBox_red.Image = Properties.Resources.black;
+                            break;
+                        case "7":
+                            pictureBox_blue.Image = Properties.Resources.black;
+                            pictureBox_green.Image = Properties.Resources.green;
+                            pictureBox_yellow.Image = Properties.Resources.yellow;
+                            pictureBox_red.Image = Properties.Resources.red;
+                            break;
+                        case "8":
+                            pictureBox_blue.Image = Properties.Resources.blue;
+                            pictureBox_green.Image = Properties.Resources.black;
+                            pictureBox_yellow.Image = Properties.Resources.black;
+                            pictureBox_red.Image = Properties.Resources.black;
+                            break;
+                        case "9":
+                            pictureBox_blue.Image = Properties.Resources.blue;
+                            pictureBox_green.Image = Properties.Resources.black;
+                            pictureBox_yellow.Image = Properties.Resources.black;
+                            pictureBox_red.Image = Properties.Resources.red;
+                            break;
+                        case "10":
+                            pictureBox_blue.Image = Properties.Resources.blue;
+                            pictureBox_green.Image = Properties.Resources.black;
+                            pictureBox_yellow.Image = Properties.Resources.yellow;
+                            pictureBox_red.Image = Properties.Resources.black;
+                            break;
+                        case "11":
+                            pictureBox_blue.Image = Properties.Resources.blue;
+                            pictureBox_green.Image = Properties.Resources.black;
+                            pictureBox_yellow.Image = Properties.Resources.yellow;
+                            pictureBox_red.Image = Properties.Resources.red;
+                            break;
+                        case "12":
+                            pictureBox_blue.Image = Properties.Resources.blue;
+                            pictureBox_green.Image = Properties.Resources.green;
+                            pictureBox_yellow.Image = Properties.Resources.black;
+                            pictureBox_red.Image = Properties.Resources.black;
+                            break;
+                        case "13":
+                            pictureBox_blue.Image = Properties.Resources.blue;
+                            pictureBox_green.Image = Properties.Resources.green;
+                            pictureBox_yellow.Image = Properties.Resources.black;
+                            pictureBox_red.Image = Properties.Resources.red;
+                            break;
+                        case "14":
+                            pictureBox_blue.Image = Properties.Resources.blue;
+                            pictureBox_green.Image = Properties.Resources.green;
+                            pictureBox_yellow.Image = Properties.Resources.yellow;
+                            pictureBox_red.Image = Properties.Resources.black;
+                            break;
+                        case "15":
+                            pictureBox_blue.Image = Properties.Resources.blue;
+                            pictureBox_green.Image = Properties.Resources.green;
+                            pictureBox_yellow.Image = Properties.Resources.yellow;
+                            pictureBox_red.Image = Properties.Resources.red;
+                            break;
+                    }
+                }
                 byteMessage_length_A = 0;
             }
             else
@@ -126,12 +230,12 @@ namespace Hotspring
         }
 
         //執行緒控制label.text
-        private delegate void UpdateUICallBack(string value, Control ctl);
+        private delegate void UpdateUICallBack_Text(string value, Control ctl);
         private void UpdateUI(string value, Control ctl)
         {
             if (InvokeRequired)
             {
-                UpdateUICallBack uu = new UpdateUICallBack(UpdateUI);
+                UpdateUICallBack_Text uu = new UpdateUICallBack_Text(UpdateUI);
                 Invoke(uu, value, ctl);
             }
             else
@@ -220,6 +324,17 @@ namespace Hotspring
             {
                 byteMessage_B[byteMessage_length_B] = ch;
                 byteMessage_length_B++;
+            }
+        }
+
+        //  IO_button_status
+        private void io_button_status()
+        {
+            while (serialPort1.IsOpen == true)
+            {
+                string send_data = "get button_io";
+                serialPort1.WriteLine(send_data);
+                Thread.Sleep(500);
             }
         }
 
@@ -330,6 +445,7 @@ namespace Hotspring
                 button_6b595_status.Enabled = true;
                 button_6b595_calculate.Enabled = true;
                 button_echo_status.Enabled = true;
+                button_io.Enabled = true;
                 button_nop.Enabled = true;
                 button_prime.Enabled = true;
                 button_prime2.Enabled = true;
@@ -353,6 +469,7 @@ namespace Hotspring
                 button_6b595_status.Enabled = false;
                 button_6b595_calculate.Enabled = false;
                 button_echo_status.Enabled = false;
+                button_io.Enabled = false;
                 button_nop.Enabled = false;
                 button_prime.Enabled = false;
                 button_prime2.Enabled = false;
@@ -412,6 +529,7 @@ namespace Hotspring
             button_6b595_status.Enabled = false;
             button_6b595_calculate.Enabled = false;
             button_echo_status.Enabled = false;
+            button_io.Enabled = false;
             button_nop.Enabled = false;
             button_prime.Enabled = false;
             button_prime2.Enabled = false;
@@ -472,11 +590,6 @@ namespace Hotspring
         {
             Random Rnd = new Random(); //加入Random，產生的數字不會重覆
             status_nop = true;
-            string close_echo = "set echo 0";
-            if (serialPort1.IsOpen == true)
-            {
-                serialPort1.WriteLine(close_echo);
-            }
 
             for (int i = 0; i < Int16.Parse(textBox_nop_number.Text); i++)
             {
@@ -496,7 +609,16 @@ namespace Hotspring
             Output_csv_log();
         }
 
+        private void button_io_Click(object sender, EventArgs e)
+        {
+            Thread ButtonThread = new Thread(new ThreadStart(io_button_status));
 
+            status_io = !status_io;
+            if (status_io == true)
+                ButtonThread.Start();
+            else
+                ButtonThread.Abort();
+        }
 
         private void Output_csv_log()
         {

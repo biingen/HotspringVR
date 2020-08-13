@@ -46,6 +46,15 @@
             this.label_6b595_result = new System.Windows.Forms.Label();
             this.textBox_nop_number = new System.Windows.Forms.TextBox();
             this.button_echo_status = new System.Windows.Forms.Button();
+            this.pictureBox_blue = new System.Windows.Forms.PictureBox();
+            this.pictureBox_green = new System.Windows.Forms.PictureBox();
+            this.pictureBox_yellow = new System.Windows.Forms.PictureBox();
+            this.pictureBox_red = new System.Windows.Forms.PictureBox();
+            this.button_io = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_blue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_green)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_yellow)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_red)).BeginInit();
             this.SuspendLayout();
             // 
             // button_prime
@@ -210,11 +219,62 @@
             this.button_echo_status.UseVisualStyleBackColor = true;
             this.button_echo_status.Click += new System.EventHandler(this.button_echo_status_Click);
             // 
+            // pictureBox_blue
+            // 
+            this.pictureBox_blue.Image = global::Hotspring.Properties.Resources.black;
+            this.pictureBox_blue.Location = new System.Drawing.Point(12, 143);
+            this.pictureBox_blue.Name = "pictureBox_blue";
+            this.pictureBox_blue.Size = new System.Drawing.Size(48, 48);
+            this.pictureBox_blue.TabIndex = 34;
+            this.pictureBox_blue.TabStop = false;
+            // 
+            // pictureBox_green
+            // 
+            this.pictureBox_green.Image = global::Hotspring.Properties.Resources.black;
+            this.pictureBox_green.Location = new System.Drawing.Point(67, 143);
+            this.pictureBox_green.Name = "pictureBox_green";
+            this.pictureBox_green.Size = new System.Drawing.Size(48, 48);
+            this.pictureBox_green.TabIndex = 35;
+            this.pictureBox_green.TabStop = false;
+            // 
+            // pictureBox_yellow
+            // 
+            this.pictureBox_yellow.Image = global::Hotspring.Properties.Resources.black;
+            this.pictureBox_yellow.Location = new System.Drawing.Point(121, 143);
+            this.pictureBox_yellow.Name = "pictureBox_yellow";
+            this.pictureBox_yellow.Size = new System.Drawing.Size(48, 48);
+            this.pictureBox_yellow.TabIndex = 36;
+            this.pictureBox_yellow.TabStop = false;
+            // 
+            // pictureBox_red
+            // 
+            this.pictureBox_red.Image = global::Hotspring.Properties.Resources.black;
+            this.pictureBox_red.Location = new System.Drawing.Point(175, 143);
+            this.pictureBox_red.Name = "pictureBox_red";
+            this.pictureBox_red.Size = new System.Drawing.Size(48, 48);
+            this.pictureBox_red.TabIndex = 37;
+            this.pictureBox_red.TabStop = false;
+            // 
+            // button_io
+            // 
+            this.button_io.Location = new System.Drawing.Point(229, 155);
+            this.button_io.Name = "button_io";
+            this.button_io.Size = new System.Drawing.Size(75, 23);
+            this.button_io.TabIndex = 38;
+            this.button_io.Text = "IO_button";
+            this.button_io.UseVisualStyleBackColor = true;
+            this.button_io.Click += new System.EventHandler(this.button_io_Click);
+            // 
             // Selftest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(327, 190);
+            this.Controls.Add(this.button_io);
+            this.Controls.Add(this.pictureBox_red);
+            this.Controls.Add(this.pictureBox_yellow);
+            this.Controls.Add(this.pictureBox_green);
+            this.Controls.Add(this.pictureBox_blue);
             this.Controls.Add(this.button_echo_status);
             this.Controls.Add(this.textBox_nop_number);
             this.Controls.Add(this.label_6b595_result);
@@ -234,6 +294,10 @@
             this.Name = "Selftest";
             this.Text = "Selftest";
             this.Load += new System.EventHandler(this.Selftest_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_blue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_green)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_yellow)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_red)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -258,5 +322,10 @@
         private System.Windows.Forms.Label label_6b595_result;
         private System.Windows.Forms.TextBox textBox_nop_number;
         private System.Windows.Forms.Button button_echo_status;
+        private System.Windows.Forms.PictureBox pictureBox_blue;
+        private System.Windows.Forms.PictureBox pictureBox_green;
+        private System.Windows.Forms.PictureBox pictureBox_yellow;
+        private System.Windows.Forms.PictureBox pictureBox_red;
+        private System.Windows.Forms.Button button_io;
     }
 }

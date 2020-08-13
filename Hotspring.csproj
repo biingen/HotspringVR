@@ -91,6 +91,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Selftest.resx">
       <DependentUpon>Selftest.cs</DependentUpon>
@@ -113,6 +114,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="hotspring.ico" />
+    <None Include="Reference\yellow.png" />
+    <None Include="Reference\red.png" />
+    <None Include="Reference\green.png" />
+    <None Include="Reference\blue.png" />
+    <None Include="Reference\black.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
