@@ -27,14 +27,17 @@ namespace Hotspring
         const int byteMessage_max_Ascii = 256;
 
         bool status_port = false;
-        bool status_6b595 = false;
+        bool status_echo = false;
+        bool status_nop = false;
         bool flag_receive = false;
+        bool flag_nop = false;
         byte[] byteMessage_A = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_A = 0;
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_B = 0;
 
         string output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+        string nop_csv = "Send, Receive, " + Environment.NewLine;
 
         public Selftest()
         {
@@ -102,11 +105,16 @@ namespace Hotspring
                 serialPort1_text = string.Concat(serialPort1_text, logValue);
                 if (dataValue.Contains("/"))
                 {
-                    UpdateUI(dataValue, button_6b595_result);
+                    string[] string_success_rate = dataValue.Split('/');
+                    float success_rate = float.Parse(string_success_rate[0]) / float.Parse(string_success_rate[1]);
+                    string display_data = dataValue + string.Format("{0:0.00%}", success_rate);
+                    UpdateUI(display_data, label_6b595_result);
                 }
                 else if (dataValue.Contains("set nop "))
                 {
-                    UpdateUI(dataValue, label_nop);
+                    string l_strResult = dataValue.Replace("\n", "").Replace("\t", "").Replace("\r", "");
+                    nop_csv = string.Concat(nop_csv, l_strResult + "," + Environment.NewLine);
+                    flag_nop = false;
                 }
                 byteMessage_length_A = 0;
             }
@@ -319,8 +327,9 @@ namespace Hotspring
             status_port = !status_port;
             if (status_port == true)
             {
-                button_6b595.Enabled = true;
-                button_6b595_result.Enabled = true;
+                button_6b595_status.Enabled = true;
+                button_6b595_calculate.Enabled = true;
+                button_echo_status.Enabled = true;
                 button_nop.Enabled = true;
                 button_prime.Enabled = true;
                 button_prime2.Enabled = true;
@@ -341,8 +350,9 @@ namespace Hotspring
             }
             else
             {
-                button_6b595.Enabled = false;
-                button_6b595_result.Enabled = false;
+                button_6b595_status.Enabled = false;
+                button_6b595_calculate.Enabled = false;
+                button_echo_status.Enabled = false;
                 button_nop.Enabled = false;
                 button_prime.Enabled = false;
                 button_prime2.Enabled = false;
@@ -399,15 +409,16 @@ namespace Hotspring
 
         private void Selftest_Load(object sender, EventArgs e)
         {
-            button_6b595.Enabled = false;
-            button_6b595_result.Enabled = false;
+            button_6b595_status.Enabled = false;
+            button_6b595_calculate.Enabled = false;
+            button_echo_status.Enabled = false;
             button_nop.Enabled = false;
             button_prime.Enabled = false;
             button_prime2.Enabled = false;
             button_prime10.Enabled = false;
         }
 
-        private void button_6b595_Click(object sender, EventArgs e)
+        private void button_6b595_status_Click(object sender, EventArgs e)
         {
             string send_data;
 
@@ -415,20 +426,20 @@ namespace Hotspring
             if (status_port == true)
             {
                 send_data = "set 6B595_selftest 1";
-                button_6b595.Text = "Off";
+                button_6b595_status.Text = "6B595: Off";
                 if (serialPort1.IsOpen == true)
                     serialPort1.WriteLine(send_data);
             }
             else
             {
                 send_data = "set 6B595_selftest 0";
-                button_6b595.Text = "On";
+                button_6b595_status.Text = "6B595: On";
                 if (serialPort1.IsOpen == true)
                     serialPort1.WriteLine(send_data);
             }
         }
 
-        private void button_6b595_result_Click(object sender, EventArgs e)
+        private void button_6b595_calculate_Click(object sender, EventArgs e)
         {
             string send_data = "get 6B595_selftest";
 
@@ -436,15 +447,56 @@ namespace Hotspring
                 serialPort1.WriteLine(send_data);
         }
 
+        private void button_echo_status_Click(object sender, EventArgs e)
+        {
+            string send_data;
+
+            status_echo = !status_echo;
+            if (status_echo == true)
+            {
+                send_data = "set echo 1";
+                button_echo_status.Text = "Echo: Off";
+                if (serialPort1.IsOpen == true)
+                    serialPort1.WriteLine(send_data);
+            }
+            else
+            {
+                send_data = "set echo 0";
+                button_echo_status.Text = "Echo: On";
+                if (serialPort1.IsOpen == true)
+                    serialPort1.WriteLine(send_data);
+            }
+        }
+
         private void button_nop_Click(object sender, EventArgs e)
         {
             Random Rnd = new Random(); //加入Random，產生的數字不會重覆
-            int i = Rnd.Next(2, 1048576);
-            string send_data = "set nop " + i;
-
+            status_nop = true;
+            string close_echo = "set echo 0";
             if (serialPort1.IsOpen == true)
-                serialPort1.WriteLine(send_data);
+            {
+                serialPort1.WriteLine(close_echo);
+            }
+
+            for (int i = 0; i < Int16.Parse(textBox_nop_number.Text); i++)
+            {
+                while (flag_nop) { }
+                int j = Rnd.Next(2, 1048576);
+                string send_data = "set nop " + j;
+
+                if (serialPort1.IsOpen == true)
+                {
+                    serialPort1.WriteLine(send_data);
+                    nop_csv = string.Concat(nop_csv, send_data + ",");
+                    flag_nop = true;
+                }
+            }
+
+            while (flag_nop) { }
+            Output_csv_log();
         }
+
+
 
         private void Output_csv_log()
         {
@@ -587,6 +639,22 @@ namespace Hotspring
                         {
                             MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
+                    }
+                }
+            }
+            else if (status_nop == true)
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_NOP_Report.csv", true))
+                {
+                    try
+                    {
+                        file.Write(nop_csv);
+                        nop_csv = "Send, Receive, " + Environment.NewLine;
+                        status_nop = false;
+                    }
+                    catch (Exception Ex)
+                    {
+                        MessageBox.Show(Ex.Message.ToString(), "Output file Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }

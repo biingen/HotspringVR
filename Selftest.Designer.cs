@@ -40,10 +40,12 @@
             this.button_prime2 = new System.Windows.Forms.Button();
             this.button_prime10 = new System.Windows.Forms.Button();
             this.button_port = new System.Windows.Forms.Button();
-            this.button_6b595 = new System.Windows.Forms.Button();
-            this.button_6b595_result = new System.Windows.Forms.Button();
+            this.button_6b595_status = new System.Windows.Forms.Button();
+            this.button_6b595_calculate = new System.Windows.Forms.Button();
             this.button_nop = new System.Windows.Forms.Button();
-            this.label_nop = new System.Windows.Forms.Label();
+            this.label_6b595_result = new System.Windows.Forms.Label();
+            this.textBox_nop_number = new System.Windows.Forms.TextBox();
+            this.button_echo_status = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_prime
@@ -84,8 +86,6 @@
             // checkBox_RA
             // 
             this.checkBox_RA.AutoSize = true;
-            this.checkBox_RA.Checked = true;
-            this.checkBox_RA.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_RA.Location = new System.Drawing.Point(12, 11);
             this.checkBox_RA.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_RA.Name = "checkBox_RA";
@@ -148,31 +148,31 @@
             this.button_port.UseVisualStyleBackColor = true;
             this.button_port.Click += new System.EventHandler(this.button_port_Click);
             // 
-            // button_6b595
+            // button_6b595_status
             // 
-            this.button_6b595.Location = new System.Drawing.Point(12, 88);
-            this.button_6b595.Margin = new System.Windows.Forms.Padding(2);
-            this.button_6b595.Name = "button_6b595";
-            this.button_6b595.Size = new System.Drawing.Size(76, 26);
-            this.button_6b595.TabIndex = 27;
-            this.button_6b595.Text = "6B595";
-            this.button_6b595.UseVisualStyleBackColor = true;
-            this.button_6b595.Click += new System.EventHandler(this.button_6b595_Click);
+            this.button_6b595_status.Location = new System.Drawing.Point(12, 88);
+            this.button_6b595_status.Margin = new System.Windows.Forms.Padding(2);
+            this.button_6b595_status.Name = "button_6b595_status";
+            this.button_6b595_status.Size = new System.Drawing.Size(92, 26);
+            this.button_6b595_status.TabIndex = 27;
+            this.button_6b595_status.Text = "6B595";
+            this.button_6b595_status.UseVisualStyleBackColor = true;
+            this.button_6b595_status.Click += new System.EventHandler(this.button_6b595_status_Click);
             // 
-            // button_6b595_result
+            // button_6b595_calculate
             // 
-            this.button_6b595_result.Location = new System.Drawing.Point(93, 88);
-            this.button_6b595_result.Margin = new System.Windows.Forms.Padding(2);
-            this.button_6b595_result.Name = "button_6b595_result";
-            this.button_6b595_result.Size = new System.Drawing.Size(113, 26);
-            this.button_6b595_result.TabIndex = 28;
-            this.button_6b595_result.Text = "6B595_Result";
-            this.button_6b595_result.UseVisualStyleBackColor = true;
-            this.button_6b595_result.Click += new System.EventHandler(this.button_6b595_result_Click);
+            this.button_6b595_calculate.Location = new System.Drawing.Point(108, 88);
+            this.button_6b595_calculate.Margin = new System.Windows.Forms.Padding(2);
+            this.button_6b595_calculate.Name = "button_6b595_calculate";
+            this.button_6b595_calculate.Size = new System.Drawing.Size(98, 26);
+            this.button_6b595_calculate.TabIndex = 28;
+            this.button_6b595_calculate.Text = "Calculate";
+            this.button_6b595_calculate.UseVisualStyleBackColor = true;
+            this.button_6b595_calculate.Click += new System.EventHandler(this.button_6b595_calculate_Click);
             // 
             // button_nop
             // 
-            this.button_nop.Location = new System.Drawing.Point(93, 118);
+            this.button_nop.Location = new System.Drawing.Point(166, 118);
             this.button_nop.Margin = new System.Windows.Forms.Padding(2);
             this.button_nop.Name = "button_nop";
             this.button_nop.Size = new System.Drawing.Size(40, 22);
@@ -181,25 +181,46 @@
             this.button_nop.UseVisualStyleBackColor = true;
             this.button_nop.Click += new System.EventHandler(this.button_nop_Click);
             // 
-            // label_nop
+            // label_6b595_result
             // 
-            this.label_nop.AutoSize = true;
-            this.label_nop.Location = new System.Drawing.Point(11, 123);
-            this.label_nop.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label_nop.Name = "label_nop";
-            this.label_nop.Size = new System.Drawing.Size(83, 12);
-            this.label_nop.TabIndex = 31;
-            this.label_nop.Text = "set nop 1000000";
+            this.label_6b595_result.AutoSize = true;
+            this.label_6b595_result.Location = new System.Drawing.Point(210, 95);
+            this.label_6b595_result.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_6b595_result.Name = "label_6b595_result";
+            this.label_6b595_result.Size = new System.Drawing.Size(0, 12);
+            this.label_6b595_result.TabIndex = 31;
+            // 
+            // textBox_nop_number
+            // 
+            this.textBox_nop_number.Location = new System.Drawing.Point(110, 118);
+            this.textBox_nop_number.Margin = new System.Windows.Forms.Padding(2);
+            this.textBox_nop_number.Name = "textBox_nop_number";
+            this.textBox_nop_number.Size = new System.Drawing.Size(52, 22);
+            this.textBox_nop_number.TabIndex = 32;
+            this.textBox_nop_number.Text = "100";
+            // 
+            // button_echo_status
+            // 
+            this.button_echo_status.Location = new System.Drawing.Point(12, 118);
+            this.button_echo_status.Margin = new System.Windows.Forms.Padding(2);
+            this.button_echo_status.Name = "button_echo_status";
+            this.button_echo_status.Size = new System.Drawing.Size(92, 22);
+            this.button_echo_status.TabIndex = 33;
+            this.button_echo_status.Text = "Echo";
+            this.button_echo_status.UseVisualStyleBackColor = true;
+            this.button_echo_status.Click += new System.EventHandler(this.button_echo_status_Click);
             // 
             // Selftest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(327, 190);
-            this.Controls.Add(this.label_nop);
+            this.Controls.Add(this.button_echo_status);
+            this.Controls.Add(this.textBox_nop_number);
+            this.Controls.Add(this.label_6b595_result);
             this.Controls.Add(this.button_nop);
-            this.Controls.Add(this.button_6b595_result);
-            this.Controls.Add(this.button_6b595);
+            this.Controls.Add(this.button_6b595_calculate);
+            this.Controls.Add(this.button_6b595_status);
             this.Controls.Add(this.button_port);
             this.Controls.Add(this.button_prime10);
             this.Controls.Add(this.button_prime2);
@@ -231,9 +252,11 @@
         private System.Windows.Forms.Button button_prime2;
         private System.Windows.Forms.Button button_prime10;
         private System.Windows.Forms.Button button_port;
-        private System.Windows.Forms.Button button_6b595;
-        private System.Windows.Forms.Button button_6b595_result;
+        private System.Windows.Forms.Button button_6b595_status;
+        private System.Windows.Forms.Button button_6b595_calculate;
         private System.Windows.Forms.Button button_nop;
-        private System.Windows.Forms.Label label_nop;
+        private System.Windows.Forms.Label label_6b595_result;
+        private System.Windows.Forms.TextBox textBox_nop_number;
+        private System.Windows.Forms.Button button_echo_status;
     }
 }
