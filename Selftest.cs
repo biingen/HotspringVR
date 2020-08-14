@@ -19,6 +19,7 @@ namespace Hotspring
         private string Config_Path = Application.StartupPath + "\\Config.ini";
 
         List<int> primeLists;
+        int start = 0, end = 0;
         string serialPort1_text, serialPort2_text;
         int resistance_value = 0;
         double target_resistance_value = 0;
@@ -394,7 +395,16 @@ namespace Hotspring
         private void button_primemix_Click(object sender, EventArgs e)
         {
             Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
-            primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17, 19 };
+            primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17 };
+            SelfThread.Start();
+        }
+        
+        private void button_primestep_Click(object sender, EventArgs e)
+        {
+            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
+            primeLists = new List<int> { 2 };
+            start = 2;
+            end = 32;
             SelfThread.Start();
         }
 
@@ -413,11 +423,12 @@ namespace Hotspring
         {
             if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
             {
+                string frontdata, receive_command = "VAL?";
+
                 for (int i = 0; i < primeLists.Count; i++)
                 {
                     int endvalue = 1048575;
                     int delay = 2000;
-                    string frontdata, receive_command = "VAL?";
 
                     if (checkBox_RA.Checked == true && serialPort1.IsOpen == true)
                     {
@@ -457,6 +468,7 @@ namespace Hotspring
                 button_prime2.Enabled = true;
                 button_prime10.Enabled = true;
                 button_primemix.Enabled = true;
+                button_primestep.Enabled = true;
                 button_voltage.Enabled = true;
 
                 if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
@@ -482,6 +494,7 @@ namespace Hotspring
                 button_prime2.Enabled = false;
                 button_prime10.Enabled = false;
                 button_primemix.Enabled = false;
+                button_primestep.Enabled = false;
                 button_voltage.Enabled = false;
 
                 if (serialPort1.IsOpen == true)          //送至Comport
@@ -541,6 +554,35 @@ namespace Hotspring
                     MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+
+            if (start != 0 && end != 0)
+            {
+                for (value = start; value <= end; value += 1)
+                {
+                    try
+                    {
+                        string send_data = frontdata + value;
+                        while (flag_receive) { }
+                        serialPort1.WriteLine(send_data);
+                        target_resistance_value = value;
+                        DateTime dt = DateTime.Now;
+                        string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                        serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
+                        output_csv = string.Concat(output_csv, value + ",");
+                        Thread.Sleep(2000);
+                        serialPort2.WriteLine(recevice_command);
+                        dt = DateTime.Now;
+                        string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                        serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
+                        flag_receive = true;
+                    }
+                    catch (Exception Ex)
+                    {
+                        MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+
+            }
         }
 
         private void Selftest_Load(object sender, EventArgs e)
@@ -553,6 +595,7 @@ namespace Hotspring
             button_prime2.Enabled = false;
             button_prime10.Enabled = false;
             button_primemix.Enabled = false;
+            button_primestep.Enabled = false;
             button_voltage.Enabled = false;
         }
 
