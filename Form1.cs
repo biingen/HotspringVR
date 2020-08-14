@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Hotspring
 {
-    public partial class Form1 : Form
+    public partial class Form_hotspring : Form
     {
-        public Form1()
+        public Form_hotspring()
         {
             InitializeComponent();
         }
@@ -64,6 +64,29 @@ namespace Hotspring
                     tabPage_self.Show();
                     break;
             }
+        }
+
+        private void Form_hotspring_Load(object sender, EventArgs e)
+        {
+            var Usertest = new Usertest();
+            //不要顯示Title
+            Usertest.FormBorderStyle = FormBorderStyle.None;
+
+            //非最上層
+            Usertest.TopLevel = false;
+
+            //顯示From，要加上去才會顯示Form
+            Usertest.Visible = true;
+
+            //設定From位置
+            Usertest.Top = 0;
+            Usertest.Left = 0;
+
+            //將Form加入tabPage中
+            tabPage_user.Controls.Add(Usertest);
+
+            //顯示tabPage
+            tabPage_user.Show();
         }
     }
 }

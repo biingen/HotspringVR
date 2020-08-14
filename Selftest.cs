@@ -220,6 +220,13 @@ namespace Hotspring
                             break;
                     }
                 }
+                else if (dataValue.Contains("input_voltage:"))
+                {
+                    string valtage_receive = dataValue.Replace("input_voltage:", "").Replace("\t", "").Replace("\r", "").Replace("\n", "");
+                    float valtage_value = float.Parse(valtage_receive) / 1000;
+                    string display_data = string.Format("{0:0.000}", valtage_value) + " V";
+                    UpdateUI(display_data, label_voltage);
+                }
                 byteMessage_length_A = 0;
             }
             else
@@ -370,13 +377,6 @@ namespace Hotspring
             check_resistance_value();
         }
 
-        private void button_prime_Click(object sender, EventArgs e)
-        {
-            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
-            primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17, 19 };
-            SelfThread.Start();
-        }
-
         private void button_prime2_Click(object sender, EventArgs e)
         {
             Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
@@ -390,7 +390,14 @@ namespace Hotspring
             primeLists = new List<int> { 10 };
             SelfThread.Start();
         }
-        
+
+        private void button_primemix_Click(object sender, EventArgs e)
+        {
+            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
+            primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17, 19 };
+            SelfThread.Start();
+        }
+
         private void check_resistance_value()
         {
             int resistance_number = 0;
@@ -447,9 +454,10 @@ namespace Hotspring
                 button_echo_status.Enabled = true;
                 button_io.Enabled = true;
                 button_nop.Enabled = true;
-                button_prime.Enabled = true;
                 button_prime2.Enabled = true;
                 button_prime10.Enabled = true;
+                button_primemix.Enabled = true;
+                button_voltage.Enabled = true;
 
                 if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
                 {
@@ -471,9 +479,10 @@ namespace Hotspring
                 button_echo_status.Enabled = false;
                 button_io.Enabled = false;
                 button_nop.Enabled = false;
-                button_prime.Enabled = false;
                 button_prime2.Enabled = false;
                 button_prime10.Enabled = false;
+                button_primemix.Enabled = false;
+                button_voltage.Enabled = false;
 
                 if (serialPort1.IsOpen == true)          //送至Comport
                 {
@@ -486,6 +495,16 @@ namespace Hotspring
                     Close_serialPort2();
                 }
                 button_port.Text = "Connect";
+            }
+        }
+
+        private void button_settings_Click(object sender, EventArgs e)
+        {
+            Settings Settings = new Settings();
+
+            if (Settings.ShowDialog() == DialogResult.Cancel)
+            {
+                check_resistance_value();
             }
         }
 
@@ -531,9 +550,10 @@ namespace Hotspring
             button_echo_status.Enabled = false;
             button_io.Enabled = false;
             button_nop.Enabled = false;
-            button_prime.Enabled = false;
             button_prime2.Enabled = false;
             button_prime10.Enabled = false;
+            button_primemix.Enabled = false;
+            button_voltage.Enabled = false;
         }
 
         private void button_6b595_status_Click(object sender, EventArgs e)
@@ -544,14 +564,14 @@ namespace Hotspring
             if (status_port == true)
             {
                 send_data = "set 6B595_selftest 1";
-                button_6b595_status.Text = "6B595: Off";
+                button_6b595_status.Text = "Off";
                 if (serialPort1.IsOpen == true)
                     serialPort1.WriteLine(send_data);
             }
             else
             {
                 send_data = "set 6B595_selftest 0";
-                button_6b595_status.Text = "6B595: On";
+                button_6b595_status.Text = "On";
                 if (serialPort1.IsOpen == true)
                     serialPort1.WriteLine(send_data);
             }
@@ -573,14 +593,14 @@ namespace Hotspring
             if (status_echo == true)
             {
                 send_data = "set echo 1";
-                button_echo_status.Text = "Echo: Off";
+                button_echo_status.Text = "Off";
                 if (serialPort1.IsOpen == true)
                     serialPort1.WriteLine(send_data);
             }
             else
             {
                 send_data = "set echo 0";
-                button_echo_status.Text = "Echo: On";
+                button_echo_status.Text = "On";
                 if (serialPort1.IsOpen == true)
                     serialPort1.WriteLine(send_data);
             }
@@ -624,6 +644,14 @@ namespace Hotspring
                 button_io.Text = "Enable";
                 ButtonThread.Abort();
             }
+        }
+
+        private void button_voltage_Click(object sender, EventArgs e)
+        {
+            string send_data = "get input_voltage";
+
+            if (serialPort1.IsOpen == true)
+                serialPort1.WriteLine(send_data);
         }
 
         private void Output_csv_log()
