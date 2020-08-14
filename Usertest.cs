@@ -512,7 +512,7 @@ namespace Hotspring
             }
             else if (basis != 0 && basis != 1)
             {
-                int power = 0;
+                int power = 1;
                 long value = 0;
                 while (value < endvalue && serialPort1.IsOpen == true)
                 {

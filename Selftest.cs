@@ -581,7 +581,8 @@ namespace Hotspring
                         MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-
+                start = 0;
+                end = 0;
             }
         }
 
