@@ -464,7 +464,7 @@ namespace Hotspring
                 button_6b595_calculate.Enabled = true;
                 button_echo_status.Enabled = true;
                 button_io.Enabled = true;
-                button_nop.Enabled = true;
+                button_usb.Enabled = true;
                 button_prime2.Enabled = true;
                 button_prime10.Enabled = true;
                 button_primemix.Enabled = true;
@@ -490,7 +490,7 @@ namespace Hotspring
                 button_6b595_calculate.Enabled = false;
                 button_echo_status.Enabled = false;
                 button_io.Enabled = false;
-                button_nop.Enabled = false;
+                button_usb.Enabled = false;
                 button_prime2.Enabled = false;
                 button_prime10.Enabled = false;
                 button_primemix.Enabled = false;
@@ -592,7 +592,7 @@ namespace Hotspring
             button_6b595_calculate.Enabled = false;
             button_echo_status.Enabled = false;
             button_io.Enabled = false;
-            button_nop.Enabled = false;
+            button_usb.Enabled = false;
             button_prime2.Enabled = false;
             button_prime10.Enabled = false;
             button_primemix.Enabled = false;
@@ -650,16 +650,21 @@ namespace Hotspring
             }
         }
 
-        private void button_nop_Click(object sender, EventArgs e)
+        private void button_usb_Click(object sender, EventArgs e)
         {
             Random Rnd = new Random(); //加入Random，產生的數字不會重覆
             status_nop = true;
+
+            string send_data = "set echo 0"; //關閉echo function
+            button_echo_status.Text = "On";
+            if (serialPort1.IsOpen == true)
+                serialPort1.WriteLine(send_data);
 
             for (int i = 0; i < Int16.Parse(textBox_nop_number.Text); i++)
             {
                 while (flag_nop) { }
                 int j = Rnd.Next(2, 1048576);
-                string send_data = "set nop " + j;
+                send_data = "set nop " + j;
 
                 if (serialPort1.IsOpen == true)
                 {

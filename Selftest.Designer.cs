@@ -42,7 +42,7 @@
             this.button_port = new System.Windows.Forms.Button();
             this.button_6b595_status = new System.Windows.Forms.Button();
             this.button_6b595_calculate = new System.Windows.Forms.Button();
-            this.button_nop = new System.Windows.Forms.Button();
+            this.button_usb = new System.Windows.Forms.Button();
             this.label_6b595_result = new System.Windows.Forms.Label();
             this.textBox_nop_number = new System.Windows.Forms.TextBox();
             this.button_echo_status = new System.Windows.Forms.Button();
@@ -53,7 +53,7 @@
             this.button_io = new System.Windows.Forms.Button();
             this.groupBox_6B595 = new System.Windows.Forms.GroupBox();
             this.groupBox_button = new System.Windows.Forms.GroupBox();
-            this.groupBox_nop = new System.Windows.Forms.GroupBox();
+            this.groupBox_usb = new System.Windows.Forms.GroupBox();
             this.groupBox_prime = new System.Windows.Forms.GroupBox();
             this.label_voltage = new System.Windows.Forms.Label();
             this.button_voltage = new System.Windows.Forms.Button();
@@ -66,7 +66,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_red)).BeginInit();
             this.groupBox_6B595.SuspendLayout();
             this.groupBox_button.SuspendLayout();
-            this.groupBox_nop.SuspendLayout();
+            this.groupBox_usb.SuspendLayout();
             this.groupBox_prime.SuspendLayout();
             this.groupBox_voltage.SuspendLayout();
             this.SuspendLayout();
@@ -162,7 +162,7 @@
             // 
             // button_port
             // 
-            this.button_port.Location = new System.Drawing.Point(238, 18);
+            this.button_port.Location = new System.Drawing.Point(238, 12);
             this.button_port.Margin = new System.Windows.Forms.Padding(2);
             this.button_port.Name = "button_port";
             this.button_port.Size = new System.Drawing.Size(70, 22);
@@ -193,16 +193,16 @@
             this.button_6b595_calculate.UseVisualStyleBackColor = true;
             this.button_6b595_calculate.Click += new System.EventHandler(this.button_6b595_calculate_Click);
             // 
-            // button_nop
+            // button_usb
             // 
-            this.button_nop.Location = new System.Drawing.Point(61, 14);
-            this.button_nop.Margin = new System.Windows.Forms.Padding(2);
-            this.button_nop.Name = "button_nop";
-            this.button_nop.Size = new System.Drawing.Size(44, 22);
-            this.button_nop.TabIndex = 29;
-            this.button_nop.Text = "Nop";
-            this.button_nop.UseVisualStyleBackColor = true;
-            this.button_nop.Click += new System.EventHandler(this.button_nop_Click);
+            this.button_usb.Location = new System.Drawing.Point(61, 14);
+            this.button_usb.Margin = new System.Windows.Forms.Padding(2);
+            this.button_usb.Name = "button_usb";
+            this.button_usb.Size = new System.Drawing.Size(44, 22);
+            this.button_usb.TabIndex = 29;
+            this.button_usb.Text = "USB";
+            this.button_usb.UseVisualStyleBackColor = true;
+            this.button_usb.Click += new System.EventHandler(this.button_usb_Click);
             // 
             // label_6b595_result
             // 
@@ -225,10 +225,10 @@
             // 
             // button_echo_status
             // 
-            this.button_echo_status.Location = new System.Drawing.Point(238, 73);
+            this.button_echo_status.Location = new System.Drawing.Point(238, 56);
             this.button_echo_status.Margin = new System.Windows.Forms.Padding(2);
             this.button_echo_status.Name = "button_echo_status";
-            this.button_echo_status.Size = new System.Drawing.Size(70, 26);
+            this.button_echo_status.Size = new System.Drawing.Size(70, 18);
             this.button_echo_status.TabIndex = 33;
             this.button_echo_status.Text = "Echo";
             this.button_echo_status.UseVisualStyleBackColor = true;
@@ -307,16 +307,16 @@
             this.groupBox_button.TabStop = false;
             this.groupBox_button.Text = "Button";
             // 
-            // groupBox_nop
+            // groupBox_usb
             // 
-            this.groupBox_nop.Controls.Add(this.textBox_nop_number);
-            this.groupBox_nop.Controls.Add(this.button_nop);
-            this.groupBox_nop.Location = new System.Drawing.Point(199, 112);
-            this.groupBox_nop.Name = "groupBox_nop";
-            this.groupBox_nop.Size = new System.Drawing.Size(111, 46);
-            this.groupBox_nop.TabIndex = 41;
-            this.groupBox_nop.TabStop = false;
-            this.groupBox_nop.Text = "Nop";
+            this.groupBox_usb.Controls.Add(this.textBox_nop_number);
+            this.groupBox_usb.Controls.Add(this.button_usb);
+            this.groupBox_usb.Location = new System.Drawing.Point(199, 112);
+            this.groupBox_usb.Name = "groupBox_usb";
+            this.groupBox_usb.Size = new System.Drawing.Size(111, 46);
+            this.groupBox_usb.TabIndex = 41;
+            this.groupBox_usb.TabStop = false;
+            this.groupBox_usb.Text = "USB";
             // 
             // groupBox_prime
             // 
@@ -370,7 +370,7 @@
             // 
             // button_settings
             // 
-            this.button_settings.Location = new System.Drawing.Point(238, 47);
+            this.button_settings.Location = new System.Drawing.Point(238, 34);
             this.button_settings.Margin = new System.Windows.Forms.Padding(2);
             this.button_settings.Name = "button_settings";
             this.button_settings.Size = new System.Drawing.Size(70, 22);
@@ -398,7 +398,7 @@
             this.Controls.Add(this.button_settings);
             this.Controls.Add(this.groupBox_voltage);
             this.Controls.Add(this.groupBox_prime);
-            this.Controls.Add(this.groupBox_nop);
+            this.Controls.Add(this.groupBox_usb);
             this.Controls.Add(this.groupBox_button);
             this.Controls.Add(this.button_echo_status);
             this.Controls.Add(this.groupBox_6B595);
@@ -414,8 +414,8 @@
             this.groupBox_6B595.ResumeLayout(false);
             this.groupBox_6B595.PerformLayout();
             this.groupBox_button.ResumeLayout(false);
-            this.groupBox_nop.ResumeLayout(false);
-            this.groupBox_nop.PerformLayout();
+            this.groupBox_usb.ResumeLayout(false);
+            this.groupBox_usb.PerformLayout();
             this.groupBox_prime.ResumeLayout(false);
             this.groupBox_prime.PerformLayout();
             this.groupBox_voltage.ResumeLayout(false);
@@ -439,7 +439,7 @@
         private System.Windows.Forms.Button button_port;
         private System.Windows.Forms.Button button_6b595_status;
         private System.Windows.Forms.Button button_6b595_calculate;
-        private System.Windows.Forms.Button button_nop;
+        private System.Windows.Forms.Button button_usb;
         private System.Windows.Forms.Label label_6b595_result;
         private System.Windows.Forms.TextBox textBox_nop_number;
         private System.Windows.Forms.Button button_echo_status;
@@ -450,7 +450,7 @@
         private System.Windows.Forms.Button button_io;
         private System.Windows.Forms.GroupBox groupBox_6B595;
         private System.Windows.Forms.GroupBox groupBox_button;
-        private System.Windows.Forms.GroupBox groupBox_nop;
+        private System.Windows.Forms.GroupBox groupBox_usb;
         private System.Windows.Forms.GroupBox groupBox_prime;
         private System.Windows.Forms.Label label_voltage;
         private System.Windows.Forms.Button button_voltage;
