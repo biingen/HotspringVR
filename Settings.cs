@@ -56,21 +56,29 @@ namespace Hotspring
             comboBox_serialPort2_baudrate.Text = ini12.INIRead(Config_Path, "serialPort2", "BaudRate", "");
             comboBox_serialPort2_portname.Text = ini12.INIRead(Config_Path, "serialPort2", "PortName", "");
 
-            if (ini12.INIRead(Config_Path, "other", "Step", "") == "1")
-                checkBox_step.Checked = true;
-            else
-                checkBox_step.Checked = false;
-        }
-
-        private void checkBox_step_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox_step.Checked == true)
+            if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
             {
-                ini12.INIWrite(Config_Path, "other", "Step", "1");
+                checkBox_hp34401A.Checked = true;
+                groupBox_serialPort2.Text = "Keysight 34401A 6½ Digit Multimeter";
             }
             else
             {
-                ini12.INIWrite(Config_Path, "other", "Step", "0");
+                checkBox_hp34401A.Checked = false;
+                groupBox_serialPort2.Text = "Fluke 45 Multi-meter";
+            }
+        }
+
+        private void checkBox_hp34401A_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_hp34401A.Checked == true)
+            {
+                ini12.INIWrite(Config_Path, "other", "HP34401A", "1");
+                groupBox_serialPort2.Text = "Keysight 34401A 6½ Digit Multimeter";
+            }
+            else
+            {
+                ini12.INIWrite(Config_Path, "other", "HP34401A", "0");
+                groupBox_serialPort2.Text = "Fluke 45 Multi-meter";
             }
         }
 
