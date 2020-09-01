@@ -30,9 +30,9 @@ namespace Hotspring
         bool status_port = false;
         bool status_echo = false;
         bool status_io = false;
-        bool status_nop = false;
+        bool status_usb = false;
         bool flag_receive = false;
-        bool flag_nop = false;
+        bool flag_usb = false;
         byte[] byteMessage_A = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_A = 0;
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
@@ -116,7 +116,7 @@ namespace Hotspring
                 {
                     string l_strResult = dataValue.Replace("\n", "").Replace("\t", "").Replace("\r", "");
                     nop_csv = string.Concat(nop_csv, l_strResult + "," + Environment.NewLine);
-                    flag_nop = false;
+                    flag_usb = false;
                 }
                 else if (dataValue.Contains("button_io:"))
                 {
@@ -259,14 +259,18 @@ namespace Hotspring
             {
                 if (serialPort2.IsOpen == false)
                 {
-                    serialPort2.StopBits = StopBits.One;
                     serialPort2.PortName = ini12.INIRead(Config_Path, "serialPort2", "PortName", "");
                     serialPort2.BaudRate = int.Parse((ini12.INIRead(Config_Path, "serialPort2", "BaudRate", "")));
                     serialPort2.DataBits = 8;
                     serialPort2.Parity = (Parity)0;
                     serialPort2.ReceivedBytesThreshold = 1;
                     if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                    {
+                        serialPort2.StopBits = StopBits.Two;
                         serialPort2.DtrEnable = true;
+                    }
+                    else
+                        serialPort2.StopBits = StopBits.One;
                     serialPort2.Open();
                 }
             }
@@ -545,11 +549,12 @@ namespace Hotspring
                         Thread.Sleep(delay);
                         if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
                         {
-                            recevice_command = ":syst:rem" + "\"\n";
+                            recevice_command = ":syst:rem" + "\r\n";
                             serialPort2.Write(recevice_command);
-                            recevice_command = ":conf:RES;" + "\"\n";
+                            recevice_command = ":conf:RES;" + "\r\n";
                             serialPort2.Write(recevice_command);
-                            recevice_command = ":read?" + "\"\n";
+                            recevice_command = ":Read?" + "\r\n";
+                            serialPort2.Write(recevice_command);
                         }
                         else
                             serialPort2.WriteLine(recevice_command);
@@ -581,7 +586,17 @@ namespace Hotspring
                         serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
                         output_csv = string.Concat(output_csv, value + ",");
                         Thread.Sleep(2000);
-                        serialPort2.WriteLine(recevice_command);
+                        if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                        {
+                            recevice_command = ":syst:rem" + "\r\n";
+                            serialPort2.Write(recevice_command);
+                            recevice_command = ":conf:RES;" + "\r\n";
+                            serialPort2.Write(recevice_command);
+                            recevice_command = ":Read?" + "\r\n";
+                            serialPort2.Write(recevice_command);
+                        }
+                        else
+                            serialPort2.WriteLine(recevice_command);
                         dt = DateTime.Now;
                         string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
                         serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
@@ -664,7 +679,7 @@ namespace Hotspring
         private void button_usb_Click(object sender, EventArgs e)
         {
             Random Rnd = new Random(); //加入Random，產生的數字不會重覆
-            status_nop = true;
+            status_usb = true;
 
             string send_data = "set echo 0"; //關閉echo function
             button_echo_status.Text = "On";
@@ -673,7 +688,7 @@ namespace Hotspring
 
             for (int i = 0; i < Int16.Parse(textBox_nop_number.Text); i++)
             {
-                while (flag_nop) { }
+                while (flag_usb) { }
                 int j = Rnd.Next(2, 1048576);
                 send_data = "set nop " + j;
 
@@ -681,11 +696,11 @@ namespace Hotspring
                 {
                     serialPort1.WriteLine(send_data);
                     nop_csv = string.Concat(nop_csv, send_data + ",");
-                    flag_nop = true;
+                    flag_usb = true;
                 }
             }
 
-            while (flag_nop) { }
+            while (flag_usb) { }
             Output_csv_log();
         }
 
@@ -858,7 +873,7 @@ namespace Hotspring
                     }
                 }
             }
-            else if (status_nop == true)
+            else if (status_usb == true)
             {
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_NOP_Report.csv", true))
                 {
@@ -866,7 +881,7 @@ namespace Hotspring
                     {
                         file.Write(nop_csv);
                         nop_csv = "Send, Receive, " + Environment.NewLine;
-                        status_nop = false;
+                        status_usb = false;
                     }
                     catch (Exception Ex)
                     {

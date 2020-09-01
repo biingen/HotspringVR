@@ -190,14 +190,18 @@ namespace Hotspring
             {
                 if (serialPort2.IsOpen == false)
                 {
-                    serialPort2.StopBits = StopBits.One;
                     serialPort2.PortName = ini12.INIRead(Config_Path, "serialPort2", "PortName", "");
                     serialPort2.BaudRate = int.Parse((ini12.INIRead(Config_Path, "serialPort2", "BaudRate", "")));
                     serialPort2.DataBits = 8;
                     serialPort2.Parity = (Parity)0;
                     serialPort2.ReceivedBytesThreshold = 1;
                     if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                    {
+                        serialPort2.StopBits = StopBits.Two;
                         serialPort2.DtrEnable = true;
+                    }
+                    else
+                        serialPort2.StopBits = StopBits.One;
                     serialPort2.Open();
                 }
             }
@@ -459,11 +463,11 @@ namespace Hotspring
                                 Thread.Sleep(delay);
                                 if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
                                 {
-                                    recevice_command = ":syst:rem" + "\"\n";
+                                    recevice_command = ":syst:rem" + "\r\n";
                                     serialPort2.Write(recevice_command);
-                                    recevice_command = ":conf:RES;" + "\"\n";
+                                    recevice_command = ":conf:RES;" + "\r\n";
                                     serialPort2.Write(recevice_command);
-                                    recevice_command = ":read?" + "\"\n";
+                                    recevice_command = ":Read?" + "\r\n";
                                     serialPort2.Write(recevice_command);
                                 }
                                 else
@@ -543,11 +547,11 @@ namespace Hotspring
                             Thread.Sleep(delay);
                             if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
                             {
-                                recevice_command = ":syst:rem" + "\"\n";
+                                recevice_command = ":syst:rem" + "\r\n";
                                 serialPort2.Write(recevice_command);
-                                recevice_command = ":conf:RES;" + "\"\n";
+                                recevice_command = ":conf:RES;" + "\r\n";
                                 serialPort2.Write(recevice_command);
-                                recevice_command = ":read?" + "\"\n";
+                                recevice_command = ":Read?" + "\r\n";
                                 serialPort2.Write(recevice_command);
                             }
                             else
