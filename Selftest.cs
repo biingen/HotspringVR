@@ -29,6 +29,8 @@ namespace Hotspring
 
         bool status_port = false;
         bool status_echo = false;
+        bool status_test = false;
+        bool status_6b595 = false;
         bool status_io = false;
         bool status_usb = false;
         bool flag_receive = false;
@@ -40,6 +42,8 @@ namespace Hotspring
 
         string output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
         string nop_csv = "Send, Receive, " + Environment.NewLine;
+
+        private Queue<string> Queue_serialPort1_command = new Queue<string>();
 
         public Selftest()
         {
@@ -341,6 +345,18 @@ namespace Hotspring
             }
         }
 
+        private void serialPort1_command()
+        {
+            while (status_port == true)
+            {
+                while (Queue_serialPort1_command.Count > 0)
+                {
+                    string send_command = Queue_serialPort1_command.Dequeue();
+                    serialPort1.WriteLine(send_command);
+                }
+            }
+        }
+
         //  IO_button_status
         private void io_button_status()
         {
@@ -384,34 +400,35 @@ namespace Hotspring
             check_resistance_value();
         }
 
-        private void button_prime2_Click(object sender, EventArgs e)
+        private void button_test_Click(object sender, EventArgs e)
         {
             Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
-            primeLists = new List<int> { 2 };
-            SelfThread.Start();
-        }
 
-        private void button_prime10_Click(object sender, EventArgs e)
-        {
-            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
-            primeLists = new List<int> { 10 };
-            SelfThread.Start();
-        }
-
-        private void button_primemix_Click(object sender, EventArgs e)
-        {
-            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
-            primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17 };
-            SelfThread.Start();
-        }
-        
-        private void button_primestep_Click(object sender, EventArgs e)
-        {
-            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
-            primeLists = new List<int> { 2 };
-            start = 2;
-            end = 32;
-            SelfThread.Start();
+            status_test = !status_test;
+            if (status_test == true)
+            {
+                if (radioButton_power2.Checked == true)
+                    primeLists = new List<int> { 2 };
+                else if (radioButton_power10.Checked == true)
+                    primeLists = new List<int> { 10 };
+                else if (radioButton_prime.Checked == true)
+                    primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17 };
+                else if (radioButton_power_step.Checked == true)
+                {
+                    primeLists = new List<int> { 2 };
+                    start = 2;
+                    end = 32;
+                }
+                else
+                    MessageBox.Show("Please select the current value!");
+                button_test.Text = "Stop";
+                SelfThread.Start();
+            }
+            else
+            {
+                SelfThread.Abort();
+                button_test.Text = "Start";
+            }
         }
 
         private void check_resistance_value()
@@ -429,7 +446,12 @@ namespace Hotspring
         {
             if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
             {
-                string frontdata, receive_command = "VAL?";
+                string frontdata, receive_command;
+
+                if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                    receive_command = ":Read?";
+                else
+                    receive_command = "VAL?";
 
                 for (int i = 0; i < primeLists.Count; i++)
                 {
@@ -462,19 +484,17 @@ namespace Hotspring
         {
             Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
             Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
+            Thread serialPort1_send = new Thread(new ThreadStart(serialPort1_command));
 
             status_port = !status_port;
             if (status_port == true)
             {
                 button_6b595_status.Enabled = true;
-                button_6b595_calculate.Enabled = true;
+                button_6b595_get.Enabled = true;
                 button_echo_status.Enabled = true;
                 button_io.Enabled = true;
                 button_usb.Enabled = true;
-                button_prime2.Enabled = true;
-                button_prime10.Enabled = true;
-                button_primemix.Enabled = true;
-                button_primestep.Enabled = true;
+                button_test.Enabled = true;
                 button_voltage.Enabled = true;
 
                 if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
@@ -489,18 +509,16 @@ namespace Hotspring
                     LogBThread.Start();
                 }
                 button_port.Text = "Disconnect";
+                serialPort1_send.Start();
             }
             else
             {
                 button_6b595_status.Enabled = false;
-                button_6b595_calculate.Enabled = false;
+                button_6b595_get.Enabled = false;
                 button_echo_status.Enabled = false;
                 button_io.Enabled = false;
                 button_usb.Enabled = false;
-                button_prime2.Enabled = false;
-                button_prime10.Enabled = false;
-                button_primemix.Enabled = false;
-                button_primestep.Enabled = false;
+                button_test.Enabled = false;
                 button_voltage.Enabled = false;
 
                 if (serialPort1.IsOpen == true)          //送至Comport
@@ -514,6 +532,7 @@ namespace Hotspring
                     Close_serialPort2();
                 }
                 button_port.Text = "Connect";
+                serialPort1_send.Abort();
             }
         }
 
@@ -527,7 +546,7 @@ namespace Hotspring
             }
         }
 
-        private void send_basis_command(int endvalue, int delay, int basis, string frontdata, string recevice_command)
+        private void send_basis_command(int endvalue, int delay, int basis, string frontdata, string receive_command)
         {
             int power = 1;
             long value = 0;
@@ -547,19 +566,9 @@ namespace Hotspring
                         serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
                         output_csv = string.Concat(output_csv, value + ",");
                         Thread.Sleep(delay);
-                        if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
-                        {
-                            recevice_command = ":syst:rem" + "\r\n";
-                            serialPort2.Write(recevice_command);
-                            recevice_command = ":conf:RES;" + "\r\n";
-                            serialPort2.Write(recevice_command);
-                            recevice_command = ":Read?" + "\r\n";
-                            serialPort2.Write(recevice_command);
-                        }
-                        else
-                            serialPort2.WriteLine(recevice_command);
+                        serialPort2.WriteLine(receive_command);
                         dt = DateTime.Now;
-                        string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                        string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + receive_command + "\r\n";
                         serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
                         flag_receive = true;
                         power++;
@@ -569,60 +578,47 @@ namespace Hotspring
                 {
                     MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
 
-            if (start != 0 && end != 0)
-            {
-                for (value = start; value <= end; value += 1)
+                if (start != 0 && end != 0)
                 {
-                    try
+                    for (value = start; value <= end; value += 1)
                     {
-                        string send_data = frontdata + value;
-                        while (flag_receive) { }
-                        serialPort1.WriteLine(send_data);
-                        target_resistance_value = value;
-                        DateTime dt = DateTime.Now;
-                        string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
-                        serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
-                        output_csv = string.Concat(output_csv, value + ",");
-                        Thread.Sleep(2000);
-                        if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                        try
                         {
-                            recevice_command = ":syst:rem" + "\r\n";
-                            serialPort2.Write(recevice_command);
-                            recevice_command = ":conf:RES;" + "\r\n";
-                            serialPort2.Write(recevice_command);
-                            recevice_command = ":Read?" + "\r\n";
-                            serialPort2.Write(recevice_command);
+                            string send_data = frontdata + value;
+                            while (flag_receive) { }
+                            serialPort1.WriteLine(send_data);
+                            target_resistance_value = value;
+                            DateTime dt = DateTime.Now;
+                            string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                            serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
+                            output_csv = string.Concat(output_csv, value + ",");
+                            Thread.Sleep(2000);
+                            serialPort2.WriteLine(receive_command);
+                            dt = DateTime.Now;
+                            string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + receive_command + "\r\n";
+                            serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
+                            flag_receive = true;
                         }
-                        else
-                            serialPort2.WriteLine(recevice_command);
-                        dt = DateTime.Now;
-                        string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
-                        serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
-                        flag_receive = true;
+                        catch (Exception Ex)
+                        {
+                            MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
-                    catch (Exception Ex)
-                    {
-                        MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    start = 0;
+                    end = 0;
                 }
-                start = 0;
-                end = 0;
             }
         }
 
         private void Selftest_Load(object sender, EventArgs e)
         {
             button_6b595_status.Enabled = false;
-            button_6b595_calculate.Enabled = false;
+            button_6b595_get.Enabled = false;
             button_echo_status.Enabled = false;
             button_io.Enabled = false;
             button_usb.Enabled = false;
-            button_prime2.Enabled = false;
-            button_prime10.Enabled = false;
-            button_primemix.Enabled = false;
-            button_primestep.Enabled = false;
+            button_test.Enabled = false;
             button_voltage.Enabled = false;
         }
 
@@ -630,29 +626,29 @@ namespace Hotspring
         {
             string send_data;
 
-            status_port = !status_port;
-            if (status_port == true)
+            status_6b595 = !status_6b595;
+            if (status_6b595 == true)
             {
                 send_data = "set 6B595_selftest 1";
                 button_6b595_status.Text = "Off";
                 if (serialPort1.IsOpen == true)
-                    serialPort1.WriteLine(send_data);
+                    Queue_serialPort1_command.Enqueue(send_data);
             }
             else
             {
                 send_data = "set 6B595_selftest 0";
                 button_6b595_status.Text = "On";
                 if (serialPort1.IsOpen == true)
-                    serialPort1.WriteLine(send_data);
+                    Queue_serialPort1_command.Enqueue(send_data);
             }
         }
 
-        private void button_6b595_calculate_Click(object sender, EventArgs e)
+        private void button_6b595_get_Click(object sender, EventArgs e)
         {
             string send_data = "get 6B595_selftest";
 
             if (serialPort1.IsOpen == true)
-                serialPort1.WriteLine(send_data);
+                Queue_serialPort1_command.Enqueue(send_data);
         }
 
         private void button_echo_status_Click(object sender, EventArgs e)
@@ -665,14 +661,14 @@ namespace Hotspring
                 send_data = "set echo 1";
                 button_echo_status.Text = "Off";
                 if (serialPort1.IsOpen == true)
-                    serialPort1.WriteLine(send_data);
+                    Queue_serialPort1_command.Enqueue(send_data);
             }
             else
             {
                 send_data = "set echo 0";
                 button_echo_status.Text = "On";
                 if (serialPort1.IsOpen == true)
-                    serialPort1.WriteLine(send_data);
+                    Queue_serialPort1_command.Enqueue(send_data);
             }
         }
 
@@ -684,7 +680,7 @@ namespace Hotspring
             string send_data = "set echo 0"; //關閉echo function
             button_echo_status.Text = "On";
             if (serialPort1.IsOpen == true)
-                serialPort1.WriteLine(send_data);
+                Queue_serialPort1_command.Enqueue(send_data);
 
             for (int i = 0; i < Int16.Parse(textBox_nop_number.Text); i++)
             {
@@ -694,7 +690,7 @@ namespace Hotspring
 
                 if (serialPort1.IsOpen == true)
                 {
-                    serialPort1.WriteLine(send_data);
+                    Queue_serialPort1_command.Enqueue(send_data);
                     nop_csv = string.Concat(nop_csv, send_data + ",");
                     flag_usb = true;
                 }
@@ -726,7 +722,7 @@ namespace Hotspring
             string send_data = "get input_voltage";
 
             if (serialPort1.IsOpen == true)
-                serialPort1.WriteLine(send_data);
+                Queue_serialPort1_command.Enqueue(send_data);
         }
 
         private void Output_csv_log()

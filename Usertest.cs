@@ -404,7 +404,7 @@ namespace Hotspring
 
         private void UserModefunction()
         {
-            string frontdata, receive_command = "VAL?";
+            string frontdata, receive_command;
             if (start_button == true)
             {
                 if (textBox_startValue.Text != "" && textBox_endValue.Text != "" && textBox_step.Text != "" && textBox_delaytime.Text != "")
@@ -414,6 +414,11 @@ namespace Hotspring
                     int step = Convert.ToInt32(textBox_step.Text);
                     int delay = Convert.ToInt32(textBox_delaytime.Text);
                     int basis = Convert.ToInt32(textBox_basis.Text);
+
+                    if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                        receive_command = ":Read?";
+                    else
+                        receive_command = "VAL?";
 
                     if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")          //送至Comport
                     {
@@ -440,8 +445,14 @@ namespace Hotspring
             }
         }
 
-        private void send_hotspring_command(int startvalue, int endvalue, int step, int delay, int basis, string frontdata, string recevice_command)
+        private void send_hotspring_command(int startvalue, int endvalue, int step, int delay, int basis, string frontdata, string receive_command)
         {
+            if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+            {
+                serialPort2.WriteLine(":syst:rem;");
+                serialPort2.WriteLine(":conf:RES;");
+            }
+
             if (step != 0)
             {
                 if (startvalue < endvalue)
@@ -461,19 +472,9 @@ namespace Hotspring
                                 serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
                                 output_csv = string.Concat(output_csv, value + ",");
                                 Thread.Sleep(delay);
-                                if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
-                                {
-                                    recevice_command = ":syst:rem" + "\r\n";
-                                    serialPort2.Write(recevice_command);
-                                    recevice_command = ":conf:RES;" + "\r\n";
-                                    serialPort2.Write(recevice_command);
-                                    recevice_command = ":Read?" + "\r\n";
-                                    serialPort2.Write(recevice_command);
-                                }
-                                else
-                                    serialPort2.WriteLine(recevice_command);
+                                serialPort2.WriteLine(receive_command);
                                 dt = DateTime.Now;
-                                string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                                string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + receive_command + "\r\n";
                                 serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
                                 flag_receive = true;
                             }
@@ -501,19 +502,9 @@ namespace Hotspring
                                 serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
                                 output_csv = string.Concat(output_csv, value + ",");
                                 Thread.Sleep(delay);
-                                if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
-                                {
-                                    recevice_command = ":syst:rem" + "\"\n";
-                                    serialPort2.Write(recevice_command);
-                                    recevice_command = ":conf:RES;" + "\"\n";
-                                    serialPort2.Write(recevice_command);
-                                    recevice_command = ":read?" + "\"\n";
-                                    serialPort2.Write(recevice_command);
-                                }
-                                else
-                                    serialPort2.WriteLine(recevice_command);
+                                serialPort2.WriteLine(receive_command);
                                 dt = DateTime.Now;
-                                string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                                string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + receive_command + "\r\n";
                                 serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
                                 flag_receive = true;
                             }
@@ -545,19 +536,9 @@ namespace Hotspring
                             serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
                             output_csv = string.Concat(output_csv, value + ",");
                             Thread.Sleep(delay);
-                            if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
-                            {
-                                recevice_command = ":syst:rem" + "\r\n";
-                                serialPort2.Write(recevice_command);
-                                recevice_command = ":conf:RES;" + "\r\n";
-                                serialPort2.Write(recevice_command);
-                                recevice_command = ":Read?" + "\r\n";
-                                serialPort2.Write(recevice_command);
-                            }
-                            else
-                                serialPort2.WriteLine(recevice_command);
+                            serialPort2.WriteLine(receive_command);
                             dt = DateTime.Now;
-                            string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + recevice_command + "\r\n";
+                            string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + receive_command + "\r\n";
                             serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
                             flag_receive = true;
                             power++;
