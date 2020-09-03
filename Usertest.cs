@@ -33,7 +33,7 @@ namespace Hotspring
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_B = 0;
 
-        string output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+        string output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
 
         public Usertest()
         {
@@ -452,6 +452,8 @@ namespace Hotspring
                 serialPort2.WriteLine(":syst:rem;");
                 serialPort2.WriteLine(":conf:RES;");
             }
+            else
+                serialPort2.WriteLine("OHMS;");
 
             if (step != 0)
             {

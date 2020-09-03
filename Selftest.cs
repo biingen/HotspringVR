@@ -40,8 +40,8 @@ namespace Hotspring
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_B = 0;
 
-        string output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
-        string nop_csv = "Send, Receive, " + Environment.NewLine;
+        string output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
+        string usb_csv = "Send value, Receive value, " + Environment.NewLine;
 
         private Queue<string> Queue_serialPort1_command = new Queue<string>();
 
@@ -119,7 +119,7 @@ namespace Hotspring
                 else if (dataValue.Contains("set nop "))
                 {
                     string l_strResult = dataValue.Replace("\n", "").Replace("\t", "").Replace("\r", "");
-                    nop_csv = string.Concat(nop_csv, l_strResult + "," + Environment.NewLine);
+                    usb_csv = string.Concat(usb_csv, l_strResult + "," + Environment.NewLine);
                     flag_usb = false;
                 }
                 else if (dataValue.Contains("button_io:"))
@@ -408,21 +408,30 @@ namespace Hotspring
             if (status_test == true)
             {
                 if (radioButton_power2.Checked == true)
+                {
                     primeLists = new List<int> { 2 };
+                    SelfThread.Start();
+                }
                 else if (radioButton_power10.Checked == true)
+                {
                     primeLists = new List<int> { 10 };
+                    SelfThread.Start();
+                }
                 else if (radioButton_prime.Checked == true)
+                {
                     primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17 };
+                    SelfThread.Start();
+                }
                 else if (radioButton_power_step.Checked == true)
                 {
                     primeLists = new List<int> { 2 };
                     start = 2;
                     end = 32;
+                    SelfThread.Start();
                 }
                 else
                     MessageBox.Show("Please select the current value!");
                 button_test.Text = "Stop";
-                SelfThread.Start();
             }
             else
             {
@@ -474,10 +483,10 @@ namespace Hotspring
                         send_basis_command(endvalue, delay, primeLists[i], frontdata, receive_command);
                     }
                 }
-            }
 
-            while (flag_receive) { }
-            Output_csv_log();
+                while (flag_receive) { }
+                Output_csv_log();
+            }
         }
 
         private void button_port_Click(object sender, EventArgs e)
@@ -550,6 +559,15 @@ namespace Hotspring
         {
             int power = 1;
             long value = 0;
+
+            if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+            {
+                serialPort2.WriteLine(":syst:rem;");
+                serialPort2.WriteLine(":conf:RES;");
+            }
+            else
+                serialPort2.WriteLine("OHMS;");
+
             while (value < endvalue && serialPort1.IsOpen == true)
             {
                 try
@@ -578,36 +596,36 @@ namespace Hotspring
                 {
                     MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
 
-                if (start != 0 && end != 0)
+            if (start != 0 && end != 0)
+            {
+                for (value = start; value <= end; value += 1)
                 {
-                    for (value = start; value <= end; value += 1)
+                    try
                     {
-                        try
-                        {
-                            string send_data = frontdata + value;
-                            while (flag_receive) { }
-                            serialPort1.WriteLine(send_data);
-                            target_resistance_value = value;
-                            DateTime dt = DateTime.Now;
-                            string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
-                            serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
-                            output_csv = string.Concat(output_csv, value + ",");
-                            Thread.Sleep(2000);
-                            serialPort2.WriteLine(receive_command);
-                            dt = DateTime.Now;
-                            string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + receive_command + "\r\n";
-                            serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
-                            flag_receive = true;
-                        }
-                        catch (Exception Ex)
-                        {
-                            MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        string send_data = frontdata + value;
+                        while (flag_receive) { }
+                        serialPort1.WriteLine(send_data);
+                        target_resistance_value = value;
+                        DateTime dt = DateTime.Now;
+                        string send_serialport1_text = "[Send_serialport1] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + send_data + "\r\n";
+                        serialPort1_text = string.Concat(serialPort1_text, send_serialport1_text);
+                        output_csv = string.Concat(output_csv, value + ",");
+                        Thread.Sleep(2000);
+                        serialPort2.WriteLine(receive_command);
+                        dt = DateTime.Now;
+                        string send_serialport2_text = "[Send_serialport2] [" + dt.ToString("yyyy/MM/dd HH:mm:ss.fff") + "]  " + receive_command + "\r\n";
+                        serialPort2_text = string.Concat(serialPort2_text, send_serialport2_text);
+                        flag_receive = true;
                     }
-                    start = 0;
-                    end = 0;
+                    catch (Exception Ex)
+                    {
+                        MessageBox.Show(Ex.Message.ToString(), "SerialPort1 || SerialPort2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
+                start = 0;
+                end = 0;
             }
         }
 
@@ -691,7 +709,7 @@ namespace Hotspring
                 if (serialPort1.IsOpen == true)
                 {
                     Queue_serialPort1_command.Enqueue(send_data);
-                    nop_csv = string.Concat(nop_csv, send_data + ",");
+                    usb_csv = string.Concat(usb_csv, send_data + ",");
                     flag_usb = true;
                 }
             }
@@ -735,7 +753,7 @@ namespace Hotspring
                     try
                     {
                         file.Write(output_csv);
-                        output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+                        output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
                     }
                     catch (Exception Ex)
                     {
@@ -782,7 +800,7 @@ namespace Hotspring
                     try
                     {
                         file.Write(output_csv);
-                        output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+                        output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
                     }
                     catch (Exception Ex)
                     {
@@ -829,7 +847,7 @@ namespace Hotspring
                     try
                     {
                         file.Write(output_csv);
-                        output_csv = "Hotspring Value, Fluke receive current value, Fluke receive deduction resistance value, Percentage, " + Environment.NewLine;
+                        output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
                     }
                     catch (Exception Ex)
                     {
@@ -875,8 +893,8 @@ namespace Hotspring
                 {
                     try
                     {
-                        file.Write(nop_csv);
-                        nop_csv = "Send, Receive, " + Environment.NewLine;
+                        file.Write(usb_csv);
+                        usb_csv = "Send value, Receive value, " + Environment.NewLine;
                         status_usb = false;
                     }
                     catch (Exception Ex)
