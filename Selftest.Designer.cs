@@ -52,15 +52,15 @@
             this.groupBox_button = new System.Windows.Forms.GroupBox();
             this.groupBox_usb = new System.Windows.Forms.GroupBox();
             this.groupBox_prime = new System.Windows.Forms.GroupBox();
+            this.radioButton_power_step = new System.Windows.Forms.RadioButton();
+            this.radioButton_prime = new System.Windows.Forms.RadioButton();
+            this.radioButton_power10 = new System.Windows.Forms.RadioButton();
+            this.radioButton_power2 = new System.Windows.Forms.RadioButton();
             this.button_test = new System.Windows.Forms.Button();
             this.label_voltage = new System.Windows.Forms.Label();
             this.button_voltage = new System.Windows.Forms.Button();
             this.groupBox_voltage = new System.Windows.Forms.GroupBox();
             this.button_settings = new System.Windows.Forms.Button();
-            this.radioButton_power2 = new System.Windows.Forms.RadioButton();
-            this.radioButton_power10 = new System.Windows.Forms.RadioButton();
-            this.radioButton_prime = new System.Windows.Forms.RadioButton();
-            this.radioButton_power_step = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_blue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_green)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_yellow)).BeginInit();
@@ -110,10 +110,10 @@
             // 
             // textBox_resistance
             // 
-            this.textBox_resistance.Location = new System.Drawing.Point(249, 18);
+            this.textBox_resistance.Location = new System.Drawing.Point(249, 19);
             this.textBox_resistance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_resistance.Name = "textBox_resistance";
-            this.textBox_resistance.Size = new System.Drawing.Size(39, 25);
+            this.textBox_resistance.Size = new System.Drawing.Size(63, 25);
             this.textBox_resistance.TabIndex = 23;
             this.textBox_resistance.Text = "0.2";
             this.textBox_resistance.TextChanged += new System.EventHandler(this.textBox_resistance_TextChanged);
@@ -129,10 +129,10 @@
             // 
             // button_port
             // 
-            this.button_port.Location = new System.Drawing.Point(317, 15);
+            this.button_port.Location = new System.Drawing.Point(338, 15);
             this.button_port.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_port.Name = "button_port";
-            this.button_port.Size = new System.Drawing.Size(93, 28);
+            this.button_port.Size = new System.Drawing.Size(74, 28);
             this.button_port.TabIndex = 26;
             this.button_port.Text = "Connect";
             this.button_port.UseVisualStyleBackColor = true;
@@ -165,7 +165,7 @@
             this.button_usb.Location = new System.Drawing.Point(7, 60);
             this.button_usb.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_usb.Name = "button_usb";
-            this.button_usb.Size = new System.Drawing.Size(81, 28);
+            this.button_usb.Size = new System.Drawing.Size(63, 28);
             this.button_usb.TabIndex = 29;
             this.button_usb.Text = "USB";
             this.button_usb.UseVisualStyleBackColor = true;
@@ -185,16 +185,16 @@
             this.textBox_nop_number.Location = new System.Drawing.Point(7, 24);
             this.textBox_nop_number.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textBox_nop_number.Name = "textBox_nop_number";
-            this.textBox_nop_number.Size = new System.Drawing.Size(81, 25);
+            this.textBox_nop_number.Size = new System.Drawing.Size(63, 25);
             this.textBox_nop_number.TabIndex = 32;
             this.textBox_nop_number.Text = "100";
             // 
             // button_echo_status
             // 
-            this.button_echo_status.Location = new System.Drawing.Point(317, 70);
+            this.button_echo_status.Location = new System.Drawing.Point(338, 71);
             this.button_echo_status.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_echo_status.Name = "button_echo_status";
-            this.button_echo_status.Size = new System.Drawing.Size(93, 22);
+            this.button_echo_status.Size = new System.Drawing.Size(74, 22);
             this.button_echo_status.TabIndex = 33;
             this.button_echo_status.Text = "Echo";
             this.button_echo_status.UseVisualStyleBackColor = true;
@@ -205,7 +205,7 @@
             // 
             this.pictureBox_blue.Image = global::Hotspring.Properties.Resources.black;
             this.pictureBox_blue.Location = new System.Drawing.Point(4, 20);
-            this.pictureBox_blue.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox_blue.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox_blue.Name = "pictureBox_blue";
             this.pictureBox_blue.Size = new System.Drawing.Size(64, 60);
             this.pictureBox_blue.TabIndex = 34;
@@ -215,7 +215,7 @@
             // 
             this.pictureBox_green.Image = global::Hotspring.Properties.Resources.black;
             this.pictureBox_green.Location = new System.Drawing.Point(77, 20);
-            this.pictureBox_green.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox_green.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox_green.Name = "pictureBox_green";
             this.pictureBox_green.Size = new System.Drawing.Size(64, 60);
             this.pictureBox_green.TabIndex = 35;
@@ -225,7 +225,7 @@
             // 
             this.pictureBox_yellow.Image = global::Hotspring.Properties.Resources.black;
             this.pictureBox_yellow.Location = new System.Drawing.Point(149, 20);
-            this.pictureBox_yellow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox_yellow.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox_yellow.Name = "pictureBox_yellow";
             this.pictureBox_yellow.Size = new System.Drawing.Size(64, 60);
             this.pictureBox_yellow.TabIndex = 36;
@@ -235,7 +235,7 @@
             // 
             this.pictureBox_red.Image = global::Hotspring.Properties.Resources.black;
             this.pictureBox_red.Location = new System.Drawing.Point(221, 20);
-            this.pictureBox_red.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox_red.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox_red.Name = "pictureBox_red";
             this.pictureBox_red.Size = new System.Drawing.Size(64, 60);
             this.pictureBox_red.TabIndex = 37;
@@ -244,7 +244,7 @@
             // button_io
             // 
             this.button_io.Location = new System.Drawing.Point(293, 20);
-            this.button_io.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button_io.Margin = new System.Windows.Forms.Padding(4);
             this.button_io.Name = "button_io";
             this.button_io.Size = new System.Drawing.Size(71, 60);
             this.button_io.TabIndex = 38;
@@ -257,11 +257,11 @@
             this.groupBox_6B595.Controls.Add(this.label_6b595_result);
             this.groupBox_6B595.Controls.Add(this.button_6b595_status);
             this.groupBox_6B595.Controls.Add(this.button_6b595_get);
-            this.groupBox_6B595.Location = new System.Drawing.Point(16, 140);
-            this.groupBox_6B595.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_6B595.Location = new System.Drawing.Point(11, 140);
+            this.groupBox_6B595.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox_6B595.Name = "groupBox_6B595";
-            this.groupBox_6B595.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox_6B595.Size = new System.Drawing.Size(294, 59);
+            this.groupBox_6B595.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox_6B595.Size = new System.Drawing.Size(320, 59);
             this.groupBox_6B595.TabIndex = 39;
             this.groupBox_6B595.TabStop = false;
             this.groupBox_6B595.Text = "TPIC6B595";
@@ -273,11 +273,11 @@
             this.groupBox_button.Controls.Add(this.button_io);
             this.groupBox_button.Controls.Add(this.pictureBox_green);
             this.groupBox_button.Controls.Add(this.pictureBox_yellow);
-            this.groupBox_button.Location = new System.Drawing.Point(16, 205);
-            this.groupBox_button.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_button.Location = new System.Drawing.Point(11, 205);
+            this.groupBox_button.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox_button.Name = "groupBox_button";
-            this.groupBox_button.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox_button.Size = new System.Drawing.Size(373, 88);
+            this.groupBox_button.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox_button.Size = new System.Drawing.Size(402, 88);
             this.groupBox_button.TabIndex = 40;
             this.groupBox_button.TabStop = false;
             this.groupBox_button.Text = "Button";
@@ -286,11 +286,11 @@
             // 
             this.groupBox_usb.Controls.Add(this.textBox_nop_number);
             this.groupBox_usb.Controls.Add(this.button_usb);
-            this.groupBox_usb.Location = new System.Drawing.Point(318, 98);
-            this.groupBox_usb.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_usb.Location = new System.Drawing.Point(336, 98);
+            this.groupBox_usb.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox_usb.Name = "groupBox_usb";
-            this.groupBox_usb.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox_usb.Size = new System.Drawing.Size(95, 100);
+            this.groupBox_usb.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox_usb.Size = new System.Drawing.Size(77, 100);
             this.groupBox_usb.TabIndex = 41;
             this.groupBox_usb.TabStop = false;
             this.groupBox_usb.Text = "USB";
@@ -307,21 +307,65 @@
             this.groupBox_prime.Controls.Add(this.checkBox_RB);
             this.groupBox_prime.Controls.Add(this.checkBox_RC);
             this.groupBox_prime.Controls.Add(this.checkBox_RA);
-            this.groupBox_prime.Location = new System.Drawing.Point(17, 6);
-            this.groupBox_prime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_prime.Location = new System.Drawing.Point(12, 6);
+            this.groupBox_prime.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox_prime.Name = "groupBox_prime";
-            this.groupBox_prime.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox_prime.Size = new System.Drawing.Size(293, 126);
+            this.groupBox_prime.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox_prime.Size = new System.Drawing.Size(319, 126);
             this.groupBox_prime.TabIndex = 42;
             this.groupBox_prime.TabStop = false;
-            this.groupBox_prime.Text = "Prime";
+            this.groupBox_prime.Text = "Power, Prime, Step";
+            // 
+            // radioButton_power_step
+            // 
+            this.radioButton_power_step.AutoSize = true;
+            this.radioButton_power_step.Location = new System.Drawing.Point(132, 55);
+            this.radioButton_power_step.Name = "radioButton_power_step";
+            this.radioButton_power_step.Size = new System.Drawing.Size(105, 19);
+            this.radioButton_power_step.TabIndex = 30;
+            this.radioButton_power_step.TabStop = true;
+            this.radioButton_power_step.Text = "2^N + 2 ~ 32";
+            this.radioButton_power_step.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_prime
+            // 
+            this.radioButton_prime.AutoSize = true;
+            this.radioButton_prime.Location = new System.Drawing.Point(9, 89);
+            this.radioButton_prime.Name = "radioButton_prime";
+            this.radioButton_prime.Size = new System.Drawing.Size(168, 19);
+            this.radioButton_prime.TabIndex = 29;
+            this.radioButton_prime.TabStop = true;
+            this.radioButton_prime.Text = "2, 3, 5, 7, 10, 11, 13, 17";
+            this.radioButton_prime.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_power10
+            // 
+            this.radioButton_power10.AutoSize = true;
+            this.radioButton_power10.Location = new System.Drawing.Point(67, 54);
+            this.radioButton_power10.Name = "radioButton_power10";
+            this.radioButton_power10.Size = new System.Drawing.Size(59, 19);
+            this.radioButton_power10.TabIndex = 28;
+            this.radioButton_power10.TabStop = true;
+            this.radioButton_power10.Text = "10^N";
+            this.radioButton_power10.UseVisualStyleBackColor = true;
+            // 
+            // radioButton_power2
+            // 
+            this.radioButton_power2.AutoSize = true;
+            this.radioButton_power2.Location = new System.Drawing.Point(9, 54);
+            this.radioButton_power2.Name = "radioButton_power2";
+            this.radioButton_power2.Size = new System.Drawing.Size(52, 19);
+            this.radioButton_power2.TabIndex = 27;
+            this.radioButton_power2.TabStop = true;
+            this.radioButton_power2.Text = "2^N";
+            this.radioButton_power2.UseVisualStyleBackColor = true;
             // 
             // button_test
             // 
-            this.button_test.Location = new System.Drawing.Point(196, 82);
+            this.button_test.Location = new System.Drawing.Point(235, 82);
             this.button_test.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_test.Name = "button_test";
-            this.button_test.Size = new System.Drawing.Size(90, 32);
+            this.button_test.Size = new System.Drawing.Size(77, 32);
             this.button_test.TabIndex = 26;
             this.button_test.Text = "Test";
             this.button_test.UseVisualStyleBackColor = true;
@@ -351,10 +395,10 @@
             // 
             this.groupBox_voltage.Controls.Add(this.button_voltage);
             this.groupBox_voltage.Controls.Add(this.label_voltage);
-            this.groupBox_voltage.Location = new System.Drawing.Point(16, 300);
-            this.groupBox_voltage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_voltage.Location = new System.Drawing.Point(11, 300);
+            this.groupBox_voltage.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox_voltage.Name = "groupBox_voltage";
-            this.groupBox_voltage.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_voltage.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox_voltage.Size = new System.Drawing.Size(161, 46);
             this.groupBox_voltage.TabIndex = 45;
             this.groupBox_voltage.TabStop = false;
@@ -362,58 +406,14 @@
             // 
             // button_settings
             // 
-            this.button_settings.Location = new System.Drawing.Point(317, 42);
+            this.button_settings.Location = new System.Drawing.Point(338, 43);
             this.button_settings.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_settings.Name = "button_settings";
-            this.button_settings.Size = new System.Drawing.Size(93, 28);
+            this.button_settings.Size = new System.Drawing.Size(74, 28);
             this.button_settings.TabIndex = 46;
             this.button_settings.Text = "Settings";
             this.button_settings.UseVisualStyleBackColor = true;
             this.button_settings.Click += new System.EventHandler(this.button_settings_Click);
-            // 
-            // radioButton_power2
-            // 
-            this.radioButton_power2.AutoSize = true;
-            this.radioButton_power2.Location = new System.Drawing.Point(9, 54);
-            this.radioButton_power2.Name = "radioButton_power2";
-            this.radioButton_power2.Size = new System.Drawing.Size(52, 19);
-            this.radioButton_power2.TabIndex = 27;
-            this.radioButton_power2.TabStop = true;
-            this.radioButton_power2.Text = "2^N";
-            this.radioButton_power2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton_power10
-            // 
-            this.radioButton_power10.AutoSize = true;
-            this.radioButton_power10.Location = new System.Drawing.Point(67, 54);
-            this.radioButton_power10.Name = "radioButton_power10";
-            this.radioButton_power10.Size = new System.Drawing.Size(59, 19);
-            this.radioButton_power10.TabIndex = 28;
-            this.radioButton_power10.TabStop = true;
-            this.radioButton_power10.Text = "10^N";
-            this.radioButton_power10.UseVisualStyleBackColor = true;
-            // 
-            // radioButton_prime
-            // 
-            this.radioButton_prime.AutoSize = true;
-            this.radioButton_prime.Location = new System.Drawing.Point(9, 89);
-            this.radioButton_prime.Name = "radioButton_prime";
-            this.radioButton_prime.Size = new System.Drawing.Size(168, 19);
-            this.radioButton_prime.TabIndex = 29;
-            this.radioButton_prime.TabStop = true;
-            this.radioButton_prime.Text = "2, 3, 5, 7, 10, 11, 13, 17";
-            this.radioButton_prime.UseVisualStyleBackColor = true;
-            // 
-            // radioButton_power_step
-            // 
-            this.radioButton_power_step.AutoSize = true;
-            this.radioButton_power_step.Location = new System.Drawing.Point(132, 55);
-            this.radioButton_power_step.Name = "radioButton_power_step";
-            this.radioButton_power_step.Size = new System.Drawing.Size(105, 19);
-            this.radioButton_power_step.TabIndex = 30;
-            this.radioButton_power_step.TabStop = true;
-            this.radioButton_power_step.Text = "2^N + 2 ~ 32";
-            this.radioButton_power_step.UseVisualStyleBackColor = true;
             // 
             // Selftest
             // 
