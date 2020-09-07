@@ -195,7 +195,7 @@ namespace Hotspring
                     serialPort2.DataBits = 8;
                     serialPort2.Parity = (Parity)0;
                     serialPort2.ReceivedBytesThreshold = 1;
-                    if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                    if (ini12.INIRead(Config_Path, "serialPort2", "HP34401A", "") == "1")
                     {
                         serialPort2.StopBits = StopBits.Two;
                         serialPort2.DtrEnable = true;
@@ -415,7 +415,7 @@ namespace Hotspring
                     int delay = Convert.ToInt32(textBox_delaytime.Text);
                     int basis = Convert.ToInt32(textBox_basis.Text);
 
-                    if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                    if (ini12.INIRead(Config_Path, "serialPort2", "HP34401A", "") == "1")
                         receive_command = ":Read?";
                     else
                         receive_command = "VAL?";
@@ -447,7 +447,7 @@ namespace Hotspring
 
         private void send_hotspring_command(int startvalue, int endvalue, int step, int delay, int basis, string frontdata, string receive_command)
         {
-            if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+            if (ini12.INIRead(Config_Path, "serialPort2", "HP34401A", "") == "1")
             {
                 serialPort2.WriteLine(":syst:rem;");
                 serialPort2.WriteLine(":conf:RES;");

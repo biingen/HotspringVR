@@ -268,7 +268,7 @@ namespace Hotspring
                     serialPort2.DataBits = 8;
                     serialPort2.Parity = (Parity)0;
                     serialPort2.ReceivedBytesThreshold = 1;
-                    if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                    if (ini12.INIRead(Config_Path, "serialPort2", "HP34401A", "") == "1")
                     {
                         serialPort2.StopBits = StopBits.Two;
                         serialPort2.DtrEnable = true;
@@ -457,7 +457,7 @@ namespace Hotspring
             {
                 string frontdata, receive_command;
 
-                if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+                if (ini12.INIRead(Config_Path, "serialPort2", "HP34401A", "") == "1")
                     receive_command = ":Read?";
                 else
                     receive_command = "VAL?";
@@ -560,7 +560,7 @@ namespace Hotspring
             int power = 1;
             long value = 0;
 
-            if (ini12.INIRead(Config_Path, "other", "HP34401A", "") == "1")
+            if (ini12.INIRead(Config_Path, "serialPort2", "HP34401A", "") == "1")
             {
                 serialPort2.WriteLine(":syst:rem;");
                 serialPort2.WriteLine(":conf:RES;");
