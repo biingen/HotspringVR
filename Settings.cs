@@ -43,14 +43,12 @@ namespace Hotspring
                 if (ini12.INIRead(Config_Path, "serialPort2", "HP34401A", "") == "1")
                 {
                     radioButton_HP34401A.Checked = true;
-                    groupBox_serialPort2.Text = "Keysight 34401A 6½ Digit Multimeter";
                     comboBox_serialPort2_baudrate.Enabled = true;
                     comboBox_serialPort2_portname.Enabled = true;
                 }
                 else
                 {
                     radioButton_fluke45.Checked = true;
-                    groupBox_serialPort2.Text = "Fluke 45 Multi-meter";
                     comboBox_serialPort2_baudrate.Enabled = true;
                     comboBox_serialPort2_portname.Enabled = true;
                 }
@@ -131,7 +129,6 @@ namespace Hotspring
             {
                 ini12.INIWrite(Config_Path, "serialPort2", "Exist", "1");
                 ini12.INIWrite(Config_Path, "serialPort2", "HP34401A", "0");
-                groupBox_serialPort2.Text = "Fluke 45 Multi-meter";
                 comboBox_serialPort2_baudrate.Enabled = true;
                 comboBox_serialPort2_portname.Enabled = true;
             }
@@ -149,7 +146,6 @@ namespace Hotspring
             {
                 ini12.INIWrite(Config_Path, "serialPort2", "Exist", "1");
                 ini12.INIWrite(Config_Path, "serialPort2", "HP34401A", "1");
-                groupBox_serialPort2.Text = "Keysight(HP) 34401A 6½ Digit Multimeter";
                 comboBox_serialPort2_baudrate.Enabled = true;
                 comboBox_serialPort2_portname.Enabled = true;
             }

@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.groupBox_serialPort2 = new System.Windows.Forms.GroupBox();
+            this.radioButton_HP34401A = new System.Windows.Forms.RadioButton();
+            this.radioButton_fluke45 = new System.Windows.Forms.RadioButton();
             this.comboBox_serialPort2_baudrate = new System.Windows.Forms.ComboBox();
             this.comboBox_serialPort2_portname = new System.Windows.Forms.ComboBox();
             this.label_serialPort2_baudrate = new System.Windows.Forms.Label();
@@ -40,8 +42,6 @@
             this.label_serialPort1_baudrate = new System.Windows.Forms.Label();
             this.label_serialPort1_portname = new System.Windows.Forms.Label();
             this.label_serialPort_status = new System.Windows.Forms.Label();
-            this.radioButton_fluke45 = new System.Windows.Forms.RadioButton();
-            this.radioButton_HP34401A = new System.Windows.Forms.RadioButton();
             this.groupBox_serialPort2.SuspendLayout();
             this.groupBox_serialPort1.SuspendLayout();
             this.SuspendLayout();
@@ -55,13 +55,37 @@
             this.groupBox_serialPort2.Controls.Add(this.label_serialPort2_baudrate);
             this.groupBox_serialPort2.Controls.Add(this.label_serialPort2_portname);
             this.groupBox_serialPort2.Location = new System.Drawing.Point(272, 33);
-            this.groupBox_serialPort2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_serialPort2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox_serialPort2.Name = "groupBox_serialPort2";
-            this.groupBox_serialPort2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_serialPort2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox_serialPort2.Size = new System.Drawing.Size(255, 119);
             this.groupBox_serialPort2.TabIndex = 9;
             this.groupBox_serialPort2.TabStop = false;
-            this.groupBox_serialPort2.Text = "Fluke 45 Multi-meter";
+            this.groupBox_serialPort2.Text = "Resistance measurement";
+            // 
+            // radioButton_HP34401A
+            // 
+            this.radioButton_HP34401A.AutoSize = true;
+            this.radioButton_HP34401A.Location = new System.Drawing.Point(109, 26);
+            this.radioButton_HP34401A.Name = "radioButton_HP34401A";
+            this.radioButton_HP34401A.Size = new System.Drawing.Size(78, 16);
+            this.radioButton_HP34401A.TabIndex = 8;
+            this.radioButton_HP34401A.TabStop = true;
+            this.radioButton_HP34401A.Text = "HP 34401A";
+            this.radioButton_HP34401A.UseVisualStyleBackColor = true;
+            this.radioButton_HP34401A.CheckedChanged += new System.EventHandler(this.radioButton_HP34401A_CheckedChanged);
+            // 
+            // radioButton_fluke45
+            // 
+            this.radioButton_fluke45.AutoSize = true;
+            this.radioButton_fluke45.Location = new System.Drawing.Point(18, 26);
+            this.radioButton_fluke45.Name = "radioButton_fluke45";
+            this.radioButton_fluke45.Size = new System.Drawing.Size(64, 16);
+            this.radioButton_fluke45.TabIndex = 7;
+            this.radioButton_fluke45.TabStop = true;
+            this.radioButton_fluke45.Text = "Fluke 45";
+            this.radioButton_fluke45.UseVisualStyleBackColor = true;
+            this.radioButton_fluke45.CheckedChanged += new System.EventHandler(this.radioButton_fluke45_CheckedChanged);
             // 
             // comboBox_serialPort2_baudrate
             // 
@@ -83,7 +107,7 @@
             "460800",
             "921600"});
             this.comboBox_serialPort2_baudrate.Location = new System.Drawing.Point(87, 86);
-            this.comboBox_serialPort2_baudrate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox_serialPort2_baudrate.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox_serialPort2_baudrate.Name = "comboBox_serialPort2_baudrate";
             this.comboBox_serialPort2_baudrate.Size = new System.Drawing.Size(160, 20);
             this.comboBox_serialPort2_baudrate.TabIndex = 5;
@@ -93,7 +117,7 @@
             // 
             this.comboBox_serialPort2_portname.FormattingEnabled = true;
             this.comboBox_serialPort2_portname.Location = new System.Drawing.Point(87, 54);
-            this.comboBox_serialPort2_portname.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox_serialPort2_portname.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox_serialPort2_portname.Name = "comboBox_serialPort2_portname";
             this.comboBox_serialPort2_portname.Size = new System.Drawing.Size(160, 20);
             this.comboBox_serialPort2_portname.TabIndex = 4;
@@ -127,19 +151,19 @@
             this.groupBox_serialPort1.Controls.Add(this.label_serialPort1_baudrate);
             this.groupBox_serialPort1.Controls.Add(this.label_serialPort1_portname);
             this.groupBox_serialPort1.Location = new System.Drawing.Point(10, 33);
-            this.groupBox_serialPort1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_serialPort1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox_serialPort1.Name = "groupBox_serialPort1";
-            this.groupBox_serialPort1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox_serialPort1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox_serialPort1.Size = new System.Drawing.Size(255, 119);
             this.groupBox_serialPort1.TabIndex = 8;
             this.groupBox_serialPort1.TabStop = false;
-            this.groupBox_serialPort1.Text = "Hotspring Board";
+            this.groupBox_serialPort1.Text = "Hotspring board";
             // 
             // serialPort1_enable
             // 
             this.serialPort1_enable.AutoSize = true;
             this.serialPort1_enable.Location = new System.Drawing.Point(13, 26);
-            this.serialPort1_enable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.serialPort1_enable.Margin = new System.Windows.Forms.Padding(4);
             this.serialPort1_enable.Name = "serialPort1_enable";
             this.serialPort1_enable.Size = new System.Drawing.Size(56, 16);
             this.serialPort1_enable.TabIndex = 6;
@@ -167,7 +191,7 @@
             "460800",
             "921600"});
             this.comboBox_serialPort1_baudrate.Location = new System.Drawing.Point(84, 86);
-            this.comboBox_serialPort1_baudrate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox_serialPort1_baudrate.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox_serialPort1_baudrate.Name = "comboBox_serialPort1_baudrate";
             this.comboBox_serialPort1_baudrate.Size = new System.Drawing.Size(160, 20);
             this.comboBox_serialPort1_baudrate.TabIndex = 5;
@@ -177,7 +201,7 @@
             // 
             this.comboBox_serialPort1_portname.FormattingEnabled = true;
             this.comboBox_serialPort1_portname.Location = new System.Drawing.Point(84, 53);
-            this.comboBox_serialPort1_portname.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox_serialPort1_portname.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox_serialPort1_portname.Name = "comboBox_serialPort1_portname";
             this.comboBox_serialPort1_portname.Size = new System.Drawing.Size(160, 20);
             this.comboBox_serialPort1_portname.TabIndex = 4;
@@ -213,30 +237,6 @@
             this.label_serialPort_status.TabIndex = 67;
             this.label_serialPort_status.Text = "Comport status";
             // 
-            // radioButton_fluke45
-            // 
-            this.radioButton_fluke45.AutoSize = true;
-            this.radioButton_fluke45.Location = new System.Drawing.Point(18, 26);
-            this.radioButton_fluke45.Name = "radioButton_fluke45";
-            this.radioButton_fluke45.Size = new System.Drawing.Size(64, 16);
-            this.radioButton_fluke45.TabIndex = 7;
-            this.radioButton_fluke45.TabStop = true;
-            this.radioButton_fluke45.Text = "Fluke 45";
-            this.radioButton_fluke45.UseVisualStyleBackColor = true;
-            this.radioButton_fluke45.CheckedChanged += new System.EventHandler(this.radioButton_fluke45_CheckedChanged);
-            // 
-            // radioButton_HP34401A
-            // 
-            this.radioButton_HP34401A.AutoSize = true;
-            this.radioButton_HP34401A.Location = new System.Drawing.Point(109, 26);
-            this.radioButton_HP34401A.Name = "radioButton_HP34401A";
-            this.radioButton_HP34401A.Size = new System.Drawing.Size(78, 16);
-            this.radioButton_HP34401A.TabIndex = 8;
-            this.radioButton_HP34401A.TabStop = true;
-            this.radioButton_HP34401A.Text = "HP 34401A";
-            this.radioButton_HP34401A.UseVisualStyleBackColor = true;
-            this.radioButton_HP34401A.CheckedChanged += new System.EventHandler(this.radioButton_HP34401A_CheckedChanged);
-            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -245,7 +245,7 @@
             this.Controls.Add(this.label_serialPort_status);
             this.Controls.Add(this.groupBox_serialPort2);
             this.Controls.Add(this.groupBox_serialPort1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Settings";
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.Settings_Load);
