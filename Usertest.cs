@@ -40,16 +40,6 @@ namespace Hotspring
             InitializeComponent();
         }
 
-        private void button_settings_Click(object sender, EventArgs e)
-        {
-            Settings Settings = new Settings();
-
-            if (Settings.ShowDialog() == DialogResult.Cancel)
-            {
-                check_resistance_value();
-            }
-        }
-
         private void button_start_Click(object sender, EventArgs e)
         {
             Thread UserThread = new Thread(new ThreadStart(UserModefunction));
@@ -69,7 +59,6 @@ namespace Hotspring
                 textBox_step.Enabled = false;
                 textBox_resistance.Enabled = false;
                 textBox_basis.Enabled = false;
-                button_settings.Enabled = false;
 
                 if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
                 {
@@ -98,7 +87,6 @@ namespace Hotspring
                 textBox_step.Enabled = true;
                 textBox_resistance.Enabled = true;
                 textBox_basis.Enabled = true;
-                button_settings.Enabled = true;
 
                 if (checkBox_RA.Checked == true || checkBox_RB.Checked == true || checkBox_RB.Checked == true)
                     UserThread.Abort();

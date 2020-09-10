@@ -88,11 +88,11 @@ namespace Hotspring
                 if (ini12.INIRead(Config_Path, "AutoKit", "PortName", "") != comboBox_serialPort1_portname.Text.Trim() && comboBox_serialPort1_portname.Text.Trim() != comboBox_serialPort2_portname.Text.Trim())
                 {
                     ini12.INIWrite(Config_Path, "serialPort1", "PortName", comboBox_serialPort1_portname.Text.Trim());
-                    label_serialPort_status.Text = "serialPort1 portname already save.";
+                    label_serialPort_status.Text = "Hotspring board portname already save.";
                 }
                 else
                 {
-                    label_serialPort_status.Text = "serialPort1 portname can't save to config.";
+                    label_serialPort_status.Text = "Hotspring board portname can't save to config.";
                 }
             }
         }
@@ -104,11 +104,11 @@ namespace Hotspring
                 if (ini12.INIRead(Config_Path, "AutoKit", "PortName", "") != comboBox_serialPort2_portname.Text.Trim() && comboBox_serialPort1_portname.Text.Trim() != comboBox_serialPort2_portname.Text.Trim())
                 {
                     ini12.INIWrite(Config_Path, "serialPort2", "PortName", comboBox_serialPort2_portname.Text.Trim());
-                    label_serialPort_status.Text = "serialPort2 portname already save.";
+                    label_serialPort_status.Text = "Resistance measurement portname already save.";
                 }
                 else
                 {
-                    label_serialPort_status.Text = "serialPort2 portname can't save to config.";
+                    label_serialPort_status.Text = "Resistance measurement portname can't save to config.";
                 }
             }
         }
@@ -155,6 +155,12 @@ namespace Hotspring
                 comboBox_serialPort2_baudrate.Enabled = false;
                 comboBox_serialPort2_portname.Enabled = false;
             }
+        }
+
+        private void button_refresh_Click(object sender, EventArgs e)
+        {
+            comboBox_serialPort1_portname.DataSource = System.IO.Ports.SerialPort.GetPortNames();
+            comboBox_serialPort2_portname.DataSource = System.IO.Ports.SerialPort.GetPortNames();
         }
     }
 }

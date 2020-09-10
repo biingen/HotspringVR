@@ -22,6 +22,7 @@ namespace Hotspring
         int start = 0, end = 0;
         string serialPort1_text, serialPort2_text;
         int resistance_value = 0;
+        int usbnumber_value = 0;
         double target_resistance_value = 0;
 
         const int byteMessage_max_Hex = 16;
@@ -30,9 +31,6 @@ namespace Hotspring
         bool status_port = false;
         bool status_echo = false;
         bool status_test = false;
-        bool status_6b595 = false;
-        bool status_io = false;
-        bool status_usb = false;
         bool flag_receive = false;
         bool flag_usb = false;
         byte[] byteMessage_A = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
@@ -42,8 +40,6 @@ namespace Hotspring
 
         string output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
         string usb_csv = "Send value, Receive value, " + Environment.NewLine;
-
-        private Queue<string> Queue_serialPort1_command = new Queue<string>();
 
         public Selftest()
         {
@@ -345,22 +341,10 @@ namespace Hotspring
             }
         }
 
-        private void serialPort1_command()
-        {
-            while (status_port == true)
-            {
-                while (Queue_serialPort1_command.Count > 0)
-                {
-                    string send_command = Queue_serialPort1_command.Dequeue();
-                    serialPort1.WriteLine(send_command);
-                }
-            }
-        }
-
         //  IO_button_status
         private void io_button_status()
         {
-            while (serialPort1.IsOpen == true && status_io == true)
+            while (serialPort1.IsOpen == true && checkBox_button.Checked == true)
             {
                 string send_data = "get button_io";
                 serialPort1.WriteLine(send_data);
@@ -400,46 +384,6 @@ namespace Hotspring
             check_resistance_value();
         }
 
-        private void button_test_Click(object sender, EventArgs e)
-        {
-            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
-
-            status_test = !status_test;
-            if (status_test == true)
-            {
-                if (radioButton_power2.Checked == true)
-                {
-                    primeLists = new List<int> { 2 };
-                    SelfThread.Start();
-                }
-                else if (radioButton_power10.Checked == true)
-                {
-                    primeLists = new List<int> { 10 };
-                    SelfThread.Start();
-                }
-                else if (radioButton_prime.Checked == true)
-                {
-                    primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17 };
-                    SelfThread.Start();
-                }
-                else if (radioButton_power_step.Checked == true)
-                {
-                    primeLists = new List<int> { 2 };
-                    start = 2;
-                    end = 32;
-                    SelfThread.Start();
-                }
-                else
-                    MessageBox.Show("Please select the current value!");
-                button_test.Text = "Stop";
-            }
-            else
-            {
-                SelfThread.Abort();
-                button_test.Text = "Start";
-            }
-        }
-
         private void check_resistance_value()
         {
             int resistance_number = 0;
@@ -449,6 +393,22 @@ namespace Hotspring
                 resistance_value = resistance_number;
             else
                 resistance_value = 0;
+        }
+
+        private void textBox_usb_TextChanged(object sender, EventArgs e)
+        {
+            check_usb_value();
+        }
+
+        private void check_usb_value()
+        {
+            int usb_number = 0;
+            bool textBox_usb_bool = Int32.TryParse(textBox_usb.Text, out usb_number);
+
+            if (textBox_usb_bool)
+                usbnumber_value = usb_number;
+            else
+                usbnumber_value = 0;
         }
 
         private void SelfModefunction()
@@ -489,69 +449,26 @@ namespace Hotspring
             }
         }
 
-        private void button_port_Click(object sender, EventArgs e)
+        private void UsbModefunction()
         {
-            Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
-            Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
-            Thread serialPort1_send = new Thread(new ThreadStart(serialPort1_command));
-
-            status_port = !status_port;
-            if (status_port == true)
+            if (serialPort1.IsOpen == true && checkBox_usb.Checked == true && usbnumber_value != 0)          //送至Comport
             {
-                button_6b595_status.Enabled = true;
-                button_6b595_get.Enabled = true;
-                button_echo_status.Enabled = true;
-                button_io.Enabled = true;
-                button_usb.Enabled = true;
-                button_test.Enabled = true;
-                button_voltage.Enabled = true;
-
-                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+                Random Rnd = new Random(); //加入Random，產生的數字不會重覆
+                serialPort1.WriteLine("set echo 0");    //關閉echo mode
+                string send_data = "";
+                for (int i = 0; i < usbnumber_value; i++)
                 {
-                    Open_serialPort1();
-                    LogAThread.Start();
+                    while (flag_usb) { }
+                    int j = Rnd.Next(2, 1048576);
+                    send_data = "set nop " + j;
+
+                    serialPort1.WriteLine(send_data);
+                    usb_csv = string.Concat(usb_csv, send_data + ",");
+                    flag_usb = true;
                 }
 
-                if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
-                {
-                    Open_serialPort2();
-                    LogBThread.Start();
-                }
-                button_port.Text = "Disconnect";
-                serialPort1_send.Start();
-            }
-            else
-            {
-                button_6b595_status.Enabled = false;
-                button_6b595_get.Enabled = false;
-                button_echo_status.Enabled = false;
-                button_io.Enabled = false;
-                button_usb.Enabled = false;
-                button_test.Enabled = false;
-                button_voltage.Enabled = false;
-
-                if (serialPort1.IsOpen == true)          //送至Comport
-                {
-                    LogAThread.Abort();
-                    Close_serialPort1();
-                }
-                if (serialPort2.IsOpen == true)          //送至Comport
-                {
-                    LogBThread.Abort();
-                    Close_serialPort2();
-                }
-                button_port.Text = "Connect";
-                serialPort1_send.Abort();
-            }
-        }
-
-        private void button_settings_Click(object sender, EventArgs e)
-        {
-            Settings Settings = new Settings();
-
-            if (Settings.ShowDialog() == DialogResult.Cancel)
-            {
-                check_resistance_value();
+                while (flag_usb) { }
+                Output_csv_log();
             }
         }
 
@@ -631,42 +548,18 @@ namespace Hotspring
 
         private void Selftest_Load(object sender, EventArgs e)
         {
-            button_6b595_status.Enabled = false;
             button_6b595_get.Enabled = false;
             button_echo_status.Enabled = false;
-            button_io.Enabled = false;
-            button_usb.Enabled = false;
-            button_test.Enabled = false;
             button_voltage.Enabled = false;
-        }
-
-        private void button_6b595_status_Click(object sender, EventArgs e)
-        {
-            string send_data;
-
-            status_6b595 = !status_6b595;
-            if (status_6b595 == true)
-            {
-                send_data = "set 6B595_selftest 1";
-                button_6b595_status.Text = "Off";
-                if (serialPort1.IsOpen == true)
-                    Queue_serialPort1_command.Enqueue(send_data);
-            }
-            else
-            {
-                send_data = "set 6B595_selftest 0";
-                button_6b595_status.Text = "On";
-                if (serialPort1.IsOpen == true)
-                    Queue_serialPort1_command.Enqueue(send_data);
-            }
+            textBox_usb.Enabled = false;
         }
 
         private void button_6b595_get_Click(object sender, EventArgs e)
         {
             string send_data = "get 6B595_selftest";
 
-            if (serialPort1.IsOpen == true)
-                Queue_serialPort1_command.Enqueue(send_data);
+            if (serialPort1.IsOpen == true && checkBox_6b595.Checked == true)
+                serialPort1.WriteLine(send_data);
         }
 
         private void button_echo_status_Click(object sender, EventArgs e)
@@ -679,59 +572,229 @@ namespace Hotspring
                 send_data = "set echo 1";
                 button_echo_status.Text = "Off";
                 if (serialPort1.IsOpen == true)
-                    Queue_serialPort1_command.Enqueue(send_data);
+                    serialPort1.WriteLine(send_data);
             }
             else
             {
                 send_data = "set echo 0";
                 button_echo_status.Text = "On";
                 if (serialPort1.IsOpen == true)
-                    Queue_serialPort1_command.Enqueue(send_data);
+                    serialPort1.WriteLine(send_data);
             }
         }
 
-        private void button_usb_Click(object sender, EventArgs e)
+        private void checkBox_6b595_CheckedChanged(object sender, EventArgs e)
         {
-            Random Rnd = new Random(); //加入Random，產生的數字不會重覆
-            status_usb = true;
-
-            string send_data = "set echo 0"; //關閉echo function
-            button_echo_status.Text = "On";
-            if (serialPort1.IsOpen == true)
-                Queue_serialPort1_command.Enqueue(send_data);
-
-            for (int i = 0; i < Int16.Parse(textBox_nop_number.Text); i++)
-            {
-                while (flag_usb) { }
-                int j = Rnd.Next(2, 1048576);
-                send_data = "set nop " + j;
-
-                if (serialPort1.IsOpen == true)
-                {
-                    Queue_serialPort1_command.Enqueue(send_data);
-                    usb_csv = string.Concat(usb_csv, send_data + ",");
-                    flag_usb = true;
-                }
-            }
-
-            while (flag_usb) { }
-            Output_csv_log();
+            if (checkBox_6b595.Checked == true)
+                button_6b595_get.Enabled = true;
+            else
+                button_6b595_get.Enabled = false;
         }
 
-        private void button_io_Click(object sender, EventArgs e)
+        private void checkBox_voltage_CheckedChanged(object sender, EventArgs e)
         {
-            Thread ButtonThread = new Thread(new ThreadStart(io_button_status));
+            if (checkBox_voltage.Checked == true)
+                button_voltage.Enabled = true;
+            else
+                button_voltage.Enabled = false;
+        }
 
-            status_io = !status_io;
-            if (status_io == true)
+        private void checkBox_usb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_usb.Checked == true)
+                checkBox_button.Checked = false;
+
+            if (checkBox_usb.Checked == true)
             {
-                button_io.Text = "Disable";
-                ButtonThread.Start();
+                textBox_usb.Enabled = true;
+                check_usb_value();
             }
             else
             {
-                button_io.Text = "Enable";
-                ButtonThread.Abort();
+                textBox_usb.Enabled = false;
+                check_usb_value();
+            }
+        }
+
+        private void checkBox_button_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_button.Checked == true)
+                checkBox_usb.Checked = false;
+        }
+
+
+        private void button_test1_Click(object sender, EventArgs e)
+        {
+            Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
+            Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
+            Thread SelfThread = new Thread(new ThreadStart(SelfModefunction));
+
+            status_test = !status_test;
+            if (status_test == true)
+            {
+                button_test1.Text = "Stop";
+                button_test2.Text = "Stop";
+                button_test2.Enabled = false;
+
+                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+                {
+                    Open_serialPort1();
+                    LogAThread.Start();
+                }
+
+                if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
+                {
+                    Open_serialPort2();
+                    LogBThread.Start();
+                }
+
+                if (radioButton_power2.Checked == true)
+                {
+                    primeLists = new List<int> { 2 };
+                    SelfThread.Start();
+                }
+                else if (radioButton_power10.Checked == true)
+                {
+                    primeLists = new List<int> { 10 };
+                    SelfThread.Start();
+                }
+                else if (radioButton_prime.Checked == true)
+                {
+                    primeLists = new List<int> { 2, 3, 5, 7, 10, 11, 13, 17 };
+                    SelfThread.Start();
+                }
+                else if (radioButton_power_step.Checked == true)
+                {
+                    primeLists = new List<int> { 2 };
+                    start = 2;
+                    end = 32;
+                    SelfThread.Start();
+                }
+                else
+                    MessageBox.Show("Please select the current value!");
+            }
+            else
+            {
+                button_test1.Text = "Start";
+                button_test2.Text = "Start";
+                button_test2.Enabled = true;
+
+                if (radioButton_power2.Checked == true || radioButton_power10.Checked == true || radioButton_prime.Checked == true || radioButton_power_step.Checked == true)
+                    SelfThread.Abort();
+
+                if (serialPort1.IsOpen == true)          //送至Comport
+                {
+                    LogAThread.Abort();
+                    Close_serialPort1();
+                }
+
+                if (serialPort2.IsOpen == true)          //送至Comport
+                {
+                    LogBThread.Abort();
+                    Close_serialPort2();
+                }
+            }
+        }
+
+        private void button_test2_Click(object sender, EventArgs e)
+        {
+            Thread LogAThread = new Thread(new ThreadStart(serialPort1_analysis));
+            Thread LogBThread = new Thread(new ThreadStart(serialPort2_analysis));
+            Thread UsbThread = new Thread(new ThreadStart(UsbModefunction));
+            Thread ButtonThread = new Thread(new ThreadStart(io_button_status));
+
+            status_test = !status_test;
+            if (status_test == true)
+            {
+                button_test1.Text = "Stop";
+                button_test1.Enabled = false;
+                button_test2.Text = "Stop";
+                checkBox_6b595.Enabled = false;
+                checkBox_button.Enabled = false;
+                checkBox_voltage.Enabled = false;
+                checkBox_usb.Enabled = false;
+
+                if (checkBox_6b595.Checked == true)
+                    button_6b595_get.Enabled = true;
+                else
+                    button_6b595_get.Enabled = false;
+                if (checkBox_voltage.Checked == true)
+                    button_voltage.Enabled = true;
+                else
+                    button_voltage.Enabled = false;
+
+                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+                {
+                    Open_serialPort1();
+                    LogAThread.Start();
+                }
+
+                if (ini12.INIRead(Config_Path, "serialPort2", "Exist", "") == "1" && serialPort2.IsOpen == false)          //送至Comport
+                {
+                    Open_serialPort2();
+                    LogBThread.Start();
+                }
+
+                if (checkBox_usb.Checked == true && textBox_usb.Text != "")
+                {
+                    UsbThread.Start();
+                }
+
+                if (checkBox_6b595.Checked == true)
+                {
+                    serialPort1.WriteLine("set 6B595_selftest 1");
+                }
+
+                if (checkBox_button.Checked == true)
+                {
+                    ButtonThread.Start();
+                }
+            }
+            else
+            {
+                button_test1.Text = "Start";
+                button_test1.Enabled = true;
+                button_test2.Text = "Start";
+                checkBox_6b595.Enabled = true;
+                checkBox_button.Enabled = true;
+                checkBox_voltage.Enabled = true;
+                checkBox_usb.Enabled = true;
+
+                if (checkBox_6b595.Checked == true)
+                    button_6b595_get.Enabled = true;
+                else
+                    button_6b595_get.Enabled = false;
+                if (checkBox_voltage.Checked == true)
+                    button_voltage.Enabled = true;
+                else
+                    button_voltage.Enabled = false;
+
+                if (checkBox_usb.Checked == true && textBox_usb.Text != "")
+                {
+                    UsbThread.Abort();
+                }
+
+                if (checkBox_6b595.Checked == true)
+                {
+                    serialPort1.WriteLine("set 6B595_selftest 0");
+                }
+
+                if (checkBox_button.Checked == true)
+                {
+                    ButtonThread.Abort();
+                }
+
+                if (serialPort1.IsOpen == true)          //送至Comport
+                {
+                    LogAThread.Abort();
+                    Close_serialPort1();
+                }
+
+                if (serialPort2.IsOpen == true)          //送至Comport
+                {
+                    LogBThread.Abort();
+                    Close_serialPort2();
+                }
             }
         }
 
@@ -739,8 +802,8 @@ namespace Hotspring
         {
             string send_data = "get input_voltage";
 
-            if (serialPort1.IsOpen == true)
-                Queue_serialPort1_command.Enqueue(send_data);
+            if (serialPort1.IsOpen == true && checkBox_voltage.Checked == true)
+                serialPort1.WriteLine(send_data);
         }
 
         private void Output_csv_log()
@@ -887,15 +950,14 @@ namespace Hotspring
                     }
                 }
             }
-            else if (status_usb == true)
+            else if (checkBox_usb.Checked == true && textBox_usb.Text != "")
             {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_NOP_Report.csv", true))
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(Application.StartupPath + "\\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_USB_Report.csv", true))
                 {
                     try
                     {
                         file.Write(usb_csv);
                         usb_csv = "Send value, Receive value, " + Environment.NewLine;
-                        status_usb = false;
                     }
                     catch (Exception Ex)
                     {

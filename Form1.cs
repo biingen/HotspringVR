@@ -22,6 +22,27 @@ namespace Hotspring
             switch ((sender as TabControl).SelectedIndex)
             {
                 case 0:
+                    var Settings = new Settings();
+                    //不要顯示Title
+                    Settings.FormBorderStyle = FormBorderStyle.None;
+
+                    //非最上層
+                    Settings.TopLevel = false;
+
+                    //顯示From，要加上去才會顯示Form
+                    Settings.Visible = true;
+
+                    //設定From位置
+                    Settings.Top = 0;
+                    Settings.Left = 0;
+
+                    //將Form加入tabPage中
+                    tabPage_settings.Controls.Add(Settings);
+
+                    //顯示tabPage
+                    tabPage_settings.Show();
+                    break;
+                case 1:
                     var Usertest = new Usertest();
                     //不要顯示Title
                     Usertest.FormBorderStyle = FormBorderStyle.None;
@@ -42,7 +63,7 @@ namespace Hotspring
                     //顯示tabPage
                     tabPage_user.Show();
                     break;
-                case 1:
+                case 2:
                     var Selftest = new Selftest();
                     //不要顯示Title
                     Selftest.FormBorderStyle = FormBorderStyle.None;
@@ -68,25 +89,25 @@ namespace Hotspring
 
         private void Form_hotspring_Load(object sender, EventArgs e)
         {
-            var Usertest = new Usertest();
+            var Settings = new Settings();
             //不要顯示Title
-            Usertest.FormBorderStyle = FormBorderStyle.None;
+            Settings.FormBorderStyle = FormBorderStyle.None;
 
             //非最上層
-            Usertest.TopLevel = false;
+            Settings.TopLevel = false;
 
             //顯示From，要加上去才會顯示Form
-            Usertest.Visible = true;
+            Settings.Visible = true;
 
             //設定From位置
-            Usertest.Top = 0;
-            Usertest.Left = 0;
+            Settings.Top = 0;
+            Settings.Left = 0;
 
             //將Form加入tabPage中
-            tabPage_user.Controls.Add(Usertest);
+            tabPage_settings.Controls.Add(Settings);
 
             //顯示tabPage
-            tabPage_user.Show();
+            tabPage_settings.Show();
         }
     }
 }

@@ -42,6 +42,7 @@
             this.label_serialPort1_baudrate = new System.Windows.Forms.Label();
             this.label_serialPort1_portname = new System.Windows.Forms.Label();
             this.label_serialPort_status = new System.Windows.Forms.Label();
+            this.button_refresh = new System.Windows.Forms.Button();
             this.groupBox_serialPort2.SuspendLayout();
             this.groupBox_serialPort1.SuspendLayout();
             this.SuspendLayout();
@@ -54,11 +55,11 @@
             this.groupBox_serialPort2.Controls.Add(this.comboBox_serialPort2_portname);
             this.groupBox_serialPort2.Controls.Add(this.label_serialPort2_baudrate);
             this.groupBox_serialPort2.Controls.Add(this.label_serialPort2_portname);
-            this.groupBox_serialPort2.Location = new System.Drawing.Point(272, 33);
+            this.groupBox_serialPort2.Location = new System.Drawing.Point(10, 160);
             this.groupBox_serialPort2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox_serialPort2.Name = "groupBox_serialPort2";
             this.groupBox_serialPort2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox_serialPort2.Size = new System.Drawing.Size(255, 119);
+            this.groupBox_serialPort2.Size = new System.Drawing.Size(198, 119);
             this.groupBox_serialPort2.TabIndex = 9;
             this.groupBox_serialPort2.TabStop = false;
             this.groupBox_serialPort2.Text = "Resistance measurement";
@@ -109,7 +110,7 @@
             this.comboBox_serialPort2_baudrate.Location = new System.Drawing.Point(87, 86);
             this.comboBox_serialPort2_baudrate.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox_serialPort2_baudrate.Name = "comboBox_serialPort2_baudrate";
-            this.comboBox_serialPort2_baudrate.Size = new System.Drawing.Size(160, 20);
+            this.comboBox_serialPort2_baudrate.Size = new System.Drawing.Size(100, 20);
             this.comboBox_serialPort2_baudrate.TabIndex = 5;
             this.comboBox_serialPort2_baudrate.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
@@ -119,7 +120,7 @@
             this.comboBox_serialPort2_portname.Location = new System.Drawing.Point(87, 54);
             this.comboBox_serialPort2_portname.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox_serialPort2_portname.Name = "comboBox_serialPort2_portname";
-            this.comboBox_serialPort2_portname.Size = new System.Drawing.Size(160, 20);
+            this.comboBox_serialPort2_portname.Size = new System.Drawing.Size(100, 20);
             this.comboBox_serialPort2_portname.TabIndex = 4;
             this.comboBox_serialPort2_portname.SelectedIndexChanged += new System.EventHandler(this.comboBox5_SelectedIndexChanged);
             // 
@@ -145,6 +146,7 @@
             // 
             // groupBox_serialPort1
             // 
+            this.groupBox_serialPort1.Controls.Add(this.button_refresh);
             this.groupBox_serialPort1.Controls.Add(this.serialPort1_enable);
             this.groupBox_serialPort1.Controls.Add(this.comboBox_serialPort1_baudrate);
             this.groupBox_serialPort1.Controls.Add(this.comboBox_serialPort1_portname);
@@ -154,7 +156,7 @@
             this.groupBox_serialPort1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox_serialPort1.Name = "groupBox_serialPort1";
             this.groupBox_serialPort1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox_serialPort1.Size = new System.Drawing.Size(255, 119);
+            this.groupBox_serialPort1.Size = new System.Drawing.Size(198, 119);
             this.groupBox_serialPort1.TabIndex = 8;
             this.groupBox_serialPort1.TabStop = false;
             this.groupBox_serialPort1.Text = "Hotspring board";
@@ -193,7 +195,7 @@
             this.comboBox_serialPort1_baudrate.Location = new System.Drawing.Point(84, 86);
             this.comboBox_serialPort1_baudrate.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox_serialPort1_baudrate.Name = "comboBox_serialPort1_baudrate";
-            this.comboBox_serialPort1_baudrate.Size = new System.Drawing.Size(160, 20);
+            this.comboBox_serialPort1_baudrate.Size = new System.Drawing.Size(103, 20);
             this.comboBox_serialPort1_baudrate.TabIndex = 5;
             this.comboBox_serialPort1_baudrate.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
@@ -203,7 +205,7 @@
             this.comboBox_serialPort1_portname.Location = new System.Drawing.Point(84, 53);
             this.comboBox_serialPort1_portname.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox_serialPort1_portname.Name = "comboBox_serialPort1_portname";
-            this.comboBox_serialPort1_portname.Size = new System.Drawing.Size(160, 20);
+            this.comboBox_serialPort1_portname.Size = new System.Drawing.Size(103, 20);
             this.comboBox_serialPort1_portname.TabIndex = 4;
             this.comboBox_serialPort1_portname.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
@@ -237,11 +239,21 @@
             this.label_serialPort_status.TabIndex = 67;
             this.label_serialPort_status.Text = "Comport status";
             // 
+            // button_refresh
+            // 
+            this.button_refresh.Location = new System.Drawing.Point(112, 17);
+            this.button_refresh.Name = "button_refresh";
+            this.button_refresh.Size = new System.Drawing.Size(75, 29);
+            this.button_refresh.TabIndex = 68;
+            this.button_refresh.Text = "Refresh";
+            this.button_refresh.UseVisualStyleBackColor = true;
+            this.button_refresh.Click += new System.EventHandler(this.button_refresh_Click);
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(544, 161);
+            this.ClientSize = new System.Drawing.Size(319, 286);
             this.Controls.Add(this.label_serialPort_status);
             this.Controls.Add(this.groupBox_serialPort2);
             this.Controls.Add(this.groupBox_serialPort1);
@@ -274,5 +286,6 @@
         private System.Windows.Forms.Label label_serialPort_status;
         private System.Windows.Forms.RadioButton radioButton_HP34401A;
         private System.Windows.Forms.RadioButton radioButton_fluke45;
+        private System.Windows.Forms.Button button_refresh;
     }
 }

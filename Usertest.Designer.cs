@@ -41,21 +41,20 @@
             this.checkBox_RB = new System.Windows.Forms.CheckBox();
             this.checkBox_RC = new System.Windows.Forms.CheckBox();
             this.button_start = new System.Windows.Forms.Button();
-            this.button_settings = new System.Windows.Forms.Button();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.serialPort2 = new System.IO.Ports.SerialPort(this.components);
             this.label_basis = new System.Windows.Forms.Label();
             this.textBox_basis = new System.Windows.Forms.TextBox();
-            this.label_sendValue = new System.Windows.Forms.Label();
-            this.label_receiveValue = new System.Windows.Forms.Label();
             this.textBox_resistance = new System.Windows.Forms.TextBox();
             this.label_resistance = new System.Windows.Forms.Label();
+            this.label_sendValue = new System.Windows.Forms.Label();
+            this.label_receiveValue = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox_startValue
             // 
             this.textBox_startValue.Location = new System.Drawing.Point(164, 38);
-            this.textBox_startValue.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_startValue.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_startValue.Name = "textBox_startValue";
             this.textBox_startValue.Size = new System.Drawing.Size(76, 22);
             this.textBox_startValue.TabIndex = 0;
@@ -65,7 +64,7 @@
             // textBox_endValue
             // 
             this.textBox_endValue.Location = new System.Drawing.Point(164, 62);
-            this.textBox_endValue.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_endValue.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_endValue.Name = "textBox_endValue";
             this.textBox_endValue.Size = new System.Drawing.Size(76, 22);
             this.textBox_endValue.TabIndex = 1;
@@ -75,7 +74,7 @@
             // textBox_delaytime
             // 
             this.textBox_delaytime.Location = new System.Drawing.Point(164, 110);
-            this.textBox_delaytime.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_delaytime.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_delaytime.Name = "textBox_delaytime";
             this.textBox_delaytime.Size = new System.Drawing.Size(76, 22);
             this.textBox_delaytime.TabIndex = 2;
@@ -84,7 +83,7 @@
             // textBox_step
             // 
             this.textBox_step.Location = new System.Drawing.Point(164, 158);
-            this.textBox_step.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_step.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_step.Name = "textBox_step";
             this.textBox_step.Size = new System.Drawing.Size(76, 22);
             this.textBox_step.TabIndex = 3;
@@ -137,7 +136,7 @@
             this.checkBox_RA.Checked = true;
             this.checkBox_RA.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_RA.Location = new System.Drawing.Point(21, 9);
-            this.checkBox_RA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox_RA.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_RA.Name = "checkBox_RA";
             this.checkBox_RA.Size = new System.Drawing.Size(40, 16);
             this.checkBox_RA.TabIndex = 8;
@@ -149,7 +148,7 @@
             // 
             this.checkBox_RB.AutoSize = true;
             this.checkBox_RB.Location = new System.Drawing.Point(62, 9);
-            this.checkBox_RB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox_RB.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_RB.Name = "checkBox_RB";
             this.checkBox_RB.Size = new System.Drawing.Size(40, 16);
             this.checkBox_RB.TabIndex = 9;
@@ -161,7 +160,7 @@
             // 
             this.checkBox_RC.AutoSize = true;
             this.checkBox_RC.Location = new System.Drawing.Point(101, 9);
-            this.checkBox_RC.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox_RC.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox_RC.Name = "checkBox_RC";
             this.checkBox_RC.Size = new System.Drawing.Size(40, 16);
             this.checkBox_RC.TabIndex = 10;
@@ -171,25 +170,14 @@
             // 
             // button_start
             // 
-            this.button_start.Location = new System.Drawing.Point(251, 109);
-            this.button_start.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_start.Location = new System.Drawing.Point(21, 184);
+            this.button_start.Margin = new System.Windows.Forms.Padding(2);
             this.button_start.Name = "button_start";
-            this.button_start.Size = new System.Drawing.Size(56, 20);
+            this.button_start.Size = new System.Drawing.Size(219, 30);
             this.button_start.TabIndex = 11;
             this.button_start.Text = "Start";
             this.button_start.UseVisualStyleBackColor = true;
             this.button_start.Click += new System.EventHandler(this.button_start_Click);
-            // 
-            // button_settings
-            // 
-            this.button_settings.Location = new System.Drawing.Point(251, 134);
-            this.button_settings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button_settings.Name = "button_settings";
-            this.button_settings.Size = new System.Drawing.Size(56, 20);
-            this.button_settings.TabIndex = 12;
-            this.button_settings.Text = "Settings";
-            this.button_settings.UseVisualStyleBackColor = true;
-            this.button_settings.Click += new System.EventHandler(this.button_settings_Click);
             // 
             // label_basis
             // 
@@ -204,39 +192,17 @@
             // textBox_basis
             // 
             this.textBox_basis.Location = new System.Drawing.Point(164, 86);
-            this.textBox_basis.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_basis.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_basis.Name = "textBox_basis";
             this.textBox_basis.Size = new System.Drawing.Size(76, 22);
             this.textBox_basis.TabIndex = 15;
             this.textBox_basis.Text = "2";
             this.textBox_basis.TextChanged += new System.EventHandler(this.textBox_basis_TextChanged);
             // 
-            // label_sendValue
-            // 
-            this.label_sendValue.AutoSize = true;
-            this.label_sendValue.Location = new System.Drawing.Point(260, 41);
-            this.label_sendValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label_sendValue.Name = "label_sendValue";
-            this.label_sendValue.Size = new System.Drawing.Size(53, 12);
-            this.label_sendValue.TabIndex = 18;
-            this.label_sendValue.Text = "00000000";
-            this.label_sendValue.Visible = false;
-            // 
-            // label_receiveValue
-            // 
-            this.label_receiveValue.AutoSize = true;
-            this.label_receiveValue.Location = new System.Drawing.Point(260, 63);
-            this.label_receiveValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label_receiveValue.Name = "label_receiveValue";
-            this.label_receiveValue.Size = new System.Drawing.Size(53, 12);
-            this.label_receiveValue.TabIndex = 19;
-            this.label_receiveValue.Text = "00000000";
-            this.label_receiveValue.Visible = false;
-            // 
             // textBox_resistance
             // 
             this.textBox_resistance.Location = new System.Drawing.Point(164, 134);
-            this.textBox_resistance.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_resistance.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_resistance.Name = "textBox_resistance";
             this.textBox_resistance.Size = new System.Drawing.Size(76, 22);
             this.textBox_resistance.TabIndex = 21;
@@ -253,6 +219,28 @@
             this.label_resistance.TabIndex = 20;
             this.label_resistance.Text = "Resistance: (Below 512 ohm)";
             // 
+            // label_sendValue
+            // 
+            this.label_sendValue.AutoSize = true;
+            this.label_sendValue.Location = new System.Drawing.Point(19, 225);
+            this.label_sendValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_sendValue.Name = "label_sendValue";
+            this.label_sendValue.Size = new System.Drawing.Size(53, 12);
+            this.label_sendValue.TabIndex = 18;
+            this.label_sendValue.Text = "00000000";
+            this.label_sendValue.Visible = false;
+            // 
+            // label_receiveValue
+            // 
+            this.label_receiveValue.AutoSize = true;
+            this.label_receiveValue.Location = new System.Drawing.Point(19, 247);
+            this.label_receiveValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label_receiveValue.Name = "label_receiveValue";
+            this.label_receiveValue.Size = new System.Drawing.Size(53, 12);
+            this.label_receiveValue.TabIndex = 19;
+            this.label_receiveValue.Text = "00000000";
+            this.label_receiveValue.Visible = false;
+            // 
             // Usertest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -264,7 +252,6 @@
             this.Controls.Add(this.label_sendValue);
             this.Controls.Add(this.textBox_basis);
             this.Controls.Add(this.label_basis);
-            this.Controls.Add(this.button_settings);
             this.Controls.Add(this.button_start);
             this.Controls.Add(this.checkBox_RC);
             this.Controls.Add(this.checkBox_RB);
@@ -277,7 +264,7 @@
             this.Controls.Add(this.textBox_delaytime);
             this.Controls.Add(this.textBox_endValue);
             this.Controls.Add(this.textBox_startValue);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Usertest";
             this.Text = "Usertest";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -300,15 +287,14 @@
         private System.Windows.Forms.CheckBox checkBox_RB;
         private System.Windows.Forms.CheckBox checkBox_RC;
         private System.Windows.Forms.Button button_start;
-        private System.Windows.Forms.Button button_settings;
         private System.IO.Ports.SerialPort serialPort1;
         private System.IO.Ports.SerialPort serialPort2;
         private System.Windows.Forms.Label label_basis;
         private System.Windows.Forms.TextBox textBox_basis;
-        private System.Windows.Forms.Label label_sendValue;
-        private System.Windows.Forms.Label label_receiveValue;
         private System.Windows.Forms.TextBox textBox_resistance;
         private System.Windows.Forms.Label label_resistance;
+        private System.Windows.Forms.Label label_sendValue;
+        private System.Windows.Forms.Label label_receiveValue;
     }
 }
 
