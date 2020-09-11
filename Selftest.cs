@@ -38,8 +38,10 @@ namespace Hotspring
         byte[] byteMessage_B = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_B = 0;
 
-        string output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
-        string usb_csv = "Send value, Receive value, " + Environment.NewLine;
+        string output_csv = "Setting value,Equipment value,Equipment value - internal resistance value,Difference, " + Environment.NewLine;
+        string usb_csv = "Test times,Send value,Receive value,Result,Pass times, " + Environment.NewLine;
+        string random_data = "";
+        int random_total, random_pass;
 
         public Selftest()
         {
@@ -115,7 +117,15 @@ namespace Hotspring
                 else if (dataValue.Contains("set nop "))
                 {
                     string l_strResult = dataValue.Replace("\n", "").Replace("\t", "").Replace("\r", "");
-                    usb_csv = string.Concat(usb_csv, l_strResult + "," + Environment.NewLine);
+                    if (l_strResult.Contains(random_data) == true)
+                    {
+                        random_pass++;
+                        usb_csv = string.Concat(usb_csv, l_strResult + ",Pass," + random_pass + "," + Environment.NewLine);
+                    }
+                    else
+                    {
+                        usb_csv = string.Concat(usb_csv, l_strResult + ",NG," + random_pass + "," + Environment.NewLine);
+                    }
                     flag_usb = false;
                 }
                 else if (dataValue.Contains("button_io:"))
@@ -456,14 +466,18 @@ namespace Hotspring
                 Random Rnd = new Random(); //加入Random，產生的數字不會重覆
                 serialPort1.WriteLine("set echo 0");    //關閉echo mode
                 string send_data = "";
+                random_total = 0;
+                random_pass = 0;
+                flag_usb = false;
                 for (int i = 0; i < usbnumber_value; i++)
                 {
                     while (flag_usb) { }
                     int j = Rnd.Next(2, 1048576);
                     send_data = "set nop " + j;
-
+                    random_data = send_data;
+                    random_total++;
                     serialPort1.WriteLine(send_data);
-                    usb_csv = string.Concat(usb_csv, send_data + ",");
+                    usb_csv = string.Concat(usb_csv, random_total + "," + send_data + ",");
                     flag_usb = true;
                 }
 
@@ -816,7 +830,7 @@ namespace Hotspring
                     try
                     {
                         file.Write(output_csv);
-                        output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
+                        output_csv = "Setting value,Equipment value,Equipment value - internal resistance value,Difference, " + Environment.NewLine;
                     }
                     catch (Exception Ex)
                     {
@@ -863,7 +877,7 @@ namespace Hotspring
                     try
                     {
                         file.Write(output_csv);
-                        output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
+                        output_csv = "Setting value,Equipment value,Equipment value - internal resistance value,Difference, " + Environment.NewLine;
                     }
                     catch (Exception Ex)
                     {
@@ -910,7 +924,7 @@ namespace Hotspring
                     try
                     {
                         file.Write(output_csv);
-                        output_csv = "Setting value, Equipment value, Equipment value - internal resistance value, Difference, " + Environment.NewLine;
+                        output_csv = "Setting value,Equipment value,Equipment value - internal resistance value,Difference, " + Environment.NewLine;
                     }
                     catch (Exception Ex)
                     {
@@ -957,7 +971,7 @@ namespace Hotspring
                     try
                     {
                         file.Write(usb_csv);
-                        usb_csv = "Send value, Receive value, " + Environment.NewLine;
+                        usb_csv = "Test times,Send value,Receive value,Result,Pass times, " + Environment.NewLine;
                     }
                     catch (Exception Ex)
                     {

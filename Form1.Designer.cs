@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage_settings = new System.Windows.Forms.TabPage();
             this.tabPage_user = new System.Windows.Forms.TabPage();
             this.tabPage_self = new System.Windows.Forms.TabPage();
-            this.tabPage_settings = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -41,49 +41,54 @@
             this.tabControl1.Controls.Add(this.tabPage_user);
             this.tabControl1.Controls.Add(this.tabPage_self);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(326, 305);
+            this.tabControl1.Size = new System.Drawing.Size(435, 381);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
+            // tabPage_settings
+            // 
+            this.tabPage_settings.Location = new System.Drawing.Point(4, 25);
+            this.tabPage_settings.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage_settings.Name = "tabPage_settings";
+            this.tabPage_settings.Size = new System.Drawing.Size(427, 352);
+            this.tabPage_settings.TabIndex = 2;
+            this.tabPage_settings.Text = "Settings";
+            this.tabPage_settings.UseVisualStyleBackColor = true;
+            // 
             // tabPage_user
             // 
-            this.tabPage_user.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_user.Location = new System.Drawing.Point(4, 25);
+            this.tabPage_user.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabPage_user.Name = "tabPage_user";
-            this.tabPage_user.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_user.Size = new System.Drawing.Size(318, 279);
+            this.tabPage_user.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage_user.Size = new System.Drawing.Size(427, 352);
             this.tabPage_user.TabIndex = 0;
             this.tabPage_user.Text = "User";
             this.tabPage_user.UseVisualStyleBackColor = true;
             // 
             // tabPage_self
             // 
-            this.tabPage_self.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_self.Location = new System.Drawing.Point(4, 25);
+            this.tabPage_self.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabPage_self.Name = "tabPage_self";
-            this.tabPage_self.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_self.Size = new System.Drawing.Size(318, 279);
+            this.tabPage_self.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage_self.Size = new System.Drawing.Size(427, 352);
             this.tabPage_self.TabIndex = 1;
             this.tabPage_self.Text = "Self";
             this.tabPage_self.UseVisualStyleBackColor = true;
             // 
-            // tabPage_settings
-            // 
-            this.tabPage_settings.Location = new System.Drawing.Point(4, 22);
-            this.tabPage_settings.Name = "tabPage_settings";
-            this.tabPage_settings.Size = new System.Drawing.Size(318, 279);
-            this.tabPage_settings.TabIndex = 2;
-            this.tabPage_settings.Text = "Settings";
-            this.tabPage_settings.UseVisualStyleBackColor = true;
-            // 
             // Form_hotspring
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(326, 307);
+            this.ClientSize = new System.Drawing.Size(435, 384);
             this.Controls.Add(this.tabControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form_hotspring";
-            this.Text = "Hotspring_v1.0.0.1";
+            this.Text = "Hotspring_v1.0.0.2";
             this.Load += new System.EventHandler(this.Form_hotspring_Load);
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
