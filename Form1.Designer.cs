@@ -32,6 +32,7 @@
             this.tabPage_settings = new System.Windows.Forms.TabPage();
             this.tabPage_user = new System.Windows.Forms.TabPage();
             this.tabPage_self = new System.Windows.Forms.TabPage();
+            this.tabPage_medical = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -40,6 +41,7 @@
             this.tabControl1.Controls.Add(this.tabPage_settings);
             this.tabControl1.Controls.Add(this.tabPage_user);
             this.tabControl1.Controls.Add(this.tabPage_self);
+            this.tabControl1.Controls.Add(this.tabPage_medical);
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabControl1.Name = "tabControl1";
@@ -80,6 +82,17 @@
             this.tabPage_self.Text = "Self";
             this.tabPage_self.UseVisualStyleBackColor = true;
             // 
+            // tabPage_medical
+            // 
+            this.tabPage_medical.Location = new System.Drawing.Point(4, 25);
+            this.tabPage_medical.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage_medical.Name = "tabPage_medical";
+            this.tabPage_medical.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage_medical.Size = new System.Drawing.Size(427, 352);
+            this.tabPage_medical.TabIndex = 1;
+            this.tabPage_medical.Text = "Medical";
+            this.tabPage_medical.UseVisualStyleBackColor = true;
+            // 
             // Form_hotspring
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -98,8 +111,9 @@
         #endregion
 
         private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage_settings;
         private System.Windows.Forms.TabPage tabPage_user;
         private System.Windows.Forms.TabPage tabPage_self;
-        private System.Windows.Forms.TabPage tabPage_settings;
+        private System.Windows.Forms.TabPage tabPage_medical;
     }
 }

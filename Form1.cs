@@ -84,6 +84,27 @@ namespace Hotspring
                     //顯示tabPage
                     tabPage_self.Show();
                     break;
+                case 3:
+                    var Medical = new Medical();
+                    //不要顯示Title
+                    Medical.FormBorderStyle = FormBorderStyle.None;
+
+                    //非最上層
+                    Medical.TopLevel = false;
+
+                    //顯示From，要加上去才會顯示Form
+                    Medical.Visible = true;
+
+                    //設定From位置
+                    Medical.Top = 0;
+                    Medical.Left = 0;
+
+                    //將Form加入tabPage中
+                    tabPage_medical.Controls.Add(Medical);
+
+                    //顯示tabPage
+                    tabPage_medical.Show();
+                    break;
             }
         }
 
