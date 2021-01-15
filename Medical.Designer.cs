@@ -38,9 +38,12 @@
             // hScrollBar_setvalue
             // 
             this.hScrollBar_setvalue.Location = new System.Drawing.Point(14, 18);
+            this.hScrollBar_setvalue.Maximum = 150;
+            this.hScrollBar_setvalue.Minimum = -50;
             this.hScrollBar_setvalue.Name = "hScrollBar_setvalue";
             this.hScrollBar_setvalue.Size = new System.Drawing.Size(173, 17);
             this.hScrollBar_setvalue.TabIndex = 1;
+            this.hScrollBar_setvalue.Value = 50;
             this.hScrollBar_setvalue.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar_setvalue_Scroll);
             // 
             // label_getvalue
