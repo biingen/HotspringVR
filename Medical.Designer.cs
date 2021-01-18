@@ -37,7 +37,7 @@
             // 
             // hScrollBar_setvalue
             // 
-            this.hScrollBar_setvalue.Location = new System.Drawing.Point(14, 18);
+            this.hScrollBar_setvalue.Location = new System.Drawing.Point(11, 20);
             this.hScrollBar_setvalue.Maximum = 150;
             this.hScrollBar_setvalue.Minimum = -50;
             this.hScrollBar_setvalue.Name = "hScrollBar_setvalue";
@@ -49,7 +49,7 @@
             // label_getvalue
             // 
             this.label_getvalue.AutoSize = true;
-            this.label_getvalue.Location = new System.Drawing.Point(21, 55);
+            this.label_getvalue.Location = new System.Drawing.Point(215, 23);
             this.label_getvalue.Name = "label_getvalue";
             this.label_getvalue.Size = new System.Drawing.Size(11, 12);
             this.label_getvalue.TabIndex = 2;
@@ -57,7 +57,7 @@
             // 
             // button_getvalue
             // 
-            this.button_getvalue.Location = new System.Drawing.Point(112, 50);
+            this.button_getvalue.Location = new System.Drawing.Point(232, 18);
             this.button_getvalue.Name = "button_getvalue";
             this.button_getvalue.Size = new System.Drawing.Size(75, 23);
             this.button_getvalue.TabIndex = 3;
