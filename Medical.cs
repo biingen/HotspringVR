@@ -135,33 +135,52 @@ namespace Hotspring
             new byte[] { 0x08, 0x00, 0xE0, 0x0D },          /// RGB_GAIN_INDEX
        };
 
-
-        private void button_getvalue_Click(object sender, EventArgs e)
+        /*
+        private bool common_get_function(int command_index)
         {
-            Thread LogA_analysis = new Thread(new ThreadStart(serialPortA_analysis));
-            Thread LogA_record = new Thread(new ThreadStart(serialPortA_recorder));
- //           string check_packet = "";
-            byte backlight_value;
+            int packet_len = Get_Value_Packet[command_index].Length;
+            Get_Value_Packet[command_index][packet_len - 1] = XOR(Get_Value_Packet[PACKET_INDEX], (packet_len - 1));
 
-           // int PACKET_INDEX = (int)command_index.BACKLIGHT_INDEX;
-            byte[] command = new byte[5];
-            command[0] = 0x05;
-            command[1] = 0x01;
-            command[2] = 0xE0;
-            command[3] = 0x01;
-            command[4] = XOR(command, 4);
-
-             if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
             {
                 Open_serialPort1();
-                LogA_analysis.Start();
-                LogA_record.Start();
-                serialPort1.Write(command, 0, command.Length);
+                //                LogA_analysis.Start();
+                //                LogA_record.Start();
+                serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
                 flag_receive = true;
             }
             else if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == true)          //送至Comport
             {
-                serialPort1.Write(command, 0, command.Length);
+                serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
+                flag_receive = true;
+            }
+
+            return false;
+        }
+        */
+
+        private void button_getvalue_Click(object sender, EventArgs e)
+        {
+ //           Thread LogA_analysis = new Thread(new ThreadStart(serialPortA_analysis));
+ //           Thread LogA_record = new Thread(new ThreadStart(serialPortA_recorder));
+             byte backlight_value;
+
+            int PACKET_INDEX = (int)command_index.BACKLIGHT_INDEX;
+            int packet_len = Get_Value_Packet[PACKET_INDEX].Length;
+
+            Get_Value_Packet[PACKET_INDEX][packet_len - 1] = XOR(Get_Value_Packet[PACKET_INDEX], (packet_len-1));
+
+            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+            {
+                Open_serialPort1();
+//                LogA_analysis.Start();
+//                LogA_record.Start();
+                serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
+                flag_receive = true;
+            }
+            else if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == true)          //送至Comport
+            {
+                serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
                 flag_receive = true;
             }
 
