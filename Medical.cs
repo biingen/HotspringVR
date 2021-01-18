@@ -45,7 +45,39 @@ namespace Hotspring
 
         //        command[5] = calculate_checksum(command,5);
         //  RS232(command,6);
+/*
+        private void hScrollBar_setvalue_Scroll(object sender, ScrollEventArgs e)
+                {
+                     Thread LogA_analysis = new Thread(new ThreadStart(serialPortA_analysis));
+                    Thread LogA_record = new Thread(new ThreadStart(serialPortA_recorder));
 
+                    //;
+                    // Make sure Serial is open
+                    if (CheckSerialOpen() == false)
+                    {
+                        // error handling and return
+                    }
+
+                    int check_packet = Set_Backlight_value((byte)hScrollBar_setvalue.Value);
+
+                    switch (check_packet)
+                    {
+                        case 0:
+                            label_getvalue.Text = "No data";
+                            break;
+                        case 1:
+                            label_getvalue.Text = "ACK";
+                            break;
+                        case 2:
+                            label_getvalue.Text = "NACK";
+                            break;
+                        case 3:
+                            label_getvalue.Text = "NAV";
+                            break;
+                    }
+
+                }
+*/
 
         private void hScrollBar_setvalue_Scroll(object sender, ScrollEventArgs e)
         {
@@ -123,6 +155,11 @@ namespace Hotspring
             RGB_GAIN_INDEX,
         }
 
+        byte[][] Set_Value_Packet =
+        {
+            new byte[] { 0x06, 0x01, 0xE0, 0x00, 0xff, 0xFF },              /// BACKLIGHT_INDEX
+            new byte[] { 0x07, 0x00, 0xE0, 0x0C, 0xff, 0xff, 0xFF },          /// RGB_GAIN_INDEX
+       };
         byte[][] Get_Value_Packet =
         {
             new byte[] { 0x05, 0x01, 0xE0, 0x01, 0xFF },          /// BACKLIGHT_INDEX
@@ -176,6 +213,33 @@ namespace Hotspring
             }
         }
 
+        private int Set_Backlight_value(byte set_value)
+        {
+            int check_packet = 0xff;
+
+            if (set_value > 100)
+            {
+                // error handling
+            }
+
+            // prepare and send get_value 
+            int PACKET_INDEX = (int)command_index.BACKLIGHT_INDEX;
+            int packet_len = Set_Value_Packet[PACKET_INDEX].Length;
+            Set_Value_Packet[PACKET_INDEX][packet_len - 2] = set_value;
+            Set_Value_Packet[PACKET_INDEX][packet_len - 1] = XOR(Set_Value_Packet[PACKET_INDEX], (packet_len - 1));
+            serialPort1.Write(Set_Value_Packet[PACKET_INDEX], 0, packet_len);
+
+            // wait until packet received
+            flag_wait_for_receive = true;
+            while (flag_wait_for_receive) { }
+
+            if (dataListbyte.Count() > 0)
+            {
+                check_packet = check_Ack_packet();
+            }
+            return check_packet;
+        }
+ 
         private bool Get_Backlight_value(out byte return_value)
         {
             bool ret_value = false;
