@@ -27,7 +27,7 @@ namespace Hotspring
 
         const int byteMessage_max_Hex = 16;
         const int byteMessage_max_Ascii = 256;
-        bool flag_receive = false;
+        bool flag_wait_for_receive = false;
 
         byte[] byteMessage_A = new byte[Math.Max(byteMessage_max_Ascii, byteMessage_max_Hex)];
         int byteMessage_length_A = 0;
@@ -67,15 +67,15 @@ namespace Hotspring
                 LogA_analysis.Start();
                 LogA_record.Start();
                 serialPort1.Write(command,0,command.Length);
-                flag_receive = true;
+                flag_wait_for_receive = true;
             }
             else if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == true)          //送至Comport
             {
                 serialPort1.Write(command, 0, command.Length);
-                flag_receive = true;
+                flag_wait_for_receive = true;
             }
 
-            while (flag_receive) { }
+            while (flag_wait_for_receive) { }
             // 檢查封包是否回Ack或別的
             check_packet = check_Ack_packet();                     
             switch (check_packet)
@@ -135,71 +135,77 @@ namespace Hotspring
             new byte[] { 0x08, 0x00, 0xE0, 0x0D },          /// RGB_GAIN_INDEX
        };
 
-        /*
-        private bool common_get_function(int command_index)
+ 
+        //Thread LogA_analysis = new Thread(new ThreadStart(serialPortA_analysis));
+        //Thread LogA_record = new Thread(new ThreadStart(serialPortA_recorder));
+
+        private bool CheckSerialOpen()
         {
-            int packet_len = Get_Value_Packet[command_index].Length;
-            Get_Value_Packet[command_index][packet_len - 1] = XOR(Get_Value_Packet[PACKET_INDEX], (packet_len - 1));
+            bool ret_value = false;
 
-            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+            if (serialPort1.IsOpen == false)          //送至Comport
             {
-                Open_serialPort1();
-                //                LogA_analysis.Start();
-                //                LogA_record.Start();
-                serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
-                flag_receive = true;
+                if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1")
+                {
+                    Open_serialPort1();
+                    //LogA_analysis.Start();
+                    //LogA_record.Start();
+                    ret_value = true;
+                }
             }
-            else if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == true)          //送至Comport
+            else
             {
-                serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
-                flag_receive = true;
+                ret_value = true;
             }
-
-            return false;
+            return ret_value;
         }
-        */
 
         private void button_getvalue_Click(object sender, EventArgs e)
         {
- //           Thread LogA_analysis = new Thread(new ThreadStart(serialPortA_analysis));
- //           Thread LogA_record = new Thread(new ThreadStart(serialPortA_recorder));
-             byte backlight_value;
+            byte backlight_value;
 
+            // Make sure Serial is open
+            if (CheckSerialOpen()==false)
+            {
+                // error handling and return
+            }
+
+            if(Get_Backlight_value(out backlight_value)==true)
+            {
+                label_getvalue.Text = backlight_value.ToString();
+            }
+        }
+
+        private bool Get_Backlight_value(out byte return_value)
+        {
+            bool ret_value = false;
+            return_value = 0;
+
+            // prepare and send get_value 
             int PACKET_INDEX = (int)command_index.BACKLIGHT_INDEX;
             int packet_len = Get_Value_Packet[PACKET_INDEX].Length;
+            Get_Value_Packet[PACKET_INDEX][packet_len - 1] = XOR(Get_Value_Packet[PACKET_INDEX], (packet_len - 1));
+            serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
 
-            Get_Value_Packet[PACKET_INDEX][packet_len - 1] = XOR(Get_Value_Packet[PACKET_INDEX], (packet_len-1));
+            // wait until packet received
+            flag_wait_for_receive = true;
+            while (flag_wait_for_receive) { }
 
-            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
-            {
-                Open_serialPort1();
-//                LogA_analysis.Start();
-//                LogA_record.Start();
-                serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
-                flag_receive = true;
-            }
-            else if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == true)          //送至Comport
-            {
-                serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
-                flag_receive = true;
-            }
-
-            while (flag_receive) { }
             // 檢查封包是否回傳正確的value.
             if (dataListbyte.Count() > 0)
             {
                 List<byte> log_analysis = new List<byte>();
                 log_analysis = dataListbyte.Dequeue();
-                if(Parse_backlight_packet(log_analysis, out backlight_value)==true)
+                if (Parse_backlight_packet(log_analysis, out return_value) == true)
                 {
-                    label_getvalue.Text = backlight_value.ToString();
+                    ret_value = true;
                 }
                 else
                 {
 
                 }
             }
-
+            return ret_value;
         }
 
         // update out byte/int16/uint32/.....
@@ -401,7 +407,7 @@ namespace Hotspring
                                 List<byte> CurrentDataList = new List<byte>();
                                 CurrentDataList = DataLists.GetRange(0, packet_len);
                                 dataListbyte.Enqueue(CurrentDataList);                  // Enqueue list byte data
-                                flag_receive = false;
+                                flag_wait_for_receive = false;
                                 DataLists.RemoveRange(0, packet_len);
                             }
                             else
