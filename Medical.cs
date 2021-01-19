@@ -122,6 +122,7 @@ namespace Hotspring
         {
             BACKLIGHT_INDEX = 0,
             RGB_GAIN_INDEX,
+            GET_MAIN_INPUT_INDEX,
         }
 
         byte[][] Set_Value_Packet =
@@ -139,6 +140,7 @@ namespace Hotspring
         {
             new byte[] { 0x06, 0x01, 0xE0, 0x01 },          /// BACKLIGHT_INDEX
             new byte[] { 0x08, 0x00, 0xE0, 0x0D },          /// RGB_GAIN_INDEX
+            new byte[] { 0x06, 0x01, 0xE0, 0x12 },              		///GET_MAIN_INPUT_INDEX,
        };
 
 
@@ -543,6 +545,89 @@ namespace Hotspring
         }
 
 
+
+        private int Set_Main_input_value(byte set_value)
+        {
+            int cmd_index = (int)command_index.SET_MAIN_INPUT_INDEX; // update index here
+
+            if (set_value > 7)        // update range check
+            {
+                // error handling
+            }
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+
+            // Update input data
+            input_data[0] = set_value;
+
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            int check_packet = 0xff;
+            if (dataListbyte.Count() > 0)
+            {
+                check_packet = check_Ack_packet();
+            }
+            return check_packet;
+        }
+
+        private bool Get_Main_input_value(out byte return_value)  // update here
+        {
+            int cmd_index = (int)command_index.GET_MAIN_INPUT_INDEX; // update index here
+            bool ret_value = false;
+            return_value = 0;
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+            //input_data[0] = set_value;
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+
+                // update parsing here
+                if (Parse_main_input_packet(log_analysis, out return_value) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
+            return ret_value;
+        }
+
+        // update out byte/int16/uint32/.....
+        private bool Parse_main_input_packet(List<byte> input_packet, out byte return_value)
+        {
+            // update here
+            int PACKET_INDEX = (int)command_index_old.GET_MAIN_INPUT_INDEX;
+
+            bool ret_value = true;
+            return_value = 0;
+
+            for (int index = 0; index < Parsing_Packet[PACKET_INDEX].Length; index++)
+            {
+                if (input_packet.ElementAt(index) != Parsing_Packet[PACKET_INDEX][index])
+                {
+                    ret_value = false;
+                    break;
+                }
+            }
+
+            if (ret_value == true)
+            {
+                // update here
+                return_value = input_packet.ElementAt(4);
+            }
+
+            return ret_value;
+        }
+
         private string Check_value_packet()
         {
             string value = "No data";
@@ -758,6 +843,79 @@ namespace Hotspring
                     break;
             }
             label_rgbgain_show.Text = return_text;
+        }
+
+        private void numericUpDown_maininput_ValueChanged(object sender, EventArgs e)
+        {
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            int check_packet = Set_Main_input_value((byte)numericUpDown_maininput.Value);
+
+            string return_text = "";
+            switch (check_packet)
+            {
+                case 0:
+                    return_text = "No data";
+                    break;
+                case 1:
+                    return_text = "ACK";
+                    break;
+                case 2:
+                    return_text = "NACK";
+                    break;
+                case 3:
+                    return_text = "NAV";
+                    break;
+            }
+            label_maininput_show.Text = return_text;
+        }
+
+        private void button_maininput_get_Click(object sender, EventArgs e)
+        {
+            byte main_input_value;
+
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            if (Get_Main_input_value(out main_input_value) == true)
+            {
+                string return_text = "";
+                switch (main_input_value)
+                {
+                    case 0:
+                        return_text = "VGA";
+                        break;
+                    case 1:
+                        return_text = "YPbPr";
+                        break;
+                    case 2:
+                        return_text = "DP";
+                        break;
+                    case 3:
+                        return_text = "DVI1";
+                        break;
+                    case 4:
+                        return_text = "DVI2";
+                        break;
+                    case 5:
+                        return_text = "CVBS";
+                        break;
+                    case 6:
+                        return_text = "Svideo";
+                        break;
+                    case 7:
+                        return_text = "SDI";
+                        break;
+                }
+                label_maininput_show.Text = return_text;
+            }
         }
     }
 }
