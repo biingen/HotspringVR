@@ -46,34 +46,7 @@ namespace Hotspring
         //        command[5] = calculate_checksum(command,5);
         //  RS232(command,6);
 
-        private void hScrollBar_backlight_set_Scroll(object sender, ScrollEventArgs e)
-        {
-            // Make sure Serial is open
-            if (CheckSerialOpen() == false)
-            {
-                // error handling and return
-            }
-
-            int check_packet = Set_Backlight_value((byte)hScrollBar_backlight_set.Value);
-
-            switch (check_packet)
-            {
-                case 0:
-                    label_backlight_show.Text = "No data";
-                    break;
-                case 1:
-                    label_backlight_show.Text = "ACK";
-                    break;
-                case 2:
-                    label_backlight_show.Text = "NACK";
-                    break;
-                case 3:
-                    label_backlight_show.Text = "NAV";
-                    break;
-            }
-
-        }
-
+ 
         /*
                 private void hScrollBar_backlight_set_Scroll(object sender, ScrollEventArgs e)
                 {
@@ -192,23 +165,6 @@ namespace Hotspring
             return ret_value;
         }
 
-        private void button_backlight_get_Click(object sender, EventArgs e)
-        {
-            byte backlight_value;
-
-            // Make sure Serial is open
-            if (CheckSerialOpen() == false)
-            {
-                // error handling and return
-            }
-
-            if (Get_Backlight_value(out backlight_value) == true)
-            {
-                label_backlight_show.Text = backlight_value.ToString();
-            }
-
-        }
-
         // copy to mei
         enum command_index
         {
@@ -216,6 +172,8 @@ namespace Hotspring
             GET_BACKLIGHT_INDEX,
             SET_RGB_GAIN_INDEX,
             GET_RGB_GAIN_INDEX,
+            SET_MAIN_INPUT_INDEX,
+            GET_MAIN_INPUT_INDEX,
         }
 
         byte[][] Command_Packet =
@@ -224,6 +182,8 @@ namespace Hotspring
             new byte[] { 0x05, 0x01, 0xE0, 0x01, 0xff },                    /// GET_BACKLIGHT_INDEX
             new byte[] { 0x07, 0x00, 0xE0, 0x0C, 0xff, 0xff, 0xff },        /// SET_RGB_GAIN_INDEX
             new byte[] { 0x05, 0x00, 0xE0, 0x0D, 0xff },                    /// GET_RGB_GAIN_INDEX
+            new byte[] { 0x06, 0x01, 0xE0, 0x11, 0xff, 0xff},               /// SET_MAIN_INPUT_INDEX
+            new byte[] { 0x05, 0x01, 0xE0, 0x12, 0xff},                     /// GET_MAIN_INPUT_INDEX
         };
         // copy to mei
 
@@ -592,9 +552,9 @@ namespace Hotspring
             }
         }
 
-        private void button_rgbgain_get_Click(object sender, EventArgs e)
+        private void button_backlight_get_Click(object sender, EventArgs e)
         {
-            byte rgbgain_value;
+            byte backlight_value;
 
             // Make sure Serial is open
             if (CheckSerialOpen() == false)
@@ -602,10 +562,84 @@ namespace Hotspring
                 // error handling and return
             }
 
-           // if (Get_RGBGain_value(out rgbgain_value) == true)
+            if (Get_Backlight_value(out backlight_value) == true)
             {
-           //     label_rgbgain_show.Text = rgbgain_value.ToString();
+                label_backlight_show.Text = backlight_value.ToString();
             }
+
+        }
+
+        private void button_rgbgain_get_Click(object sender, EventArgs e)
+        {
+            byte[] rgbgain_value = new byte [3];
+
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            if (Get_RGBGain_value(out rgbgain_value) == true)
+            {
+                 label_rgbgain_show.Text = rgbgain_value[0] + "," + rgbgain_value[1] + "," + rgbgain_value[2];
+            }
+        }
+
+        private void hScrollBar_backlight_set_Scroll(object sender, ScrollEventArgs e)
+        {
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            int check_packet = Set_Backlight_value((byte)hScrollBar_backlight_set.Value);
+
+            switch (check_packet)
+            {
+                case 0:
+                    label_backlight_show.Text = "No data";
+                    break;
+                case 1:
+                    label_backlight_show.Text = "ACK";
+                    break;
+                case 2:
+                    label_backlight_show.Text = "NACK";
+                    break;
+                case 3:
+                    label_backlight_show.Text = "NAV";
+                    break;
+            }
+
+        }
+
+        private void hScrollBar_rgbgain_set_Scroll(object sender, ScrollEventArgs e)
+        {
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            int check_packet = Set_RGBGain_value((byte)numericUpDown_rgbgain_set.Value, (byte)hScrollBar_rgbgain_set.Value);
+
+            string return_text ="";
+            switch (check_packet)
+            {
+                case 0:
+                    return_text = "No data";
+                    break;
+                case 1:
+                    return_text = "ACK";
+                    break;
+                case 2:
+                    return_text = "NACK";
+                    break;
+                case 3:
+                    return_text = "NAV";
+                    break;
+            }
+            label_rgbgain_show.Text = return_text;
         }
     }
 }

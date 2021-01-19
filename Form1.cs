@@ -42,7 +42,7 @@ namespace Hotspring
                     //顯示tabPage
                     tabPage_settings.Show();
                     break;
-                case 1:
+                 case 1:
                     var Usertest = new Usertest();
                     //不要顯示Title
                     Usertest.FormBorderStyle = FormBorderStyle.None;
@@ -110,25 +110,25 @@ namespace Hotspring
 
         private void Form_hotspring_Load(object sender, EventArgs e)
         {
-            var Settings = new Settings();
+            var Medical = new Medical();
             //不要顯示Title
-            Settings.FormBorderStyle = FormBorderStyle.None;
+            Medical.FormBorderStyle = FormBorderStyle.None;
 
             //非最上層
-            Settings.TopLevel = false;
+            Medical.TopLevel = false;
 
             //顯示From，要加上去才會顯示Form
-            Settings.Visible = true;
+            Medical.Visible = true;
 
             //設定From位置
-            Settings.Top = 0;
-            Settings.Left = 0;
+            Medical.Top = 0;
+            Medical.Left = 0;
 
             //將Form加入tabPage中
-            tabPage_settings.Controls.Add(Settings);
+            tabPage_medical.Controls.Add(Medical);
 
             //顯示tabPage
-            tabPage_settings.Show();
+            tabPage_medical.Show();
         }
     }
 }

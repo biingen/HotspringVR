@@ -62,23 +62,23 @@
             // 
             // button_backlight_get
             // 
-            this.button_backlight_get.Location = new System.Drawing.Point(232, 18);
+            this.button_backlight_get.Location = new System.Drawing.Point(269, 19);
             this.button_backlight_get.Name = "button_backlight_get";
-            this.button_backlight_get.Size = new System.Drawing.Size(75, 23);
+            this.button_backlight_get.Size = new System.Drawing.Size(38, 23);
             this.button_backlight_get.TabIndex = 3;
-            this.button_backlight_get.Text = "Get value";
+            this.button_backlight_get.Text = "Get";
             this.button_backlight_get.UseVisualStyleBackColor = true;
             this.button_backlight_get.Click += new System.EventHandler(this.button_backlight_get_Click);
             // 
             // hScrollBar_rgbgain_set
             // 
             this.hScrollBar_rgbgain_set.Location = new System.Drawing.Point(52, 54);
-            this.hScrollBar_rgbgain_set.Maximum = 150;
-            this.hScrollBar_rgbgain_set.Minimum = -50;
+            this.hScrollBar_rgbgain_set.Maximum = 255;
             this.hScrollBar_rgbgain_set.Name = "hScrollBar_rgbgain_set";
             this.hScrollBar_rgbgain_set.Size = new System.Drawing.Size(132, 17);
             this.hScrollBar_rgbgain_set.TabIndex = 5;
-            this.hScrollBar_rgbgain_set.Value = 50;
+            this.hScrollBar_rgbgain_set.Value = 100;
+            this.hScrollBar_rgbgain_set.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar_rgbgain_set_Scroll);
             // 
             // label_rgbgain_show
             // 
@@ -91,17 +91,22 @@
             // 
             // button_rgbgain_get
             // 
-            this.button_rgbgain_get.Location = new System.Drawing.Point(232, 50);
+            this.button_rgbgain_get.Location = new System.Drawing.Point(269, 52);
             this.button_rgbgain_get.Name = "button_rgbgain_get";
-            this.button_rgbgain_get.Size = new System.Drawing.Size(75, 23);
+            this.button_rgbgain_get.Size = new System.Drawing.Size(38, 23);
             this.button_rgbgain_get.TabIndex = 7;
-            this.button_rgbgain_get.Text = "Get value";
+            this.button_rgbgain_get.Text = "Get";
             this.button_rgbgain_get.UseVisualStyleBackColor = true;
             this.button_rgbgain_get.Click += new System.EventHandler(this.button_rgbgain_get_Click);
             // 
             // numericUpDown_rgbgain_set
             // 
             this.numericUpDown_rgbgain_set.Location = new System.Drawing.Point(11, 53);
+            this.numericUpDown_rgbgain_set.Maximum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.numericUpDown_rgbgain_set.Name = "numericUpDown_rgbgain_set";
             this.numericUpDown_rgbgain_set.Size = new System.Drawing.Size(38, 22);
             this.numericUpDown_rgbgain_set.TabIndex = 2;
