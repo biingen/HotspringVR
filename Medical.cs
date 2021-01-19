@@ -46,7 +46,7 @@ namespace Hotspring
         //        command[5] = calculate_checksum(command,5);
         //  RS232(command,6);
 
-        private void hScrollBar_setvalue_Scroll(object sender, ScrollEventArgs e)
+        private void hScrollBar_backlight_set_Scroll(object sender, ScrollEventArgs e)
         {
             // Make sure Serial is open
             if (CheckSerialOpen() == false)
@@ -54,75 +54,75 @@ namespace Hotspring
                 // error handling and return
             }
 
-            int check_packet = Set_Backlight_value((byte)hScrollBar_setvalue.Value);
+            int check_packet = Set_Backlight_value((byte)hScrollBar_backlight_set.Value);
 
             switch (check_packet)
             {
                 case 0:
-                    label_getvalue.Text = "No data";
+                    label_backlight_show.Text = "No data";
                     break;
                 case 1:
-                    label_getvalue.Text = "ACK";
+                    label_backlight_show.Text = "ACK";
                     break;
                 case 2:
-                    label_getvalue.Text = "NACK";
+                    label_backlight_show.Text = "NACK";
                     break;
                 case 3:
-                    label_getvalue.Text = "NAV";
+                    label_backlight_show.Text = "NAV";
                     break;
             }
 
         }
 
-/*
-        private void hScrollBar_setvalue_Scroll(object sender, ScrollEventArgs e)
-        {
-            Thread LogA_analysis = new Thread(new ThreadStart(serialPortA_analysis));
-            Thread LogA_record = new Thread(new ThreadStart(serialPortA_recorder));
-            int check_packet = 0;
+        /*
+                private void hScrollBar_backlight_set_Scroll(object sender, ScrollEventArgs e)
+                {
+                    Thread LogA_analysis = new Thread(new ThreadStart(serialPortA_analysis));
+                    Thread LogA_record = new Thread(new ThreadStart(serialPortA_recorder));
+                    int check_packet = 0;
 
-            byte [] command = new byte[6];
-            command[0] = 0x06;
-            command[1] = 0x01;
-            command[2] = 0xE0;
-            command[3] = 0x00;
-            command[4] = (byte)hScrollBar_setvalue.Value;
-            command[5] = XOR(command, 5);
+                    byte [] command = new byte[6];
+                    command[0] = 0x06;
+                    command[1] = 0x01;
+                    command[2] = 0xE0;
+                    command[3] = 0x00;
+                    command[4] = (byte)hScrollBar_setvalue.Value;
+                    command[5] = XOR(command, 5);
 
-            if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
-            {
-                Open_serialPort1();
-                LogA_analysis.Start();
-                LogA_record.Start();
-                serialPort1.Write(command,0,command.Length);
-                flag_wait_for_receive = true;
-            }
-            else if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == true)          //送至Comport
-            {
-                serialPort1.Write(command, 0, command.Length);
-                flag_wait_for_receive = true;
-            }
+                    if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == false)          //送至Comport
+                    {
+                        Open_serialPort1();
+                        LogA_analysis.Start();
+                        LogA_record.Start();
+                        serialPort1.Write(command,0,command.Length);
+                        flag_wait_for_receive = true;
+                    }
+                    else if (ini12.INIRead(Config_Path, "serialPort1", "Exist", "") == "1" && serialPort1.IsOpen == true)          //送至Comport
+                    {
+                        serialPort1.Write(command, 0, command.Length);
+                        flag_wait_for_receive = true;
+                    }
 
-            while (flag_wait_for_receive) { }
-            // 檢查封包是否回Ack或別的
-            check_packet = check_Ack_packet();                     
-            switch (check_packet)
-            {
-                case 0:
-                    label_getvalue.Text = "No data";
-                    break;
-                case 1:
-                    label_getvalue.Text = "ACK";
-                    break;
-                case 2:
-                    label_getvalue.Text = "NACK";
-                    break;
-                case 3:
-                    label_getvalue.Text = "NAV";
-                    break;
-            }
-        }
-        */
+                    while (flag_wait_for_receive) { }
+                    // 檢查封包是否回Ack或別的
+                    check_packet = check_Ack_packet();                     
+                    switch (check_packet)
+                    {
+                        case 0:
+                            label_getvalue.Text = "No data";
+                            break;
+                        case 1:
+                            label_getvalue.Text = "ACK";
+                            break;
+                        case 2:
+                            label_getvalue.Text = "NACK";
+                            break;
+                        case 3:
+                            label_getvalue.Text = "NAV";
+                            break;
+                    }
+                }
+                */
         private int check_Ack_packet()
         {
             int value = 0;
@@ -192,23 +192,24 @@ namespace Hotspring
             return ret_value;
         }
 
-        private void button_getvalue_Click(object sender, EventArgs e)
+        private void button_backlight_get_Click(object sender, EventArgs e)
         {
             byte backlight_value;
 
             // Make sure Serial is open
-            if (CheckSerialOpen()==false)
+            if (CheckSerialOpen() == false)
             {
                 // error handling and return
             }
 
-            if(Get_Backlight_value(out backlight_value)==true)
+            if (Get_Backlight_value(out backlight_value) == true)
             {
-                label_getvalue.Text = backlight_value.ToString();
+                label_backlight_show.Text = backlight_value.ToString();
             }
+
         }
 
-
+        // copy to mei
         enum command_index
         {
             SET_BACKLIGHT_INDEX = 0,
@@ -219,13 +220,19 @@ namespace Hotspring
 
         byte[][] Command_Packet =
         {
-            new byte[] { 0x06, 0x01, 0xE0, 0x00, 0xff, 0xFF },              /// SET_BACKLIGHT_INDEX
-            new byte[] { 0x05, 0x01, 0xE0, 0x01, 0xFF },                    /// GET_BACKLIGHT_INDEX
-            new byte[] { 0x07, 0x00, 0xE0, 0x0C, 0xff, 0xff, 0xFF },        /// SET_RGB_GAIN_INDEX
-            new byte[] { 0x05, 0x00, 0xE0, 0x0D, 0xFF },                    /// GET_RGB_GAIN_INDEX
-       };
+            new byte[] { 0x06, 0x01, 0xE0, 0x00, 0xff, 0xff },              /// SET_BACKLIGHT_INDEX
+            new byte[] { 0x05, 0x01, 0xE0, 0x01, 0xff },                    /// GET_BACKLIGHT_INDEX
+            new byte[] { 0x07, 0x00, 0xE0, 0x0C, 0xff, 0xff, 0xff },        /// SET_RGB_GAIN_INDEX
+            new byte[] { 0x05, 0x00, 0xE0, 0x0D, 0xff },                    /// GET_RGB_GAIN_INDEX
+        };
+        // copy to mei
 
         private bool Send_and_Receive_Packet(command_index cmd_index, byte[] data_array)
+        {
+            return Send_and_Receive_Packet((int)cmd_index, data_array);
+        }
+
+        private bool Send_and_Receive_Packet(int cmd_index, byte[] data_array)
         {
             bool ret_value = false;
 
@@ -251,19 +258,24 @@ namespace Hotspring
             return ret_value;
         }
 
-        private int Set_Backlight_value(byte set_value)
+        private int Set_Backlight_value(byte set_value)   // update here
         {
-            int check_packet = 0xff;
+            int cmd_index = (int)command_index.SET_BACKLIGHT_INDEX; // update index here
 
-            if (set_value > 100)
+            if (set_value > 100)        // update range check
             {
                 // error handling
             }
 
-            byte []input_data = new byte[1];
-            input_data[0] = set_value;
-            Send_and_Receive_Packet(command_index.SET_BACKLIGHT_INDEX, input_data);
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte []input_data = new byte[input_data_length];
 
+            // Update input data
+            input_data[0] = set_value;
+
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            int check_packet = 0xff;
             if (dataListbyte.Count() > 0)
             {
                 check_packet = check_Ack_packet();
@@ -271,20 +283,24 @@ namespace Hotspring
             return check_packet;
         }
  
-        private bool Get_Backlight_value(out byte return_value)
+        private bool Get_Backlight_value(out byte return_value)  // update here
         {
+            int cmd_index = (int)command_index.GET_BACKLIGHT_INDEX; // update index here
             bool ret_value = false;
             return_value = 0;
 
-            byte[] input_data = new byte[0];
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
             //input_data[0] = set_value;
-            Send_and_Receive_Packet(command_index.GET_BACKLIGHT_INDEX, input_data);
+            Send_and_Receive_Packet(cmd_index, input_data);
 
             // 檢查封包是否回傳正確的value.
             if (dataListbyte.Count() > 0)
             {
                 List<byte> log_analysis = new List<byte>();
                 log_analysis = dataListbyte.Dequeue();
+
+                // update parsing here
                 if (Parse_backlight_packet(log_analysis, out return_value) == true)
                 {
                     ret_value = true;
@@ -326,15 +342,26 @@ namespace Hotspring
 
         private int Set_RGBGain_value(byte set_select, byte set_value)
         {
+            int cmd_index = (int)command_index.SET_RGB_GAIN_INDEX;
             int check_packet = 0xff;
-            int check_gain_select = 0xff;
-            int check_gain_data = 0xff;
+
+            if (set_select > 2)
+            {
+                // error handling
+            }
 
             if (set_value > 255)
             {
                 // error handling
             }
 
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+            input_data[0] = set_select;
+            input_data[1] = set_value;
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            /*
             // prepare and send get_value 
             int PACKET_INDEX = (int)command_index_old.RGB_GAIN_INDEX;
             int packet_len = Set_Value_Packet[PACKET_INDEX].Length;
@@ -346,12 +373,40 @@ namespace Hotspring
             // wait until packet received
             flag_wait_for_receive = true;
             while (flag_wait_for_receive) { }
-
+*/
             if (dataListbyte.Count() > 0)
             {
                 check_packet = check_Ack_packet();
             }
             return check_packet;
+        }
+
+        private bool Get_RGBGain_value(out byte[] rgb_gain_value)
+        {
+            int cmd_index = (int)command_index.GET_RGB_GAIN_INDEX;
+            bool ret_value = false;
+            rgb_gain_value = new byte[3];
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+            //input_data[0] = set_value;
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+                if (Parse_rgb_gain_packet(log_analysis, out rgb_gain_value) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
+            return ret_value;
         }
 
         private bool Parse_rgb_gain_packet(List<byte> input_packet, out byte r_gain, out byte g_gain, out byte b_gain)
@@ -534,6 +589,22 @@ namespace Hotspring
                         }
                     }
                 }
+            }
+        }
+
+        private void button_rgbgain_get_Click(object sender, EventArgs e)
+        {
+            byte rgbgain_value;
+
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+           // if (Get_RGBGain_value(out rgbgain_value) == true)
+            {
+           //     label_rgbgain_show.Text = rgbgain_value.ToString();
             }
         }
     }
