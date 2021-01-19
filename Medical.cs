@@ -145,7 +145,7 @@ namespace Hotspring
             return value;
         }
 
-        enum command_index
+        enum command_index_old
         {
             BACKLIGHT_INDEX = 0,
             RGB_GAIN_INDEX,
@@ -208,6 +208,49 @@ namespace Hotspring
             }
         }
 
+
+        enum command_index
+        {
+            SET_BACKLIGHT_INDEX = 0,
+            GET_BACKLIGHT_INDEX,
+            SET_RGB_GAIN_INDEX,
+            GET_RGB_GAIN_INDEX,
+        }
+
+        byte[][] Command_Packet =
+        {
+            new byte[] { 0x06, 0x01, 0xE0, 0x00, 0xff, 0xFF },              /// SET_BACKLIGHT_INDEX
+            new byte[] { 0x05, 0x01, 0xE0, 0x01, 0xFF },                    /// GET_BACKLIGHT_INDEX
+            new byte[] { 0x07, 0x00, 0xE0, 0x0C, 0xff, 0xff, 0xFF },        /// SET_RGB_GAIN_INDEX
+            new byte[] { 0x05, 0x00, 0xE0, 0x0D, 0xFF },                    /// GET_RGB_GAIN_INDEX
+       };
+
+        private bool Send_and_Receive_Packet(command_index cmd_index, byte[] data_array)
+        {
+            bool ret_value = false;
+
+            // prepare and send get_value 
+            int PACKET_INDEX = (int)cmd_index;
+            int packet_len = Command_Packet[PACKET_INDEX].Length;
+            for (int index = 0; index < data_array.Length; index++)
+            {
+                Command_Packet[PACKET_INDEX][index + 4] = data_array[index];
+            }
+            Command_Packet[PACKET_INDEX][packet_len - 1] = XOR_Byte(Command_Packet[PACKET_INDEX], (packet_len - 1));
+            serialPort1.Write(Command_Packet[PACKET_INDEX], 0, packet_len);
+
+            // wait until packet received
+            flag_wait_for_receive = true;
+            while (flag_wait_for_receive) { }
+
+            if (dataListbyte.Count() > 0)
+            {
+                ret_value = true;
+            }
+
+            return ret_value;
+        }
+
         private int Set_Backlight_value(byte set_value)
         {
             int check_packet = 0xff;
@@ -217,16 +260,9 @@ namespace Hotspring
                 // error handling
             }
 
-            // prepare and send get_value 
-            int PACKET_INDEX = (int)command_index.BACKLIGHT_INDEX;
-            int packet_len = Set_Value_Packet[PACKET_INDEX].Length;
-            Set_Value_Packet[PACKET_INDEX][packet_len - 2] = set_value;
-            Set_Value_Packet[PACKET_INDEX][packet_len - 1] = XOR_Byte(Set_Value_Packet[PACKET_INDEX], (packet_len - 1));
-            serialPort1.Write(Set_Value_Packet[PACKET_INDEX], 0, packet_len);
-
-            // wait until packet received
-            flag_wait_for_receive = true;
-            while (flag_wait_for_receive) { }
+            byte []input_data = new byte[1];
+            input_data[0] = set_value;
+            Send_and_Receive_Packet(command_index.SET_BACKLIGHT_INDEX, input_data);
 
             if (dataListbyte.Count() > 0)
             {
@@ -240,15 +276,9 @@ namespace Hotspring
             bool ret_value = false;
             return_value = 0;
 
-            // prepare and send get_value 
-            int PACKET_INDEX = (int)command_index.BACKLIGHT_INDEX;
-            int packet_len = Get_Value_Packet[PACKET_INDEX].Length;
-            Get_Value_Packet[PACKET_INDEX][packet_len - 1] = XOR_Byte(Get_Value_Packet[PACKET_INDEX], (packet_len - 1));
-            serialPort1.Write(Get_Value_Packet[PACKET_INDEX], 0, packet_len);
-
-            // wait until packet received
-            flag_wait_for_receive = true;
-            while (flag_wait_for_receive) { }
+            byte[] input_data = new byte[0];
+            //input_data[0] = set_value;
+            Send_and_Receive_Packet(command_index.GET_BACKLIGHT_INDEX, input_data);
 
             // 檢查封包是否回傳正確的value.
             if (dataListbyte.Count() > 0)
@@ -271,7 +301,7 @@ namespace Hotspring
         private bool Parse_backlight_packet(List<byte>input_packet, out byte return_value)
         {
             // update here
-            int PACKET_INDEX = (int)command_index.BACKLIGHT_INDEX;
+            int PACKET_INDEX = (int)command_index_old.BACKLIGHT_INDEX;
 
             bool ret_value = true;
             return_value = 0;
@@ -306,9 +336,9 @@ namespace Hotspring
             }
 
             // prepare and send get_value 
-            int PACKET_INDEX = (int)command_index.BACKLIGHT_INDEX;
+            int PACKET_INDEX = (int)command_index_old.RGB_GAIN_INDEX;
             int packet_len = Set_Value_Packet[PACKET_INDEX].Length;
-            Set_Value_Packet[PACKET_INDEX][packet_len - 3] = set_value;
+            Set_Value_Packet[PACKET_INDEX][packet_len - 3] = set_select;
             Set_Value_Packet[PACKET_INDEX][packet_len - 2] = set_value;
             Set_Value_Packet[PACKET_INDEX][packet_len - 1] = XOR_Byte(Set_Value_Packet[PACKET_INDEX], (packet_len - 1));
             serialPort1.Write(Set_Value_Packet[PACKET_INDEX], 0, packet_len);
@@ -327,7 +357,7 @@ namespace Hotspring
         private bool Parse_rgb_gain_packet(List<byte> input_packet, out byte r_gain, out byte g_gain, out byte b_gain)
         {
             // update here
-            int PACKET_INDEX = (int)command_index.RGB_GAIN_INDEX;
+            int PACKET_INDEX = (int)command_index_old.RGB_GAIN_INDEX;
 
             bool ret_value = true;
             r_gain = g_gain = b_gain = 0;
@@ -355,7 +385,7 @@ namespace Hotspring
         private bool Parse_rgb_gain_packet(List<byte> input_packet, out byte []rgb_gain)
         {
             // update here
-            int PACKET_INDEX = (int)command_index.RGB_GAIN_INDEX;
+            int PACKET_INDEX = (int)command_index_old.RGB_GAIN_INDEX;
 
             bool ret_value = true;
             rgb_gain = new byte[3];
