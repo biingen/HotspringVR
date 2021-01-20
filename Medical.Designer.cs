@@ -40,8 +40,13 @@
             this.numericUpDown_maininput = new System.Windows.Forms.NumericUpDown();
             this.button_maininput_get = new System.Windows.Forms.Button();
             this.label_maininput_show = new System.Windows.Forms.Label();
+            this.label_sensor_show = new System.Windows.Forms.Label();
+            this.button_backlight_sensor_get = new System.Windows.Forms.Button();
+            this.button_thermal_sensor_get = new System.Windows.Forms.Button();
+            this.numericUpDown_thermal = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_rgbgain_set)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_maininput)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_thermal)).BeginInit();
             this.SuspendLayout();
             // 
             // hScrollBar_backlight_set
@@ -149,11 +154,56 @@
             this.label_maininput_show.TabIndex = 9;
             this.label_maininput_show.Text = "0";
             // 
+            // label_sensor_show
+            // 
+            this.label_sensor_show.AutoSize = true;
+            this.label_sensor_show.Location = new System.Drawing.Point(12, 131);
+            this.label_sensor_show.Name = "label_sensor_show";
+            this.label_sensor_show.Size = new System.Drawing.Size(11, 12);
+            this.label_sensor_show.TabIndex = 11;
+            this.label_sensor_show.Text = "0";
+            // 
+            // button_backlight_sensor_get
+            // 
+            this.button_backlight_sensor_get.Location = new System.Drawing.Point(89, 126);
+            this.button_backlight_sensor_get.Name = "button_backlight_sensor_get";
+            this.button_backlight_sensor_get.Size = new System.Drawing.Size(78, 23);
+            this.button_backlight_sensor_get.TabIndex = 12;
+            this.button_backlight_sensor_get.Text = "Get Backlight";
+            this.button_backlight_sensor_get.UseVisualStyleBackColor = true;
+            this.button_backlight_sensor_get.Click += new System.EventHandler(this.button_backlight_sensor_get_Click);
+            // 
+            // button_thermal_sensor_get
+            // 
+            this.button_thermal_sensor_get.Location = new System.Drawing.Point(234, 126);
+            this.button_thermal_sensor_get.Name = "button_thermal_sensor_get";
+            this.button_thermal_sensor_get.Size = new System.Drawing.Size(73, 23);
+            this.button_thermal_sensor_get.TabIndex = 13;
+            this.button_thermal_sensor_get.Text = "Get Thermal";
+            this.button_thermal_sensor_get.UseVisualStyleBackColor = true;
+            this.button_thermal_sensor_get.Click += new System.EventHandler(this.button_thermal_sensor_get_Click);
+            // 
+            // numericUpDown_thermal
+            // 
+            this.numericUpDown_thermal.Location = new System.Drawing.Point(190, 126);
+            this.numericUpDown_thermal.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDown_thermal.Name = "numericUpDown_thermal";
+            this.numericUpDown_thermal.Size = new System.Drawing.Size(38, 22);
+            this.numericUpDown_thermal.TabIndex = 14;
+            // 
             // Medical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(319, 286);
+            this.Controls.Add(this.numericUpDown_thermal);
+            this.Controls.Add(this.button_thermal_sensor_get);
+            this.Controls.Add(this.button_backlight_sensor_get);
+            this.Controls.Add(this.label_sensor_show);
             this.Controls.Add(this.button_maininput_get);
             this.Controls.Add(this.label_maininput_show);
             this.Controls.Add(this.numericUpDown_maininput);
@@ -168,6 +218,7 @@
             this.Text = "Medical";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_rgbgain_set)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_maininput)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_thermal)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -186,5 +237,9 @@
         private System.Windows.Forms.NumericUpDown numericUpDown_maininput;
         private System.Windows.Forms.Button button_maininput_get;
         private System.Windows.Forms.Label label_maininput_show;
+        private System.Windows.Forms.Label label_sensor_show;
+        private System.Windows.Forms.Button button_backlight_sensor_get;
+        private System.Windows.Forms.Button button_thermal_sensor_get;
+        private System.Windows.Forms.NumericUpDown numericUpDown_thermal;
     }
 }

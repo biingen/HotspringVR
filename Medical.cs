@@ -118,13 +118,16 @@ namespace Hotspring
             return value;
         }
 
+
         enum command_index_old
         {
             BACKLIGHT_INDEX = 0,
             RGB_GAIN_INDEX,
             GET_MAIN_INPUT_INDEX,
+            GET_BACKLIGHT_SENSOR_INDEX,
+            GET_THERMAL_SENSOR_INDEX,
         }
-
+/*
         byte[][] Set_Value_Packet =
         {
             new byte[] { 0x06, 0x01, 0xE0, 0x00, 0xff, 0xFF },              /// BACKLIGHT_INDEX
@@ -135,14 +138,15 @@ namespace Hotspring
             new byte[] { 0x05, 0x01, 0xE0, 0x01, 0xFF },          /// BACKLIGHT_INDEX
             new byte[] { 0x05, 0x00, 0xE0, 0x0D, 0xFF },          /// RGB_GAIN_INDEX
        };
-
+*/
         byte[][] Parsing_Packet =
         {
             new byte[] { 0x06, 0x01, 0xE0, 0x01 },          /// BACKLIGHT_INDEX
             new byte[] { 0x08, 0x00, 0xE0, 0x0D },          /// RGB_GAIN_INDEX
-            new byte[] { 0x06, 0x01, 0xE0, 0x12 },              		///GET_MAIN_INPUT_INDEX,
+            new byte[] { 0x06, 0x01, 0xE0, 0x12 },          /// GET_MAIN_INPUT_INDEX,
+            new byte[] { 0x07, 0x01, 0xE0, 0x07 },          /// GET_BACKLIGHT_SENSOR_INDEX
+            new byte[] { 0x09, 0x01, 0xE0, 0x08 },          /// GET_THERMAL_SENSOR_INDEX,
        };
-
 
         private bool CheckSerialOpen()
         {
@@ -306,6 +310,84 @@ namespace Hotspring
             //new byte[] { 0xff, 0x00, 0xE0, 0x07, 0xff, 0xff, 0xff },      ///GET_BENQ_EEPROM_INDEX,
         };
         // copy to mei
+
+        byte[][] Parsing_Packet_new =
+       {
+            //// Calibration Command
+            new byte [] { }, //SET_GAMMA_INDEX = 0,
+            //GET_GAMMA_INDEX,
+            ////SET_OUTPUT_GAMMA_TABLE_INDEX,
+            //GET_OUTPUT_GAMMA_TABLE_INDEX,
+            //SET_COLOR_GAMUT_INDEX,
+            //GET_COLOR_GAMUT_INDEX,
+            ////SET_INPUT_GAMMA_TABLE_INDEX,
+            //GET_INPUT_GAMMA_TABLE_INDEX,
+            ////SET_PCM_MARTIX_TABLE_INDEX,
+            //GET_PCM_MARTIX_TABLE_INDEX,
+            //SET_COLOR_TEMP_INDEX,
+            //GET_COLOR_TEMP_INDEX,
+            //SET_RGB_GAIN_INDEX,
+            //GET_RGB_GAIN_INDEX,
+            
+            //// Control Command
+            //SET_BACKLIGHT_INDEX,
+             new byte[] { 0x06, 0x01, 0xE0, 0x01 },  //GET_BACKLIGHT_INDEX,
+            //SET_PQ_ONOFF_INDEX,
+            //SET_INTERNAL_PATTERN_INDEX,
+            //SET_PATTERN_RGB_INDEX,
+            //SET_SHARPNESS_INDEX,
+            //GET_SHARPNESS_INDEX,
+            //GET_BACKLIGHT_SENSOR_INDEX,
+            //GET_THERMAL_SENSOR_INDEX,
+            //SET_SPI_PORT_INDEX,
+            //GET_SPI_PORT_INDEX,
+            //SET_UART_PORT_INDEX,
+            //GET_UART_PORT_INDEX,
+            //SET_BRIGHTNESS_INDEX,
+            //GET_BRIGHTNESS_INDEX,
+            //SET_CONTRAST_INDEX,
+            //GET_CONTRAST_INDEX,
+            //SET_MAIN_INPUT_INDEX,
+            //GET_MAIN_INPUT_INDEX,
+            //SET_SUB_INPUT_INDEX,
+            //GET_SUB_INPUT_INDEX,
+            //SET_PIP_MODE_INDEX,
+            //GET_PIP_MODE_INDEX,
+            
+            //// Write Data Command
+            //GET_SCALER_TYPE_INDEX,
+            ////SET_MODEL_NAME_INDEX,
+            //GET_MODEL_NAME_INDEX,
+            ////SET_EDID_INDEX,
+            //GET_EDID_INDEX,
+            ////SET_HDCP14_INDEX,
+            //GET_HDCP14_INDEX,
+            ////SET_HDCP2x_INDEX,
+            //GET_HDCP2x_INDEX,
+            ////SET_SERIAL_NUMBER_INDEX,
+            //GET_SERIAL_NUMBER_INDEX,
+            //GET_FW_VERSION_INDEX,
+            //GET_FAC_EEPROM_DATA_INDEX,
+            
+            //// BenQ Command
+            ////SET_BENQ_MODEL_NAME_INDEX,
+            ////SET_BENQ_SERIAL_NAME_INDEX,
+            ////SET_BENQ_FW_VERSION_INDEX,
+            ////SET_BENQ_MONITOR_ID_INDEX,
+            ////SET_BENQ_DNA_VERSION_INDEX,
+            ////SET_BENQ_MANUFACTURE_YEARANDDATE_INDEX,
+            ////SET_BENQ_EEPROM_INIT_INDEX,
+            ////GET_BENQ_EEPROM_INDEX,
+
+
+
+            //new byte[] { 0x06, 0x01, 0xE0, 0x01 },          /// BACKLIGHT_INDEX
+           // new byte[] { 0x08, 0x00, 0xE0, 0x0D },          /// RGB_GAIN_INDEX
+           // new byte[] { 0x06, 0x01, 0xE0, 0x12 },          /// GET_MAIN_INPUT_INDEX,
+           // new byte[] { 0x07, 0x01, 0xE0, 0x07 },          /// GET_BACKLIGHT_SENSOR_INDEX
+          //  new byte[] { 0x07, 0x01, 0xE0, 0x08 },          /// GET_THERMAL_SENSOR_INDEX,
+       };
+
 
         private bool Send_and_Receive_Packet(command_index cmd_index, byte[] data_array)
         {
@@ -628,6 +710,152 @@ namespace Hotspring
             return ret_value;
         }
 
+        private bool Get_Backlight_sensor_value(out int return_value)  // update here
+        {
+            int cmd_index = (int)command_index.GET_BACKLIGHT_SENSOR_INDEX; // update index here
+            bool ret_value = false;
+            return_value = 0;
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+            //input_data[0] = set_value;
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+
+                // update parsing here
+                if (Parse_backlight_sensor_packet(log_analysis, out return_value) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
+            return ret_value;
+        }
+
+        // update out byte/int16/uint32/.....
+        private bool Parse_backlight_sensor_packet(List<byte> input_packet, out int return_value)
+        {
+            bool ret_value;
+            byte [] return_byte_array = new byte[2];
+            ret_value = Parse_backlight_sensor_packet(input_packet, out return_byte_array);
+            return_value = (int)return_byte_array[0] * 256 + return_byte_array[1];
+            return ret_value;
+        }
+
+        private bool Parse_backlight_sensor_packet(List<byte> input_packet, out byte [] return_value)
+        {
+            // update here
+            int PACKET_INDEX = (int)command_index_old.GET_BACKLIGHT_SENSOR_INDEX;
+
+            bool ret_value = true;
+            return_value = new byte [2];
+
+            for (int index = 0; index < Parsing_Packet[PACKET_INDEX].Length; index++)
+            {
+                if (input_packet.ElementAt(index) != Parsing_Packet[PACKET_INDEX][index])
+                {
+                    ret_value = false;
+                    break;
+                }
+            }
+
+            if (ret_value == true)
+            {
+                // update here
+                return_value[0] = input_packet.ElementAt(4);
+                return_value[1] = input_packet.ElementAt(5);
+            }
+
+            return ret_value;
+        }
+
+        private bool Get_Thermal_sensor_value(byte set_value, out int sensor1, out int sensor2)  // update here
+        {
+            int cmd_index = (int)command_index.GET_THERMAL_SENSOR_INDEX; // update index here
+            bool ret_value = false;
+            if (set_value > 1)        // update range check
+            {
+                // error handling
+            }
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+
+            byte[] input_data = new byte[input_data_length];
+            sensor1 = 0;
+            sensor2 = 0;
+
+            //new byte[] { 0x06, 0x01, 0xE0, 0x08, 0xff, 0xff },              ///GET_THERMAL_SENSOR_INDEX,
+            Command_Packet[cmd_index][4] = set_value;
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+
+                // update parsing here
+                if (Parse_thermal_sensor_packet(log_analysis, out sensor1, out sensor2) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
+            return ret_value;
+        }
+
+        // update out byte/int16/uint32/.....
+        private bool Parse_thermal_sensor_packet(List<byte> input_packet, out int return_value_1, out int return_value_2)
+        {
+            bool ret_value;
+            byte[] return_byte_array = new byte[4];
+            ret_value = Parse_thermal_sensor_packet(input_packet, out return_byte_array);
+            return_value_1 = (int)return_byte_array[0] * 256 + return_byte_array[1];
+            return_value_2 = (int)return_byte_array[2] * 256 + return_byte_array[3];
+            return ret_value;
+        }
+
+        // update out byte/int16/uint32/.....
+        private bool Parse_thermal_sensor_packet(List<byte> input_packet, out byte [] return_value)
+        {
+            // update here
+            int PACKET_INDEX = (int)command_index_old.GET_THERMAL_SENSOR_INDEX;
+
+            bool ret_value = true;
+            return_value = new byte [4];
+
+            for (int index = 0; index < Parsing_Packet[PACKET_INDEX].Length; index++)
+            {
+                if (input_packet.ElementAt(index) != Parsing_Packet[PACKET_INDEX][index])
+                {
+                    ret_value = false;
+                    break;
+                }
+            }
+
+            if (ret_value == true)
+            {
+                // update here
+                return_value[0] = input_packet.ElementAt(4);
+                return_value[1] = input_packet.ElementAt(5);
+                return_value[2] = input_packet.ElementAt(6);
+                return_value[3] = input_packet.ElementAt(7);
+            }
+
+            return ret_value;
+        }
+
         private string Check_value_packet()
         {
             string value = "No data";
@@ -915,6 +1143,39 @@ namespace Hotspring
                         break;
                 }
                 label_maininput_show.Text = return_text;
+            }
+        }
+
+        private void button_backlight_sensor_get_Click(object sender, EventArgs e)
+        {
+            int sensor_value = 0;
+
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            if (Get_Backlight_sensor_value(out sensor_value) == true)
+            {
+                label_sensor_show.Text = sensor_value.ToString();
+            }
+        }
+
+        private void button_thermal_sensor_get_Click(object sender, EventArgs e)
+        {
+            int sensor_value_1 = 0;
+            int sensor_value_2 = 0;
+
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            if (Get_Thermal_sensor_value((byte)numericUpDown_maininput.Value,out sensor_value_1, out sensor_value_2) == true)
+            {
+                label_sensor_show.Text = sensor_value_1 + "," + sensor_value_2;
             }
         }
     }
