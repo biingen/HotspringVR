@@ -139,7 +139,7 @@ namespace Hotspring
             new byte[] { 0x05, 0x00, 0xE0, 0x0D, 0xFF },          /// RGB_GAIN_INDEX
        };
 */
-        byte[][] Parsing_Packet =
+        byte[][] Parsing_Packet_old =
         {
             new byte[] { 0x06, 0x01, 0xE0, 0x01 },          /// BACKLIGHT_INDEX
             new byte[] { 0x08, 0x00, 0xE0, 0x0D },          /// RGB_GAIN_INDEX
@@ -311,81 +311,73 @@ namespace Hotspring
         };
         // copy to mei
 
-        byte[][] Parsing_Packet_new =
-       {
+        byte[][] Parsing_Packet =
+        {
             //// Calibration Command
             new byte [] { }, //SET_GAMMA_INDEX = 0,
-            //GET_GAMMA_INDEX,
-            ////SET_OUTPUT_GAMMA_TABLE_INDEX,
-            //GET_OUTPUT_GAMMA_TABLE_INDEX,
-            //SET_COLOR_GAMUT_INDEX,
-            //GET_COLOR_GAMUT_INDEX,
-            ////SET_INPUT_GAMMA_TABLE_INDEX,
-            //GET_INPUT_GAMMA_TABLE_INDEX,
-            ////SET_PCM_MARTIX_TABLE_INDEX,
-            //GET_PCM_MARTIX_TABLE_INDEX,
-            //SET_COLOR_TEMP_INDEX,
-            //GET_COLOR_TEMP_INDEX,
-            //SET_RGB_GAIN_INDEX,
-            //GET_RGB_GAIN_INDEX,
+            new byte [] { }, //GET_GAMMA_INDEX,
+            //new byte [] { }, //SET_OUTPUT_GAMMA_TABLE_INDEX,
+            new byte [] { }, //GET_OUTPUT_GAMMA_TABLE_INDEX,
+            new byte [] { }, //SET_COLOR_GAMUT_INDEX,
+            new byte [] { }, //GET_COLOR_GAMUT_INDEX,
+            //new byte [] { }, //SET_INPUT_GAMMA_TABLE_INDEX,
+            new byte [] { }, //GET_INPUT_GAMMA_TABLE_INDEX,
+            new byte [] { }, ////SET_PCM_MARTIX_TABLE_INDEX,
+            new byte [] { }, //GET_PCM_MARTIX_TABLE_INDEX,
+            new byte [] { }, //SET_COLOR_TEMP_INDEX,
+            new byte [] { }, //GET_COLOR_TEMP_INDEX,
+            new byte [] { }, //SET_RGB_GAIN_INDEX,
+            new byte [] { 0x08, 0x00, 0xE0, 0x0D }, //GET_RGB_GAIN_INDEX,
             
             //// Control Command
-            //SET_BACKLIGHT_INDEX,
-             new byte[] { 0x06, 0x01, 0xE0, 0x01 },  //GET_BACKLIGHT_INDEX,
-            //SET_PQ_ONOFF_INDEX,
-            //SET_INTERNAL_PATTERN_INDEX,
-            //SET_PATTERN_RGB_INDEX,
-            //SET_SHARPNESS_INDEX,
-            //GET_SHARPNESS_INDEX,
-            //GET_BACKLIGHT_SENSOR_INDEX,
-            //GET_THERMAL_SENSOR_INDEX,
-            //SET_SPI_PORT_INDEX,
-            //GET_SPI_PORT_INDEX,
-            //SET_UART_PORT_INDEX,
-            //GET_UART_PORT_INDEX,
-            //SET_BRIGHTNESS_INDEX,
-            //GET_BRIGHTNESS_INDEX,
-            //SET_CONTRAST_INDEX,
-            //GET_CONTRAST_INDEX,
-            //SET_MAIN_INPUT_INDEX,
-            //GET_MAIN_INPUT_INDEX,
-            //SET_SUB_INPUT_INDEX,
-            //GET_SUB_INPUT_INDEX,
-            //SET_PIP_MODE_INDEX,
-            //GET_PIP_MODE_INDEX,
+            new byte [] { }, //SET_BACKLIGHT_INDEX,
+            new byte [] { 0x06, 0x01, 0xE0, 0x01 },  //GET_BACKLIGHT_INDEX,
+            new byte [] { }, //SET_PQ_ONOFF_INDEX,
+            new byte [] { }, //SET_INTERNAL_PATTERN_INDEX,
+            new byte [] { }, //SET_PATTERN_RGB_INDEX,
+            new byte [] { }, //SET_SHARPNESS_INDEX,
+            new byte [] { }, //GET_SHARPNESS_INDEX,
+            new byte [] { 0x07, 0x01, 0xE0, 0x07 }, //GET_BACKLIGHT_SENSOR_INDEX,
+            new byte [] { 0x07, 0x01, 0xE0, 0x08 }, //GET_THERMAL_SENSOR_INDEX,
+            new byte [] { }, //SET_SPI_PORT_INDEX,
+            new byte [] { }, //GET_SPI_PORT_INDEX,
+            new byte [] { }, //SET_UART_PORT_INDEX,
+            new byte [] { }, //GET_UART_PORT_INDEX,
+            new byte [] { }, //SET_BRIGHTNESS_INDEX,
+            new byte [] { }, //GET_BRIGHTNESS_INDEX,
+            new byte [] { }, //SET_CONTRAST_INDEX,
+            new byte [] { }, //GET_CONTRAST_INDEX,
+            new byte [] { }, //SET_MAIN_INPUT_INDEX,
+            new byte [] { 0x06, 0x01, 0xE0, 0x12 }, //GET_MAIN_INPUT_INDEX,
+            new byte [] { }, //SET_SUB_INPUT_INDEX,
+            new byte [] { }, //GET_SUB_INPUT_INDEX,
+            new byte [] { }, //SET_PIP_MODE_INDEX,
+            new byte [] { }, //GET_PIP_MODE_INDEX,
             
-            //// Write Data Command
-            //GET_SCALER_TYPE_INDEX,
-            ////SET_MODEL_NAME_INDEX,
-            //GET_MODEL_NAME_INDEX,
-            ////SET_EDID_INDEX,
-            //GET_EDID_INDEX,
-            ////SET_HDCP14_INDEX,
-            //GET_HDCP14_INDEX,
-            ////SET_HDCP2x_INDEX,
-            //GET_HDCP2x_INDEX,
-            ////SET_SERIAL_NUMBER_INDEX,
-            //GET_SERIAL_NUMBER_INDEX,
-            //GET_FW_VERSION_INDEX,
-            //GET_FAC_EEPROM_DATA_INDEX,
+            //new byte [] { }, // Write Data Command
+            new byte [] { }, //GET_SCALER_TYPE_INDEX,
+            //new byte [] { }, //SET_MODEL_NAME_INDEX,
+            new byte [] { }, //GET_MODEL_NAME_INDEX,
+            //new byte [] { }, //SET_EDID_INDEX,
+            new byte [] { }, //GET_EDID_INDEX,
+            //new byte [] { }, //SET_HDCP14_INDEX,
+            new byte [] { }, //GET_HDCP14_INDEX,
+            //new byte [] { }, //SET_HDCP2x_INDEX,
+            new byte [] { }, //GET_HDCP2x_INDEX,
+            //new byte [] { }, //SET_SERIAL_NUMBER_INDEX,
+            new byte [] { }, //GET_SERIAL_NUMBER_INDEX,
+            new byte [] { }, //GET_FW_VERSION_INDEX,
+            new byte [] { }, //GET_FAC_EEPROM_DATA_INDEX,
             
             //// BenQ Command
-            ////SET_BENQ_MODEL_NAME_INDEX,
-            ////SET_BENQ_SERIAL_NAME_INDEX,
-            ////SET_BENQ_FW_VERSION_INDEX,
-            ////SET_BENQ_MONITOR_ID_INDEX,
-            ////SET_BENQ_DNA_VERSION_INDEX,
-            ////SET_BENQ_MANUFACTURE_YEARANDDATE_INDEX,
-            ////SET_BENQ_EEPROM_INIT_INDEX,
-            ////GET_BENQ_EEPROM_INDEX,
-
-
-
-            //new byte[] { 0x06, 0x01, 0xE0, 0x01 },          /// BACKLIGHT_INDEX
-           // new byte[] { 0x08, 0x00, 0xE0, 0x0D },          /// RGB_GAIN_INDEX
-           // new byte[] { 0x06, 0x01, 0xE0, 0x12 },          /// GET_MAIN_INPUT_INDEX,
-           // new byte[] { 0x07, 0x01, 0xE0, 0x07 },          /// GET_BACKLIGHT_SENSOR_INDEX
-          //  new byte[] { 0x07, 0x01, 0xE0, 0x08 },          /// GET_THERMAL_SENSOR_INDEX,
+            //new byte [] { }, //SET_BENQ_MODEL_NAME_INDEX,
+            //new byte [] { }, //SET_BENQ_SERIAL_NAME_INDEX,
+            //new byte [] { }, //SET_BENQ_FW_VERSION_INDEX,
+            //new byte [] { }, //SET_BENQ_MONITOR_ID_INDEX,
+            //new byte [] { }, //SET_BENQ_DNA_VERSION_INDEX,
+            //new byte [] { }, //SET_BENQ_MANUFACTURE_YEARANDDATE_INDEX,
+            //new byte [] { }, //SET_BENQ_EEPROM_INIT_INDEX,
+            //new byte [] { }, //GET_BENQ_EEPROM_INDEX,
        };
 
 
