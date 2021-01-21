@@ -1331,5 +1331,167 @@ namespace Hotspring
 
             return ret_value;
         }
+
+        private void numericUpDown_colortemp_set_ValueChanged(object sender, EventArgs e)
+        {
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            // update here
+            int check_packet = Set_colortemp_value((byte)numericUpDown_colortemp_set.Value);        // update here
+
+            string return_text = "";
+            switch (check_packet)
+            {
+                case 0:
+                    return_text = "No data";
+                    break;
+                case 1:
+                    return_text = "ACK";
+                    break;
+                case 2:
+                    return_text = "NACK";
+                    break;
+                case 3:
+                    return_text = "NAV";
+                    break;
+            }
+            // update here
+            label_colortemp_show.Text = return_text;            
+        }
+
+        private void button_colortemp_get_Click(object sender, EventArgs e)
+        {
+            byte colortemp_value;
+
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            // update here
+            if (Get_colortemp_value(out colortemp_value) == true)           
+            {
+                string return_text = "";
+                switch (colortemp_value)    // update here
+                {
+                    case 0:
+                        return_text = "DCI-P3";
+                        break;
+                    case 1:
+                        return_text = "5500K";
+                        break;
+                    case 2:
+                        return_text = "6500K";
+                        break;
+                    case 3:
+                        return_text = "7500K";
+                        break;
+                    case 4:
+                        return_text = "9300K";
+                        break;
+                    case 5:
+                        return_text = "User";
+                        break;
+                    case 6:
+                        return_text = "Natural";
+                        break;
+                }
+                // update here
+                label_colortemp_show.Text = return_text;            
+            }
+        }
+
+        // update here
+        private int Set_colortemp_value(byte set_value)
+        {
+            // update index here
+            int cmd_index = (int)command_index.SET_COLOR_TEMP_INDEX;
+
+            // update range check
+            if (set_value > 7)        
+            {
+                // error handling
+            }
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+
+            // Update input data
+            input_data[0] = set_value;
+
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            int check_packet = 0xff;
+            if (dataListbyte.Count() > 0)
+            {
+                check_packet = check_Ack_packet();
+            }
+            return check_packet;
+        }
+
+        // update here
+        private bool Get_colortemp_value(out byte return_value)
+        {
+            // update index here
+            int cmd_index = (int)command_index.GET_COLOR_TEMP_INDEX; 
+            bool ret_value = false;
+            // update here
+            return_value = 0;       
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+            //input_data[0] = set_value;
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+
+                // update parsing here
+                if (Parse_colortemp_packet(log_analysis, out return_value) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
+            return ret_value;
+        }
+
+        // update here
+        private bool Parse_colortemp_packet(List<byte> input_packet, out byte return_value)
+        {
+            // update here
+            int PACKET_INDEX = (int)command_index.GET_COLOR_TEMP_INDEX;
+
+            bool ret_value = true;
+            return_value = 0;
+
+            for (int index = 0; index < Parsing_Packet[PACKET_INDEX].Length; index++)
+            {
+                if (input_packet.ElementAt(index) != Parsing_Packet[PACKET_INDEX][index])
+                {
+                    ret_value = false;
+                    break;
+                }
+            }
+
+            if (ret_value == true)
+            {
+                // update here
+                return_value = input_packet.ElementAt(4);
+            }
+
+            return ret_value;
+        }
     }
 }

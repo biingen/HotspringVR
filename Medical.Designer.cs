@@ -47,16 +47,20 @@
             this.button_gamma_get = new System.Windows.Forms.Button();
             this.label_gamma_show = new System.Windows.Forms.Label();
             this.numericUpDown_gamma_set = new System.Windows.Forms.NumericUpDown();
+            this.button_colortemp_get = new System.Windows.Forms.Button();
+            this.label_colortemp_show = new System.Windows.Forms.Label();
+            this.numericUpDown_colortemp_set = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_rgbgain_set)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_maininput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_thermal)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_gamma_set)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_colortemp_set)).BeginInit();
             this.SuspendLayout();
             // 
             // hScrollBar_backlight_set
             // 
             this.hScrollBar_backlight_set.LargeChange = 1;
-            this.hScrollBar_backlight_set.Location = new System.Drawing.Point(13, 95);
+            this.hScrollBar_backlight_set.Location = new System.Drawing.Point(13, 185);
             this.hScrollBar_backlight_set.Maximum = 150;
             this.hScrollBar_backlight_set.Minimum = -50;
             this.hScrollBar_backlight_set.Name = "hScrollBar_backlight_set";
@@ -68,7 +72,7 @@
             // label_backlight_show
             // 
             this.label_backlight_show.AutoSize = true;
-            this.label_backlight_show.Location = new System.Drawing.Point(206, 98);
+            this.label_backlight_show.Location = new System.Drawing.Point(206, 188);
             this.label_backlight_show.Name = "label_backlight_show";
             this.label_backlight_show.Size = new System.Drawing.Size(11, 12);
             this.label_backlight_show.TabIndex = 2;
@@ -76,7 +80,7 @@
             // 
             // button_backlight_get
             // 
-            this.button_backlight_get.Location = new System.Drawing.Point(271, 94);
+            this.button_backlight_get.Location = new System.Drawing.Point(271, 184);
             this.button_backlight_get.Name = "button_backlight_get";
             this.button_backlight_get.Size = new System.Drawing.Size(38, 23);
             this.button_backlight_get.TabIndex = 3;
@@ -87,7 +91,7 @@
             // hScrollBar_rgbgain_set
             // 
             this.hScrollBar_rgbgain_set.LargeChange = 1;
-            this.hScrollBar_rgbgain_set.Location = new System.Drawing.Point(54, 61);
+            this.hScrollBar_rgbgain_set.Location = new System.Drawing.Point(55, 76);
             this.hScrollBar_rgbgain_set.Maximum = 255;
             this.hScrollBar_rgbgain_set.Name = "hScrollBar_rgbgain_set";
             this.hScrollBar_rgbgain_set.Size = new System.Drawing.Size(132, 17);
@@ -98,7 +102,7 @@
             // label_rgbgain_show
             // 
             this.label_rgbgain_show.AutoSize = true;
-            this.label_rgbgain_show.Location = new System.Drawing.Point(205, 62);
+            this.label_rgbgain_show.Location = new System.Drawing.Point(206, 77);
             this.label_rgbgain_show.Name = "label_rgbgain_show";
             this.label_rgbgain_show.Size = new System.Drawing.Size(11, 12);
             this.label_rgbgain_show.TabIndex = 6;
@@ -106,7 +110,7 @@
             // 
             // button_rgbgain_get
             // 
-            this.button_rgbgain_get.Location = new System.Drawing.Point(271, 59);
+            this.button_rgbgain_get.Location = new System.Drawing.Point(272, 74);
             this.button_rgbgain_get.Name = "button_rgbgain_get";
             this.button_rgbgain_get.Size = new System.Drawing.Size(38, 23);
             this.button_rgbgain_get.TabIndex = 7;
@@ -116,7 +120,7 @@
             // 
             // numericUpDown_rgbgain_set
             // 
-            this.numericUpDown_rgbgain_set.Location = new System.Drawing.Point(13, 59);
+            this.numericUpDown_rgbgain_set.Location = new System.Drawing.Point(14, 74);
             this.numericUpDown_rgbgain_set.Maximum = new decimal(new int[] {
             2,
             0,
@@ -128,7 +132,7 @@
             // 
             // numericUpDown_maininput
             // 
-            this.numericUpDown_maininput.Location = new System.Drawing.Point(13, 213);
+            this.numericUpDown_maininput.Location = new System.Drawing.Point(13, 218);
             this.numericUpDown_maininput.Maximum = new decimal(new int[] {
             7,
             0,
@@ -141,7 +145,7 @@
             // 
             // button_maininput_get
             // 
-            this.button_maininput_get.Location = new System.Drawing.Point(271, 213);
+            this.button_maininput_get.Location = new System.Drawing.Point(271, 218);
             this.button_maininput_get.Name = "button_maininput_get";
             this.button_maininput_get.Size = new System.Drawing.Size(38, 23);
             this.button_maininput_get.TabIndex = 10;
@@ -152,7 +156,7 @@
             // label_maininput_show
             // 
             this.label_maininput_show.AutoSize = true;
-            this.label_maininput_show.Location = new System.Drawing.Point(205, 216);
+            this.label_maininput_show.Location = new System.Drawing.Point(205, 221);
             this.label_maininput_show.Name = "label_maininput_show";
             this.label_maininput_show.Size = new System.Drawing.Size(11, 12);
             this.label_maininput_show.TabIndex = 9;
@@ -231,11 +235,46 @@
             this.numericUpDown_gamma_set.TabIndex = 15;
             this.numericUpDown_gamma_set.ValueChanged += new System.EventHandler(this.numericUpDown_gamma_set_ValueChanged);
             // 
+            // button_colortemp_get
+            // 
+            this.button_colortemp_get.Location = new System.Drawing.Point(272, 48);
+            this.button_colortemp_get.Name = "button_colortemp_get";
+            this.button_colortemp_get.Size = new System.Drawing.Size(38, 23);
+            this.button_colortemp_get.TabIndex = 20;
+            this.button_colortemp_get.Text = "Get";
+            this.button_colortemp_get.UseVisualStyleBackColor = true;
+            this.button_colortemp_get.Click += new System.EventHandler(this.button_colortemp_get_Click);
+            // 
+            // label_colortemp_show
+            // 
+            this.label_colortemp_show.AutoSize = true;
+            this.label_colortemp_show.Location = new System.Drawing.Point(206, 51);
+            this.label_colortemp_show.Name = "label_colortemp_show";
+            this.label_colortemp_show.Size = new System.Drawing.Size(11, 12);
+            this.label_colortemp_show.TabIndex = 19;
+            this.label_colortemp_show.Text = "0";
+            // 
+            // numericUpDown_colortemp_set
+            // 
+            this.numericUpDown_colortemp_set.Location = new System.Drawing.Point(14, 48);
+            this.numericUpDown_colortemp_set.Maximum = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+            this.numericUpDown_colortemp_set.Name = "numericUpDown_colortemp_set";
+            this.numericUpDown_colortemp_set.Size = new System.Drawing.Size(120, 22);
+            this.numericUpDown_colortemp_set.TabIndex = 18;
+            this.numericUpDown_colortemp_set.ValueChanged += new System.EventHandler(this.numericUpDown_colortemp_set_ValueChanged);
+            // 
             // Medical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(319, 277);
+            this.Controls.Add(this.button_colortemp_get);
+            this.Controls.Add(this.label_colortemp_show);
+            this.Controls.Add(this.numericUpDown_colortemp_set);
             this.Controls.Add(this.button_gamma_get);
             this.Controls.Add(this.label_gamma_show);
             this.Controls.Add(this.numericUpDown_gamma_set);
@@ -259,6 +298,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_maininput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_thermal)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_gamma_set)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_colortemp_set)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -284,5 +324,8 @@
         private System.Windows.Forms.Button button_gamma_get;
         private System.Windows.Forms.Label label_gamma_show;
         private System.Windows.Forms.NumericUpDown numericUpDown_gamma_set;
+        private System.Windows.Forms.Button button_colortemp_get;
+        private System.Windows.Forms.Label label_colortemp_show;
+        private System.Windows.Forms.NumericUpDown numericUpDown_colortemp_set;
     }
 }
