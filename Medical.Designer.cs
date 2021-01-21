@@ -50,6 +50,9 @@
             this.button_colortemp_get = new System.Windows.Forms.Button();
             this.label_colortemp_show = new System.Windows.Forms.Label();
             this.numericUpDown_colortemp_set = new System.Windows.Forms.NumericUpDown();
+            this.button_sharpness_get = new System.Windows.Forms.Button();
+            this.label_sharpness_show = new System.Windows.Forms.Label();
+            this.hScrollBar_sharpness_set = new System.Windows.Forms.HScrollBar();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_rgbgain_set)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_maininput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_thermal)).BeginInit();
@@ -60,7 +63,7 @@
             // hScrollBar_backlight_set
             // 
             this.hScrollBar_backlight_set.LargeChange = 1;
-            this.hScrollBar_backlight_set.Location = new System.Drawing.Point(13, 185);
+            this.hScrollBar_backlight_set.Location = new System.Drawing.Point(14, 111);
             this.hScrollBar_backlight_set.Maximum = 150;
             this.hScrollBar_backlight_set.Minimum = -50;
             this.hScrollBar_backlight_set.Name = "hScrollBar_backlight_set";
@@ -72,7 +75,7 @@
             // label_backlight_show
             // 
             this.label_backlight_show.AutoSize = true;
-            this.label_backlight_show.Location = new System.Drawing.Point(206, 188);
+            this.label_backlight_show.Location = new System.Drawing.Point(207, 114);
             this.label_backlight_show.Name = "label_backlight_show";
             this.label_backlight_show.Size = new System.Drawing.Size(11, 12);
             this.label_backlight_show.TabIndex = 2;
@@ -80,7 +83,7 @@
             // 
             // button_backlight_get
             // 
-            this.button_backlight_get.Location = new System.Drawing.Point(271, 184);
+            this.button_backlight_get.Location = new System.Drawing.Point(272, 110);
             this.button_backlight_get.Name = "button_backlight_get";
             this.button_backlight_get.Size = new System.Drawing.Size(38, 23);
             this.button_backlight_get.TabIndex = 3;
@@ -122,7 +125,7 @@
             // 
             this.numericUpDown_rgbgain_set.Location = new System.Drawing.Point(14, 74);
             this.numericUpDown_rgbgain_set.Maximum = new decimal(new int[] {
-            2,
+            4,
             0,
             0,
             0});
@@ -134,7 +137,7 @@
             // 
             this.numericUpDown_maininput.Location = new System.Drawing.Point(13, 218);
             this.numericUpDown_maininput.Maximum = new decimal(new int[] {
-            7,
+            10,
             0,
             0,
             0});
@@ -165,7 +168,7 @@
             // label_sensor_show
             // 
             this.label_sensor_show.AutoSize = true;
-            this.label_sensor_show.Location = new System.Drawing.Point(14, 246);
+            this.label_sensor_show.Location = new System.Drawing.Point(15, 168);
             this.label_sensor_show.Name = "label_sensor_show";
             this.label_sensor_show.Size = new System.Drawing.Size(11, 12);
             this.label_sensor_show.TabIndex = 11;
@@ -173,7 +176,7 @@
             // 
             // button_backlight_sensor_get
             // 
-            this.button_backlight_sensor_get.Location = new System.Drawing.Point(91, 241);
+            this.button_backlight_sensor_get.Location = new System.Drawing.Point(92, 163);
             this.button_backlight_sensor_get.Name = "button_backlight_sensor_get";
             this.button_backlight_sensor_get.Size = new System.Drawing.Size(78, 23);
             this.button_backlight_sensor_get.TabIndex = 12;
@@ -183,7 +186,7 @@
             // 
             // button_thermal_sensor_get
             // 
-            this.button_thermal_sensor_get.Location = new System.Drawing.Point(236, 241);
+            this.button_thermal_sensor_get.Location = new System.Drawing.Point(237, 163);
             this.button_thermal_sensor_get.Name = "button_thermal_sensor_get";
             this.button_thermal_sensor_get.Size = new System.Drawing.Size(73, 23);
             this.button_thermal_sensor_get.TabIndex = 13;
@@ -193,7 +196,7 @@
             // 
             // numericUpDown_thermal
             // 
-            this.numericUpDown_thermal.Location = new System.Drawing.Point(192, 241);
+            this.numericUpDown_thermal.Location = new System.Drawing.Point(193, 163);
             this.numericUpDown_thermal.Maximum = new decimal(new int[] {
             1,
             0,
@@ -226,7 +229,7 @@
             // 
             this.numericUpDown_gamma_set.Location = new System.Drawing.Point(14, 21);
             this.numericUpDown_gamma_set.Maximum = new decimal(new int[] {
-            8,
+            10,
             0,
             0,
             0});
@@ -267,11 +270,45 @@
             this.numericUpDown_colortemp_set.TabIndex = 18;
             this.numericUpDown_colortemp_set.ValueChanged += new System.EventHandler(this.numericUpDown_colortemp_set_ValueChanged);
             // 
+            // button_sharpness_get
+            // 
+            this.button_sharpness_get.Location = new System.Drawing.Point(272, 134);
+            this.button_sharpness_get.Name = "button_sharpness_get";
+            this.button_sharpness_get.Size = new System.Drawing.Size(38, 23);
+            this.button_sharpness_get.TabIndex = 23;
+            this.button_sharpness_get.Text = "Get";
+            this.button_sharpness_get.UseVisualStyleBackColor = true;
+            this.button_sharpness_get.Click += new System.EventHandler(this.button_sharpness_get_Click);
+            // 
+            // label_sharpness_show
+            // 
+            this.label_sharpness_show.AutoSize = true;
+            this.label_sharpness_show.Location = new System.Drawing.Point(207, 138);
+            this.label_sharpness_show.Name = "label_sharpness_show";
+            this.label_sharpness_show.Size = new System.Drawing.Size(11, 12);
+            this.label_sharpness_show.TabIndex = 22;
+            this.label_sharpness_show.Text = "0";
+            // 
+            // hScrollBar_sharpness_set
+            // 
+            this.hScrollBar_sharpness_set.LargeChange = 1;
+            this.hScrollBar_sharpness_set.Location = new System.Drawing.Point(14, 135);
+            this.hScrollBar_sharpness_set.Maximum = 6;
+            this.hScrollBar_sharpness_set.Minimum = -2;
+            this.hScrollBar_sharpness_set.Name = "hScrollBar_sharpness_set";
+            this.hScrollBar_sharpness_set.Size = new System.Drawing.Size(173, 17);
+            this.hScrollBar_sharpness_set.TabIndex = 21;
+            this.hScrollBar_sharpness_set.Value = 2;
+            this.hScrollBar_sharpness_set.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar_sharpness_set_Scroll);
+            // 
             // Medical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(319, 277);
+            this.Controls.Add(this.button_sharpness_get);
+            this.Controls.Add(this.label_sharpness_show);
+            this.Controls.Add(this.hScrollBar_sharpness_set);
             this.Controls.Add(this.button_colortemp_get);
             this.Controls.Add(this.label_colortemp_show);
             this.Controls.Add(this.numericUpDown_colortemp_set);
@@ -327,5 +364,8 @@
         private System.Windows.Forms.Button button_colortemp_get;
         private System.Windows.Forms.Label label_colortemp_show;
         private System.Windows.Forms.NumericUpDown numericUpDown_colortemp_set;
+        private System.Windows.Forms.Button button_sharpness_get;
+        private System.Windows.Forms.Label label_sharpness_show;
+        private System.Windows.Forms.HScrollBar hScrollBar_sharpness_set;
     }
 }
