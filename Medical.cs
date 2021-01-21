@@ -118,36 +118,6 @@ namespace Hotspring
             return value;
         }
 
-
-        enum command_index_old
-        {
-            BACKLIGHT_INDEX = 0,
-            RGB_GAIN_INDEX,
-            GET_MAIN_INPUT_INDEX,
-            GET_BACKLIGHT_SENSOR_INDEX,
-            GET_THERMAL_SENSOR_INDEX,
-        }
-/*
-        byte[][] Set_Value_Packet =
-        {
-            new byte[] { 0x06, 0x01, 0xE0, 0x00, 0xff, 0xFF },              /// BACKLIGHT_INDEX
-            new byte[] { 0x07, 0x00, 0xE0, 0x0C, 0xff, 0xff, 0xFF },          /// RGB_GAIN_INDEX
-       };
-        byte[][] Get_Value_Packet =
-        {
-            new byte[] { 0x05, 0x01, 0xE0, 0x01, 0xFF },          /// BACKLIGHT_INDEX
-            new byte[] { 0x05, 0x00, 0xE0, 0x0D, 0xFF },          /// RGB_GAIN_INDEX
-       };
-*/
-        byte[][] Parsing_Packet_old =
-        {
-            new byte[] { 0x06, 0x01, 0xE0, 0x01 },          /// BACKLIGHT_INDEX
-            new byte[] { 0x08, 0x00, 0xE0, 0x0D },          /// RGB_GAIN_INDEX
-            new byte[] { 0x06, 0x01, 0xE0, 0x12 },          /// GET_MAIN_INPUT_INDEX,
-            new byte[] { 0x07, 0x01, 0xE0, 0x07 },          /// GET_BACKLIGHT_SENSOR_INDEX
-            new byte[] { 0x09, 0x01, 0xE0, 0x08 },          /// GET_THERMAL_SENSOR_INDEX,
-       };
-
         private bool CheckSerialOpen()
         {
             Thread LogA_analysis = new Thread(new ThreadStart(serialPortA_analysis));
@@ -316,17 +286,17 @@ namespace Hotspring
         {
             //// Calibration Command
             new byte [] { }, //SET_GAMMA_INDEX = 0,
-            new byte [] { }, //GET_GAMMA_INDEX,
+            new byte [] { 0x06, 0x00, 0xE0, 0x01 }, //GET_GAMMA_INDEX,
             //new byte [] { }, //SET_OUTPUT_GAMMA_TABLE_INDEX,
             new byte [] { }, //GET_OUTPUT_GAMMA_TABLE_INDEX,
             new byte [] { }, //SET_COLOR_GAMUT_INDEX,
-            new byte [] { }, //GET_COLOR_GAMUT_INDEX,
+            new byte [] { 0x06, 0x00, 0xE0, 0x05 }, //GET_COLOR_GAMUT_INDEX,
             //new byte [] { }, //SET_INPUT_GAMMA_TABLE_INDEX,
             new byte [] { }, //GET_INPUT_GAMMA_TABLE_INDEX,
-            new byte [] { }, ////SET_PCM_MARTIX_TABLE_INDEX,
+            //new byte [] { }, //SET_PCM_MARTIX_TABLE_INDEX,
             new byte [] { }, //GET_PCM_MARTIX_TABLE_INDEX,
             new byte [] { }, //SET_COLOR_TEMP_INDEX,
-            new byte [] { }, //GET_COLOR_TEMP_INDEX,
+            new byte [] { 0x06, 0x00, 0xE0, 0x0B }, //GET_COLOR_TEMP_INDEX,
             new byte [] { }, //SET_RGB_GAIN_INDEX,
             new byte [] { 0x08, 0x00, 0xE0, 0x0D }, //GET_RGB_GAIN_INDEX,
             
@@ -337,23 +307,23 @@ namespace Hotspring
             new byte [] { }, //SET_INTERNAL_PATTERN_INDEX,
             new byte [] { }, //SET_PATTERN_RGB_INDEX,
             new byte [] { }, //SET_SHARPNESS_INDEX,
-            new byte [] { }, //GET_SHARPNESS_INDEX,
+            new byte [] { 0x06, 0x01, 0xE0, 0x06 }, //GET_SHARPNESS_INDEX,
             new byte [] { 0x07, 0x01, 0xE0, 0x07 }, //GET_BACKLIGHT_SENSOR_INDEX,
-            new byte [] { 0x07, 0x01, 0xE0, 0x08 }, //GET_THERMAL_SENSOR_INDEX,
+            new byte [] { 0x09, 0x01, 0xE0, 0x08 }, //GET_THERMAL_SENSOR_INDEX,
             new byte [] { }, //SET_SPI_PORT_INDEX,
-            new byte [] { }, //GET_SPI_PORT_INDEX,
+            new byte [] { 0x07, 0x01, 0xE0, 0x0A }, //GET_SPI_PORT_INDEX,
             new byte [] { }, //SET_UART_PORT_INDEX,
-            new byte [] { }, //GET_UART_PORT_INDEX,
+            new byte [] { 0x07, 0x01, 0xE0, 0x0C }, //GET_UART_PORT_INDEX,
             new byte [] { }, //SET_BRIGHTNESS_INDEX,
-            new byte [] { }, //GET_BRIGHTNESS_INDEX,
+            new byte [] { 0x06, 0x01, 0xE0, 0x0E }, //GET_BRIGHTNESS_INDEX,
             new byte [] { }, //SET_CONTRAST_INDEX,
-            new byte [] { }, //GET_CONTRAST_INDEX,
+            new byte [] { 0x06, 0x01, 0xE0, 0x10 }, //GET_CONTRAST_INDEX,
             new byte [] { }, //SET_MAIN_INPUT_INDEX,
             new byte [] { 0x06, 0x01, 0xE0, 0x12 }, //GET_MAIN_INPUT_INDEX,
             new byte [] { }, //SET_SUB_INPUT_INDEX,
-            new byte [] { }, //GET_SUB_INPUT_INDEX,
+            new byte [] { 0x06, 0x01, 0xE0, 0x14 }, //GET_SUB_INPUT_INDEX,
             new byte [] { }, //SET_PIP_MODE_INDEX,
-            new byte [] { }, //GET_PIP_MODE_INDEX,
+            new byte [] { 0x06, 0x01, 0xE0, 0x16 }, //GET_PIP_MODE_INDEX,
             
             //new byte [] { }, // Write Data Command
             new byte [] { }, //GET_SCALER_TYPE_INDEX,
@@ -472,7 +442,7 @@ namespace Hotspring
         private bool Parse_backlight_packet(List<byte>input_packet, out byte return_value)
         {
             // update here
-            int PACKET_INDEX = (int)command_index_old.BACKLIGHT_INDEX;
+            int PACKET_INDEX = (int)command_index.GET_BACKLIGHT_INDEX;
 
             bool ret_value = true;
             return_value = 0;
@@ -567,7 +537,7 @@ namespace Hotspring
         private bool Parse_rgb_gain_packet(List<byte> input_packet, out byte r_gain, out byte g_gain, out byte b_gain)
         {
             // update here
-            int PACKET_INDEX = (int)command_index_old.RGB_GAIN_INDEX;
+            int PACKET_INDEX = (int)command_index.GET_RGB_GAIN_INDEX;
 
             bool ret_value = true;
             r_gain = g_gain = b_gain = 0;
@@ -595,7 +565,7 @@ namespace Hotspring
         private bool Parse_rgb_gain_packet(List<byte> input_packet, out byte []rgb_gain)
         {
             // update here
-            int PACKET_INDEX = (int)command_index_old.RGB_GAIN_INDEX;
+            int PACKET_INDEX = (int)command_index.GET_RGB_GAIN_INDEX;
 
             bool ret_value = true;
             rgb_gain = new byte[3];
@@ -680,7 +650,7 @@ namespace Hotspring
         private bool Parse_main_input_packet(List<byte> input_packet, out byte return_value)
         {
             // update here
-            int PACKET_INDEX = (int)command_index_old.GET_MAIN_INPUT_INDEX;
+            int PACKET_INDEX = (int)command_index.GET_MAIN_INPUT_INDEX;
 
             bool ret_value = true;
             return_value = 0;
@@ -746,7 +716,7 @@ namespace Hotspring
         private bool Parse_backlight_sensor_packet(List<byte> input_packet, out byte [] return_value)
         {
             // update here
-            int PACKET_INDEX = (int)command_index_old.GET_BACKLIGHT_SENSOR_INDEX;
+            int PACKET_INDEX = (int)command_index.GET_BACKLIGHT_SENSOR_INDEX;
 
             bool ret_value = true;
             return_value = new byte [2];
@@ -856,7 +826,7 @@ namespace Hotspring
         private bool Parse_thermal_sensor_packet(List<byte> input_packet, out byte [] return_value)
         {
             // update here
-            int PACKET_INDEX = (int)command_index_old.GET_THERMAL_SENSOR_INDEX;
+            int PACKET_INDEX = (int)command_index.GET_THERMAL_SENSOR_INDEX;
 
             bool ret_value = true;
             return_value = new byte [4];
@@ -1203,6 +1173,163 @@ namespace Hotspring
             {
                 label_sensor_show.Text = sensor_value_1 + "," + sensor_value_2;
             }
+        }
+
+        private void numericUpDown_gamma_set_ValueChanged(object sender, EventArgs e)
+        {
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            int check_packet = Set_Gamma_value((byte)numericUpDown_gamma_set.Value);        // update here
+
+            string return_text = "";
+            switch (check_packet)
+            {
+                case 0:
+                    return_text = "No data";
+                    break;
+                case 1:
+                    return_text = "ACK";
+                    break;
+                case 2:
+                    return_text = "NACK";
+                    break;
+                case 3:
+                    return_text = "NAV";
+                    break;
+            }
+            label_gamma_show.Text = return_text;
+        }
+
+        private void button_gamma_get_Click(object sender, EventArgs e)
+        {
+            byte gamma_value;
+
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            if (Get_Gamma_value(out gamma_value) == true)           // update here
+            {
+                string return_text = "";
+                switch (gamma_value)    // update here
+                {
+                    case 0:
+                        return_text = "1.4";
+                        break;
+                    case 1:
+                        return_text = "1.6";
+                        break;
+                    case 2:
+                        return_text = "1.8";
+                        break;
+                    case 3:
+                        return_text = "2.0";
+                        break;
+                    case 4:
+                        return_text = "2.2";
+                        break;
+                    case 5:
+                        return_text = "2.4";
+                        break;
+                    case 6:
+                        return_text = "Video";
+                        break;
+                    case 7:
+                        return_text = "HLG";
+                        break;
+                    case 8:
+                        return_text = "DICOM";
+                        break;
+                }
+                label_gamma_show.Text = return_text;            // update here
+            }
+        }
+
+        private int Set_Gamma_value(byte set_value)
+        {
+            int cmd_index = (int)command_index.SET_GAMMA_INDEX; // update index here
+
+            if (set_value > 8)        // update range check
+            {
+                // error handling
+            }
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+
+            // Update input data
+            input_data[0] = set_value;
+
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            int check_packet = 0xff;
+            if (dataListbyte.Count() > 0)
+            {
+                check_packet = check_Ack_packet();
+            }
+            return check_packet;
+        }
+
+        private bool Get_Gamma_value(out byte return_value)  // update here
+        {
+            int cmd_index = (int)command_index.GET_GAMMA_INDEX; // update index here
+            bool ret_value = false;
+            return_value = 0;       // update here
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+            //input_data[0] = set_value;
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+
+                // update parsing here
+                if (Parse_gamma_packet(log_analysis, out return_value) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
+            return ret_value;
+        }
+
+        private bool Parse_gamma_packet(List<byte> input_packet, out byte return_value)
+        {
+            // update here
+            int PACKET_INDEX = (int)command_index.GET_GAMMA_INDEX;
+
+            bool ret_value = true;
+            return_value = 0;
+
+            for (int index = 0; index < Parsing_Packet[PACKET_INDEX].Length; index++)
+            {
+                if (input_packet.ElementAt(index) != Parsing_Packet[PACKET_INDEX][index])
+                {
+                    ret_value = false;
+                    break;
+                }
+            }
+
+            if (ret_value == true)
+            {
+                // update here
+                return_value = input_packet.ElementAt(4);
+            }
+
+            return ret_value;
         }
     }
 }
