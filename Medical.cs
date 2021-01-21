@@ -268,7 +268,8 @@ namespace Hotspring
             new byte[] { 0x06, 0x01, 0xE0, 0x05, 0xff, 0xff },              ///SET_SHARPNESS_INDEX,
             new byte[] { 0x05, 0x01, 0xE0, 0x06, 0xff },              		///GET_SHARPNESS_INDEX,
             new byte[] { 0x05, 0x01, 0xE0, 0x07, 0xff },              		///GET_BACKLIGHT_SENSOR_INDEX,
-            new byte[] { 0x06, 0x01, 0xE0, 0x08, 0xff, 0xff },              ///GET_THERMAL_SENSOR_INDEX,
+            new byte[] { 0x05, 0x01, 0xE0, 0x08, 0xff },                    ///GET_THERMAL_SENSOR_INDEX,
+            //new byte[] { 0x06, 0x01, 0xE0, 0x08, 0xff, 0xff },            ///GET_THERMAL_SENSOR_INDEX,
             new byte[] { 0x06, 0x01, 0xE0, 0x09, 0xff, 0xff },              ///SET_SPI_PORT_INDEX,
             new byte[] { 0x05, 0x01, 0xE0, 0x0A, 0xff },              		///GET_SPI_PORT_INDEX,
             new byte[] { 0x06, 0x01, 0xE0, 0x0B, 0xff, 0xff },              ///SET_UART_PORT_INDEX,
@@ -769,6 +770,39 @@ namespace Hotspring
             return ret_value;
         }
 
+        private bool Get_Thermal_sensor_value(out int sensor1, out int sensor2)  // update here
+        {
+            int cmd_index = (int)command_index.GET_THERMAL_SENSOR_INDEX; // update index here
+            bool ret_value = false;
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+
+            byte[] input_data = new byte[input_data_length];
+            sensor1 = 0;
+            sensor2 = 0;
+
+            //new byte[] { 0x05, 0x01, 0xE0, 0x08, 0xff },              ///GET_THERMAL_SENSOR_INDEX,
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+
+                // update parsing here
+                if (Parse_thermal_sensor_packet(log_analysis, out sensor1, out sensor2) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
+            return ret_value;
+        }
+
         private bool Get_Thermal_sensor_value(byte set_value, out int sensor1, out int sensor2)  // update here
         {
             int cmd_index = (int)command_index.GET_THERMAL_SENSOR_INDEX; // update index here
@@ -785,7 +819,7 @@ namespace Hotspring
             sensor2 = 0;
 
             //new byte[] { 0x06, 0x01, 0xE0, 0x08, 0xff, 0xff },              ///GET_THERMAL_SENSOR_INDEX,
-            Command_Packet[cmd_index][4] = set_value;
+            Command_Packet[cmd_index][4] = set_value;                         // set_value equal [4] value.
             Send_and_Receive_Packet(cmd_index, input_data);
 
             // 檢查封包是否回傳正確的value.
@@ -1165,7 +1199,7 @@ namespace Hotspring
                 // error handling and return
             }
 
-            if (Get_Thermal_sensor_value((byte)numericUpDown_maininput.Value,out sensor_value_1, out sensor_value_2) == true)
+            if (Get_Thermal_sensor_value(out sensor_value_1, out sensor_value_2) == true)
             {
                 label_sensor_show.Text = sensor_value_1 + "," + sensor_value_2;
             }
