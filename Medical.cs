@@ -1620,5 +1620,134 @@ namespace Hotspring
 
             return ret_value;
         }
+
+        private void hScrollBar_brightness_set_Scroll(object sender, ScrollEventArgs e)
+        {
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            // update here
+            int check_packet = Set_brightness_value((byte)hScrollBar_brightness_set.Value);
+
+            switch (check_packet)
+            {
+                case 0:
+                    label_brightness_show.Text = "No data";     // update here
+                    break;
+                case 1:
+                    label_brightness_show.Text = "ACK";         // update here
+                    break;
+                case 2:
+                    label_brightness_show.Text = "NACK";        // update here
+                    break;
+                case 3:
+                    label_brightness_show.Text = "NAV";         // update here
+                    break;
+            }
+        }
+
+        private void button_brightness_get_Click(object sender, EventArgs e)
+        {
+            // update here
+            byte brightness_value;
+
+            // Make sure Serial is open
+            if (CheckSerialOpen() == false)
+            {
+                // error handling and return
+            }
+
+            // update here
+            if (Get_brightness_value(out brightness_value) == true)
+            {
+                // update here
+                label_brightness_show.Text = brightness_value.ToString();
+            }
+        }
+
+        private int Set_brightness_value(byte set_value)   // update here
+        {
+            int cmd_index = (int)command_index.SET_BRIGHTNESS_INDEX; // update index here
+
+            if (set_value > 100 || set_value < 0)        // update range check
+            {
+                // error handling
+            }
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+
+            // Update input data
+            input_data[0] = set_value;
+
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            int check_packet = 0xff;
+            if (dataListbyte.Count() > 0)
+            {
+                check_packet = check_Ack_packet();
+            }
+            return check_packet;
+        }
+
+        private bool Get_brightness_value(out byte return_value)  // update here
+        {
+            int cmd_index = (int)command_index.GET_BRIGHTNESS_INDEX; // update index here
+            bool ret_value = false;
+            return_value = 0;
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+            //input_data[0] = set_value;
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+
+                // update parsing here
+                if (Parse_brightness_packet(log_analysis, out return_value) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
+            return ret_value;
+        }
+
+        // update out byte/int16/uint32/.....
+        private bool Parse_brightness_packet(List<byte> input_packet, out byte return_value)
+        {
+            // update here
+            int PACKET_INDEX = (int)command_index.GET_BRIGHTNESS_INDEX;
+
+            bool ret_value = true;
+            return_value = 0;
+
+            for (int index = 0; index < Parsing_Packet[PACKET_INDEX].Length; index++)
+            {
+                if (input_packet.ElementAt(index) != Parsing_Packet[PACKET_INDEX][index])
+                {
+                    ret_value = false;
+                    break;
+                }
+            }
+
+            if (ret_value == true)
+            {
+                // update here
+                return_value = input_packet.ElementAt(4);
+            }
+
+            return ret_value;
+        }
     }
 }
