@@ -56,6 +56,9 @@
             this.button_brightness_get = new System.Windows.Forms.Button();
             this.label_brightness_show = new System.Windows.Forms.Label();
             this.hScrollBar_brightness_set = new System.Windows.Forms.HScrollBar();
+            this.button_contrast_get = new System.Windows.Forms.Button();
+            this.label_contrast_show = new System.Windows.Forms.Label();
+            this.hScrollBar_contrast_set = new System.Windows.Forms.HScrollBar();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_rgbgain_set)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_maininput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_thermal)).BeginInit();
@@ -335,11 +338,45 @@
             this.hScrollBar_brightness_set.Value = 50;
             this.hScrollBar_brightness_set.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar_brightness_set_Scroll);
             // 
+            // button_contrast_get
+            // 
+            this.button_contrast_get.Location = new System.Drawing.Point(272, 208);
+            this.button_contrast_get.Name = "button_contrast_get";
+            this.button_contrast_get.Size = new System.Drawing.Size(38, 23);
+            this.button_contrast_get.TabIndex = 29;
+            this.button_contrast_get.Text = "Get";
+            this.button_contrast_get.UseVisualStyleBackColor = true;
+            this.button_contrast_get.Click += new System.EventHandler(this.button_contrast_get_Click);
+            // 
+            // label_contrast_show
+            // 
+            this.label_contrast_show.AutoSize = true;
+            this.label_contrast_show.Location = new System.Drawing.Point(207, 212);
+            this.label_contrast_show.Name = "label_contrast_show";
+            this.label_contrast_show.Size = new System.Drawing.Size(11, 12);
+            this.label_contrast_show.TabIndex = 28;
+            this.label_contrast_show.Text = "0";
+            // 
+            // hScrollBar_contrast_set
+            // 
+            this.hScrollBar_contrast_set.LargeChange = 1;
+            this.hScrollBar_contrast_set.Location = new System.Drawing.Point(14, 209);
+            this.hScrollBar_contrast_set.Maximum = 150;
+            this.hScrollBar_contrast_set.Minimum = -50;
+            this.hScrollBar_contrast_set.Name = "hScrollBar_contrast_set";
+            this.hScrollBar_contrast_set.Size = new System.Drawing.Size(173, 17);
+            this.hScrollBar_contrast_set.TabIndex = 27;
+            this.hScrollBar_contrast_set.Value = 50;
+            this.hScrollBar_contrast_set.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar_contrast_set_Scroll);
+            // 
             // Medical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(319, 277);
+            this.Controls.Add(this.button_contrast_get);
+            this.Controls.Add(this.label_contrast_show);
+            this.Controls.Add(this.hScrollBar_contrast_set);
             this.Controls.Add(this.button_brightness_get);
             this.Controls.Add(this.label_brightness_show);
             this.Controls.Add(this.hScrollBar_brightness_set);
@@ -407,5 +444,8 @@
         private System.Windows.Forms.Button button_brightness_get;
         private System.Windows.Forms.Label label_brightness_show;
         private System.Windows.Forms.HScrollBar hScrollBar_brightness_set;
+        private System.Windows.Forms.Button button_contrast_get;
+        private System.Windows.Forms.Label label_contrast_show;
+        private System.Windows.Forms.HScrollBar hScrollBar_contrast_set;
     }
 }
