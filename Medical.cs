@@ -919,19 +919,15 @@ namespace Hotspring
 
         private string raw_data(List<byte> data)
         {
-            string hexString = string.Empty;
-            byte[] bytedata = data.ToArray();
-            if (bytedata != null)
+            string HexString = "";
+            if (data != null)
             {
-                StringBuilder strB = new StringBuilder();
-
-                for (int i = 0; i < bytedata.Length; i++)
+                foreach (byte sum in data)
                 {
-                    strB.Append(data[i].ToString("X2"));
+                    HexString += (sum.ToString("X2"));
                 }
-                hexString = strB.ToString();
             }
-            return hexString;
+            return HexString;
         }
 
         private string Check_value_packet()
