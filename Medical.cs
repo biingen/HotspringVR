@@ -703,6 +703,37 @@ namespace Hotspring
             return ret_value;
         }
 
+        private bool Get_Backlight_sensor_value_with_rawdata(out int return_value, out string rawdata)  // update here
+        {
+            int cmd_index = (int)command_index.GET_BACKLIGHT_SENSOR_INDEX; // update index here
+            bool ret_value = false;
+            return_value = 0;
+            rawdata = "";
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+            byte[] input_data = new byte[input_data_length];
+            //input_data[0] = set_value;
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+                rawdata = raw_data(log_analysis);
+                // update parsing here
+                if (Parse_backlight_sensor_packet(log_analysis, out return_value) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
+            return ret_value;
+        }
+
         // update out byte/int16/uint32/.....
         private bool Parse_backlight_sensor_packet(List<byte> input_packet, out int return_value)
         {
@@ -737,6 +768,40 @@ namespace Hotspring
                 return_value[1] = input_packet.ElementAt(5);
             }
 
+            return ret_value;
+        }
+
+        private bool Get_Thermal_sensor_value_with_rawdata(out int sensor1, out int sensor2, out string rawdata)  // update here
+        {
+            int cmd_index = (int)command_index.GET_THERMAL_SENSOR_INDEX; // update index here
+            bool ret_value = false;
+
+            int input_data_length = Command_Packet[cmd_index].Length - 0x05;
+
+            byte[] input_data = new byte[input_data_length];
+            sensor1 = 0;
+            sensor2 = 0;
+            rawdata = "";
+
+            //new byte[] { 0x05, 0x01, 0xE0, 0x08, 0xff },              ///GET_THERMAL_SENSOR_INDEX,
+            Send_and_Receive_Packet(cmd_index, input_data);
+
+            // 檢查封包是否回傳正確的value.
+            if (dataListbyte.Count() > 0)
+            {
+                List<byte> log_analysis = new List<byte>();
+                log_analysis = dataListbyte.Dequeue();
+                rawdata = raw_data(log_analysis);
+                // update parsing here
+                if (Parse_thermal_sensor_packet(log_analysis, out sensor1, out sensor2) == true)
+                {
+                    ret_value = true;
+                }
+                else
+                {
+
+                }
+            }
             return ret_value;
         }
 
@@ -850,6 +915,23 @@ namespace Hotspring
             }
 
             return ret_value;
+        }
+
+        private string raw_data(List<byte> data)
+        {
+            string hexString = string.Empty;
+            byte[] bytedata = data.ToArray();
+            if (bytedata != null)
+            {
+                StringBuilder strB = new StringBuilder();
+
+                for (int i = 0; i < bytedata.Length; i++)
+                {
+                    strB.Append(data[i].ToString("X2"));
+                }
+                hexString = strB.ToString();
+            }
+            return hexString;
         }
 
         private string Check_value_packet()
@@ -1145,6 +1227,7 @@ namespace Hotspring
         private void button_backlight_sensor_get_Click(object sender, EventArgs e)
         {
             int sensor_value = 0;
+            string sensor_rawdata = "";
 
             // Make sure Serial is open
             if (CheckSerialOpen() == false)
@@ -1152,9 +1235,10 @@ namespace Hotspring
                 // error handling and return
             }
 
-            if (Get_Backlight_sensor_value(out sensor_value) == true)
+            if (Get_Backlight_sensor_value_with_rawdata(out sensor_value, out sensor_rawdata) == true)
             {
                 label_sensor_show.Text = sensor_value.ToString();
+                label_rawdata_show.Text = sensor_rawdata;
             }
         }
 
@@ -1162,6 +1246,7 @@ namespace Hotspring
         {
             int sensor_value_1 = 0;
             int sensor_value_2 = 0;
+            string sensor_rawdata = "";
 
             // Make sure Serial is open
             if (CheckSerialOpen() == false)
@@ -1169,9 +1254,10 @@ namespace Hotspring
                 // error handling and return
             }
 
-            if (Get_Thermal_sensor_value(out sensor_value_1, out sensor_value_2) == true)
+            if (Get_Thermal_sensor_value_with_rawdata(out sensor_value_1, out sensor_value_2, out sensor_rawdata) == true)
             {
                 label_sensor_show.Text = sensor_value_1 + "," + sensor_value_2;
+                label_rawdata_show.Text = sensor_rawdata;
             }
         }
 
